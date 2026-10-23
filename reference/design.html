@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Averon Overseas – Design reference, Phase 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+ --paper:#E9EFF4; --panel:#D6E1EA; --ink:#12263F; --mute:#566577; --rule:#9FB1C2;
+ --accent:#E58C6B; --accent-ink:#12263F; --night:#12263F; --on-night:#EAF0F6;
+ --serif:"Young Serif",Georgia,"Times New Roman",serif;
+ --sans:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+ --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+ box-sizing:border-box; color-scheme:light;
+ padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --paper:#0D1826; --panel:#16273B; --ink:#E6EDF4; --mute:#93A4B7; --rule:#34495F;
+ --night:#16273B; color-scheme:dark;}}
+:root[data-theme="dark"]{--paper:#0D1826; --panel:#16273B; --ink:#E6EDF4; --mute:#93A4B7; --rule:#34495F; --night:#16273B; color-scheme:dark;}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0}
+h1{font-size:clamp(38px,6vw,72px);letter-spacing:-.01em}
+h2{font-size:clamp(28px,3.6vw,44px)}
+h3{font-size:24px}
+.v{font-family:var(--mono);font-size:.84em}
+.mute{color:var(--mute)}
+/* header */
+header{border-bottom:1px solid var(--rule);background:var(--paper);position:sticky;top:0;z-index:20}
+.bar{display:flex;align-items:center;gap:28px;height:68px}
+.logo{font-family:var(--serif);font-size:21px;text-decoration:none;letter-spacing:.02em;margin-right:auto}
+.logo small{display:block;font:400 11px/1 var(--sans);color:var(--mute);letter-spacing:.14em;margin-top:3px}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
+nav a{text-decoration:none;font-weight:500;padding:6px 0;border-bottom:2px solid transparent}
+nav a:hover{border-color:var(--accent)}
+select{font:inherit;background:transparent;color:inherit;border:1px solid var(--rule);padding:7px 8px}
+.btn{display:inline-block;font:700 16px/1 var(--sans);padding:15px 22px;text-decoration:none;border:2px solid var(--ink);cursor:pointer}
+.btn.p{background:var(--ink);color:var(--paper)}
+.btn.s{background:transparent;color:var(--ink)}
+.btn.a{background:var(--accent);border-color:var(--accent);color:#12263F}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--accent)}
+.menu{display:none}
+/* hero */
+.hero{display:grid;grid-template-columns:7fr 5fr;gap:clamp(24px,5vw,72px);padding:clamp(40px,7vw,96px) 0 clamp(40px,6vw,80px);align-items:center}
+.hero p.lead{font-size:20px;max-width:46ch;color:var(--mute);margin:22px 0 32px}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+figure{margin:0}
+figcaption{font-size:14px;color:var(--mute);border-top:1px solid var(--rule);margin-top:10px;padding-top:8px}
+.plate{background:var(--panel);padding:20px}
+.ph{display:grid;place-items:center;text-align:center;min-height:220px;border:1px dashed var(--rule);color:var(--mute);font-size:14px;padding:12px}
+/* index */
+section{padding:clamp(44px,6vw,84px) 0}
+.sechead{display:grid;grid-template-columns:5fr 7fr;gap:32px;margin-bottom:36px;align-items:end}
+.sechead p{margin:0;color:var(--mute);max-width:56ch}
+.idx{border-top:2px solid var(--ink)}
+.row{display:grid;grid-template-columns:120px 1.1fr 1.6fr 1fr;gap:24px;align-items:center;padding:20px 0;border-bottom:1px solid var(--rule);text-decoration:none}
+.row:hover{background:var(--panel)}
+.row .th{height:84px}
+.row .ph{min-height:84px;padding:4px;font-size:11px}
+.row b{font:400 24px/1.15 var(--serif)}
+.row .sz{color:var(--mute)}
+/* spec */
+.night{background:var(--night);color:var(--on-night)}
+.night .mute,.night figcaption{color:#A9B9CA}
+.night figcaption{border-color:#41566D}
+.spec{display:grid;grid-template-columns:6fr 5fr;gap:clamp(24px,5vw,72px);align-items:start}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:11px 0;border-bottom:1px solid #41566D;vertical-align:top}
+th{font-weight:400;color:#A9B9CA;width:46%;padding-right:16px}
+td{font-family:var(--mono);font-size:15px}
+.docs{margin-top:22px;font-size:15px}
+/* process */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink)}
+.step{padding:22px 24px 0 0}
+.step .n{font:400 40px/1 var(--serif);color:var(--accent)}
+.step h3{margin:14px 0 8px;font-size:21px}
+.step p{margin:0;color:var(--mute);font-size:16px}
+/* docs list */
+.dl{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--rule)}
+.dl div{padding:18px;border-right:1px solid var(--rule)}
+.dl div:last-child{border-right:0}
+.dl b{display:block;font-weight:700}
+.dl span{font-size:14px;color:var(--mute)}
+/* rfq */
+.rfq{background:var(--accent);color:#12263F}
+.rfq .g{display:grid;grid-template-columns:5fr 7fr;gap:clamp(24px,5vw,72px);align-items:start}
+form{display:grid;grid-template-columns:1fr 1fr;gap:22px 28px}
+label{display:block;font-size:14px;font-weight:700}
+input,textarea{width:100%;font:inherit;color:inherit;background:transparent;border:0;border-bottom:2px solid #12263F;padding:8px 0;border-radius:0}
+input::placeholder{color:#4a3a34}
+.full{grid-column:1/-1}
+.rfq .btn.p{background:#12263F;color:#E9EFF4;border-color:#12263F}
+/* system */
+.sys{display:grid;gap:36px}
+.sw{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border:1px solid var(--rule)}
+.sw div{padding:60px 12px 12px;font-size:13px}
+.ts>*{margin:0 0 14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.bc{font-size:14px;color:var(--mute)}
+footer{background:var(--night);color:var(--on-night);padding:48px 0 calc(48px + env(safe-area-inset-bottom,0px))}
+footer .f{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px}
+footer a{display:block;text-decoration:none;padding:3px 0}
+footer a:hover{text-decoration:underline}
+.sticky{display:none}
+@media (max-width:860px){
+ nav,.bar .btn.p.d{display:none}
+ .menu{display:block;position:relative}
+ .menu summary{list-style:none;cursor:pointer;font-weight:700;padding:10px 4px}
+ .menu ul{position:absolute;right:0;top:48px;background:var(--paper);border:1px solid var(--rule);list-style:none;margin:0;padding:8px 20px;min-width:200px}
+ .menu li a{display:block;padding:10px 0;text-decoration:none}
+ .hero,.sechead,.spec,.rfq .g,.two,footer .f{grid-template-columns:1fr}
+ .row{grid-template-columns:84px 1fr;gap:6px 16px}
+ .row .sz{grid-column:2}.row .dsc{grid-column:2}
+ .steps{grid-template-columns:1fr 1fr}
+ .dl{grid-template-columns:1fr 1fr}.dl div{border-bottom:1px solid var(--rule)}
+ .sw{grid-template-columns:repeat(3,1fr)}
+ form{grid-template-columns:1fr}
+ .sticky{display:block;position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:var(--paper);border-top:1px solid var(--rule);z-index:30}
+ .sticky .btn{display:block;text-align:center}
+ body{padding-bottom:72px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.btn:hover{transform:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+ <a class="logo" href="#top">AVERON OVERSEAS<small>Enable better reach</small></a>
+ <nav aria-label="Main"><ul>
+  <li><a href="#products">Products</a></li><li><a href="#specs">Specifications</a></li>
+  <li><a href="#process">How we source</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li>
+ </ul></nav>
+ <label class="v" style="font-weight:400"><span style="position:absolute;left:-9999px">Language</span>
+  <select aria-label="Language"><option>EN</option><option disabled>हिन्दी (soon)</option><option disabled>العربية (soon)</option><option disabled>Français (soon)</option></select></label>
+ <a class="btn p d" href="#rfq">Request a quote</a>
+ <details class="menu"><summary>Menu</summary><ul>
+  <li><a href="#products">Products</a></li><li><a href="#specs">Specifications</a></li><li><a href="#process">How we source</a></li><li><a href="#contact">Contact</a></li></ul></details>
+</div></header>
+
+<main id="top">
+<div class="wrap hero">
+ <div>
+  <h1>Pharmaceutical packaging, specified before it is sourced.</h1>
+  <p class="lead">Averon Overseas connects pharma manufacturers and brand owners with qualified manufacturing partners for primary packaging and raw materials.</p>
+  <div class="cta"><a class="btn a" href="#rfq">Request a quote</a><a class="btn s" href="#products">Browse the range</a></div>
+ </div>
+ <figure>
+  <div class="plate">
+  <svg viewBox="0 0 360 400" role="img" aria-label="Line drawing of a glass vial with dimension lines" style="width:100%;height:auto;display:block">
+   <g fill="none" stroke="currentColor" stroke-width="1.6">
+    <rect x="130" y="40" width="100" height="26"/><rect x="118" y="66" width="124" height="16"/>
+    <path d="M136 82v22q-26 14-26 44v196q0 14 14 14h112q14 0 14-14V148q0-30-26-44V82"/>
+    <path d="M110 330h140" stroke-dasharray="3 4" opacity=".5"/>
+   </g>
+   <g stroke="#E58C6B" stroke-width="1.2" fill="none">
+    <path d="M70 40v370M62 40h16M62 410h16"/><path d="M110 424h140M110 416v16M250 416v16"/>
+    <path d="M300 82v22M292 82h16M292 104h16"/>
+   </g>
+   <g font-family="JetBrains Mono,monospace" font-size="11" fill="currentColor">
+    <text x="20" y="230" transform="rotate(-90 28 230)">height, per vial size</text>
+    <text x="142" y="444">outer Ø, per vial size</text>
+    <text x="256" y="98">neck finish 13 / 20 mm</text>
+   </g>
+  </svg></div>
+  <figcaption>Type I borosilicate vial, 2R to 100R, clear or amber. Final dimensions are confirmed against the supplier drawing at order stage.</figcaption>
+ </figure>
+</div>
+
+<section id="products" style="border-top:1px solid var(--rule)"><div class="wrap">
+ <div class="sechead"><h2>Six product families, one enquiry</h2><p>Typical ranges from our 2026 catalogue. Exact sizes, necks and grades are confirmed per order.</p></div>
+ <div class="idx">
+  <a class="row" href="#"><div class="th"><div class="ph">photo: vials &amp; ampoules</div></div><div><b>Injectables</b></div><div class="dsc">Vials, ampoules, flip-off seals, rubber stoppers</div><div class="sz v">2R–100R vials · 1–25 ml ampoules</div></a>
+  <a class="row" href="#"><div class="th"><div class="ph">photo: syrup bottles</div></div><div><b>Bottles and containers</b></div><div class="dsc">Glass, PET, HDPE and LDPE for liquids, solids and topicals</div><div class="sz v">5 ml–1000 ml</div></a>
+  <a class="row" href="#"><div class="th"><div class="ph">photo: CRC &amp; ROPP caps</div></div><div><b>Closures and caps</b></div><div class="dsc">ROPP, child-resistant, tamper-evident and plain screw caps</div><div class="sz v">18–38 mm</div></a>
+  <a class="row" href="#"><div class="th"><div class="ph">photo: film rolls</div></div><div><b>Blister films and foils</b></div><div class="dsc">PVC, PVC/PVDC, Triplex, blister, tropical and strip foil, laminates</div><div class="sz v">100–600 µm · up to 1360 mm</div></a>
+  <a class="row" href="#"><div class="th"><div class="ph">photo: droppers &amp; syringes</div></div><div><b>Dosing and dispensing</b></div><div class="dsc">Dropper assemblies, oral syringes, measuring cups, spoons</div><div class="sz v">1–20 ml syringes · 5–60 ml cups</div></a>
+  <a class="row" href="#"><div class="th"><div class="ph">photo: powders</div></div><div><b>Pharma raw materials</b></div><div class="dsc">APIs, excipients, vitamins, chemicals in BP, USP, EP, IP grades</div><div class="sz v">CoA, TDS, SDS on request</div></a>
+ </div>
+</div></section>
+
+<section class="night" id="specs"><div class="wrap spec">
+ <div>
+  <h2>A closure, as a buyer reads it</h2>
+  <p class="mute" style="max-width:48ch;margin:16px 0 26px">Every product page follows this sheet: material, dimensions, weight, documents. Values below are from our CRC28 specification, document AO/QA/QC/SPC/02.</p>
+  <table>
+   <tr><th>Product</th><td>CRC28, 28 mm child-resistant closure</td></tr>
+   <tr><th>Outer / inner cap</th><td>Polypropylene (PP)</td></tr>
+   <tr><th>Tamper-evident ring</th><td>LDPE</td></tr>
+   <tr><th>Liner</th><td>Expanded polyethylene (EPE)</td></tr>
+   <tr><th>Overall height</th><td>24.30 ± 0.20 mm</td></tr>
+   <tr><th>Outer diameter (top)</th><td>34.40 ± 0.20 mm</td></tr>
+   <tr><th>Liner thickness</th><td>1.40 ± 0.10 mm</td></tr>
+   <tr><th>Overall weight</th><td>6.30 ± 0.30 g</td></tr>
+  </table>
+  <p class="docs">Available on request: technical drawing, specification, certificate of analysis.</p>
+ </div>
+ <figure>
+  <svg viewBox="0 0 340 300" role="img" aria-label="Section drawing of a 28 mm CRC closure with dimensions" style="width:100%;height:auto;display:block">
+   <g fill="none" stroke="#EAF0F6" stroke-width="1.5">
+    <path d="M70 60h200v12H258v128H82V72H70z"/><path d="M94 72v110M246 72v110"/>
+    <path d="M102 72h136v10H102z" opacity=".7"/><path d="M82 200l-8 10h12M258 200l8 10h-12"/>
+   </g>
+   <g stroke="#E58C6B" stroke-width="1.1" fill="none">
+    <path d="M70 34h200M70 28v12M270 28v12"/><path d="M304 60v140M298 60h12M298 200h12"/>
+    <path d="M102 250h136M102 244v12M238 244v12"/>
+   </g>
+   <g font-family="JetBrains Mono,monospace" font-size="11" fill="#EAF0F6">
+    <text x="128" y="24">Ø 34.4 ± 0.2</text><text x="150" y="272">liner Ø 25.6</text>
+    <text x="238" y="130" fill="#E58C6B" transform="rotate(90 312 130)">24.3 ± 0.2</text>
+   </g>
+  </svg>
+  <figcaption>Fig. CRC28 section, simplified. Replace with the supplier drawing in production.</figcaption>
+ </figure>
+</div></section>
+
+<section id="process"><div class="wrap">
+ <div class="sechead"><h2>From enquiry to delivery</h2><p>Four steps, with documents shared at the point you need them.</p></div>
+ <div class="steps">
+  <div class="step"><div class="n">1</div><h3>Enquiry</h3><p>Send product, size and quantity.</p></div>
+  <div class="step"><div class="n">2</div><h3>Specification</h3><p>We match it to a qualified partner and confirm the drawing.</p></div>
+  <div class="step"><div class="n">3</div><h3>Documents</h3><p>CoA, TDS and SDS shared on request.</p></div>
+  <div class="step"><div class="n">4</div><h3>Supply</h3><p>Order coordination through to delivery.</p></div>
+ </div>
+</div></section>
+
+<section class="rfq" id="rfq"><div class="wrap g">
+ <div><h2>Tell us your product, size and quantity.</h2><p style="max-width:40ch;margin-top:14px">We will come back with options. Prefer email? Write to info@averonoverseas.com.</p></div>
+ <form onsubmit="return false" aria-label="Request a quote">
+  <div><label for="n">Name</label><input id="n" autocomplete="name" required></div>
+  <div><label for="c">Company</label><input id="c" autocomplete="organization"></div>
+  <div><label for="e">Work email</label><input id="e" type="email" autocomplete="email" required></div>
+  <div><label for="p">Product and size</label><input id="p" placeholder="e.g. 28 mm CRC cap, white"></div>
+  <div><label for="q">Quantity</label><input id="q"></div>
+  <div><label for="co">Destination country</label><input id="co"></div>
+  <div class="full"><label for="m">Notes</label><textarea id="m" rows="2"></textarea></div>
+  <div class="full"><button class="btn p" type="submit">Send quote request</button></div>
+ </form>
+</div></section>
+</main>
+
+<section id="system" style="border-top:1px solid var(--rule)"><div class="wrap sys">
+ <h2>Design system (reference for Kiro)</h2>
+ <div class="sw" aria-label="Palette">
+  <div style="background:#E9EFF4;color:#12263F">Paper<br><span class="v">#E9EFF4</span></div>
+  <div style="background:#D6E1EA;color:#12263F">Panel<br><span class="v">#D6E1EA</span></div>
+  <div style="background:#12263F;color:#EAF0F6">Ink / night<br><span class="v">#12263F</span></div>
+  <div style="background:#E58C6B;color:#12263F">Accent, CTA only<br><span class="v">#E58C6B</span></div>
+  <div style="background:#566577;color:#fff">Muted<br><span class="v">#566577</span></div>
+  <div style="background:#9FB1C2;color:#12263F">Rule<br><span class="v">#9FB1C2</span></div>
+ </div>
+ <div class="two">
+  <div class="ts"><h1 style="font-size:48px">Young Serif display</h1><h3>Headings use Young Serif</h3><p>Body uses Hanken Grotesk 17/1.6. Spec values only use JetBrains Mono, for example <span class="v">24.30 ± 0.20 mm</span>.</p>
+   <p class="bc">Home / Closures and caps / CRC28</p></div>
+  <div class="ts"><p><a class="btn p" href="#rfq">Primary</a> <a class="btn s" href="#rfq">Secondary</a> <a class="btn a" href="#rfq">Accent</a></p>
+   <p class="mute">Rules: square corners, 1 px rules for structure, no card shadows, accent colour only for the quote action and diagram dimension lines, one spec table pattern for every product, a photo frame or drawing on every product row.</p></div>
+ </div>
+</div></section>
+
+<footer id="contact"><div class="wrap f">
+ <div><b style="font-family:var(--serif);font-size:22px;font-weight:400">AVERON OVERSEAS</b>
+  <p style="margin:10px 0 0;max-width:36ch" id="about">Sourcing and supply company for pharmaceutical primary packaging and raw materials.</p>
+  <p style="margin:14px 0 0">Jaipur, Rajasthan 302012, India</p></div>
+ <div><a href="mailto:info@averonoverseas.com">info@averonoverseas.com</a><a href="tel:+918591104074">+91-85911-04074</a><a href="tel:+917073857555">+91-70738-57555</a></div>
+ <div><a href="#products">Products</a><a href="#">Privacy policy</a><a href="#">Sitemap</a></div>
+</div></footer>
+<div class="sticky"><a class="btn a" href="#rfq">Request a quote</a></div>
+</body>
+</html>

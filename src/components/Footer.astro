@@ -1,0 +1,126 @@
+---
+import { useTranslations } from '../i18n/index.ts';
+
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<footer
+  role="contentinfo"
+  style="background: var(--night); color: var(--on-night); padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));"
+>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <p class="footer-company">{t('footer.companyName')}</p>
+      <p class="footer-description">{t('footer.description')}</p>
+    </div>
+
+    <div class="footer-contact">
+      <address>
+        <p class="footer-address">{t('footer.address')}</p>
+        <p>
+          <a href={`mailto:${t('footer.email')}`}>{t('footer.email')}</a>
+        </p>
+        <p>
+          <a href={`tel:${t('footer.phone1')}`}>{t('footer.phone1')}</a>
+        </p>
+        <p>
+          <a href={`tel:${t('footer.phone2')}`}>{t('footer.phone2')}</a>
+        </p>
+      </address>
+    </div>
+
+    <nav aria-label="Footer" class="footer-nav">
+      <ul>
+        <li><a href="/products/">{t('footer.links.products')}</a></li>
+        <li><a href="/privacy/">{t('footer.links.privacy')}</a></li>
+        <li><a href="/sitemap.xml">{t('footer.links.sitemap')}</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+  }
+
+  .footer-company {
+    font-family: var(--serif);
+    font-size: 1.125rem;
+    margin: 0 0 12px;
+    color: var(--on-night);
+  }
+
+  .footer-description {
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    color: var(--on-night);
+    opacity: 0.75;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  address {
+    font-style: normal;
+  }
+
+  .footer-address {
+    font-size: 0.875rem;
+    color: var(--on-night);
+    opacity: 0.75;
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+
+  .footer-contact p {
+    margin: 4px 0;
+  }
+
+  .footer-contact a,
+  .footer-nav a {
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    color: var(--on-night);
+    text-decoration: none;
+    opacity: 0.85;
+  }
+
+  .footer-contact a:hover,
+  .footer-nav a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  .footer-contact a:focus-visible,
+  .footer-nav a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .footer-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+</style>

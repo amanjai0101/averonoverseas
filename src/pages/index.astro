@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://averonoverseas.github.io').toString();
+---
+
+<Base
+  title="Averon Overseas – Pharmaceutical Packaging Supplier"
+  description="Sourcing and supply company for pharmaceutical primary packaging and raw materials. Jaipur, India."
+  canonicalURL={canonicalURL}
+>
+  <section style="padding: 80px 24px; max-width: 900px; margin: 0 auto;">
+    <h1 style="font-family: var(--serif); color: var(--ink); font-size: 2rem; margin: 0 0 16px;">
+      Pharmaceutical Primary Packaging
+    </h1>
+    <p style="font-family: var(--sans); color: var(--muted); max-width: 60ch; line-height: 1.7;">
+      Averon Overseas sources and supplies pharmaceutical primary packaging and raw materials for manufacturers and brand owners worldwide.
+    </p>
+  </section>
+</Base>

@@ -1,0 +1,22 @@
+{
+  "slug": "crc-cap-28",
+  "category": "closures-caps",
+  "name": "Child-Resistant Closure (CRC) 28 mm",
+  "summary": "PP/LDPE child-resistant closure with EPE liner, 28 mm neck finish, suitable for oral pharmaceutical bottles.",
+  "materials": ["PP", "LDPE", "EPE liner"],
+  "variants": [
+    { "label": "28 mm", "attrs": { "neck": 28, "unit": "mm" } }
+  ],
+  "specs": [
+    { "key": "Overall height", "value": "24.30", "tol": "0.20", "unit": "mm" },
+    { "key": "Outer diameter", "value": "34.40", "tol": "0.20", "unit": "mm" },
+    { "key": "Weight", "value": "6.30", "tol": "0.20", "unit": "g" }
+  ],
+  "sizeRange": "22–38 mm",
+  "colours": ["White", "Custom"],
+  "standards": [],
+  "docs": ["Drawing", "Specification", "CoA"],
+  "images": ["crc-cap-28-1.webp"],
+  "status": "verified",
+  "tags": ["child resistant", "tamper evident", "28 mm"]
+}
