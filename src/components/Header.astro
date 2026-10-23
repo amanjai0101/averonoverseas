@@ -8,12 +8,15 @@ interface Props {
 const { lang = 'en' } = Astro.props;
 const t = useTranslations(lang);
 
+// BASE_URL always ends with '/'; strip it so we can append paths cleanly.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 const navLinks = [
-  { key: 'nav.products',       href: '/products/' },
-  { key: 'nav.specifications', href: '/specifications/' },
-  { key: 'nav.howWeSource',    href: '/how-we-source/' },
-  { key: 'nav.about',          href: '/about/' },
-  { key: 'nav.contact',        href: '/contact/' },
+  { key: 'nav.products',       href: `${base}/products/` },
+  { key: 'nav.specifications', href: `${base}/specifications/` },
+  { key: 'nav.howWeSource',    href: `${base}/how-we-source/` },
+  { key: 'nav.about',          href: `${base}/about/` },
+  { key: 'nav.contact',        href: `${base}/contact/` },
 ] as const;
 
 const langOptions = [
@@ -29,7 +32,7 @@ const langOptions = [
   <div class="header-inner">
 
     <!-- Wordmark -->
-    <a href="/" class="wordmark-link" aria-label="Averon Overseas – home">
+    <a href={`${base}/`} class="wordmark-link" aria-label="Averon Overseas – home">
       <span class="wordmark">AVERON OVERSEAS</span>
       <span class="tagline">Enable Better Reach</span>
     </a>
@@ -53,7 +56,7 @@ const langOptions = [
         ))}
       </select>
 
-      <a href="/rfq/" class="cta-btn">{t('nav.requestQuote')}</a>
+      <a href={`${base}/rfq/`} class="cta-btn">{t('nav.requestQuote')}</a>
     </div>
 
     <!-- Mobile menu (details/summary — zero JS for open/close) -->

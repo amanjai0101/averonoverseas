@@ -18,7 +18,9 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = resolve(__dirname, '..', 'dist');
 
-const SITE_URL = (process.env.SITE_URL ?? 'https://averonoverseas.github.io').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL ?? 'https://amanjai0101.github.io').replace(/\/$/, '');
+const RAW_BASE = process.env.BASE_PATH ?? '/averonoverseas';
+const BASE_PATH = RAW_BASE === '/' ? '' : RAW_BASE.replace(/\/$/, '');
 
 let allPassed = true;
 
@@ -56,15 +58,14 @@ check('dist/robots.txt exists', robotsExists);
 
 if (robotsExists) {
   const robotsContent = readFileSync(robotsPath, 'utf-8');
-  const expectedSitemapLine = `Sitemap: ${SITE_URL}/sitemap-index.xml`;
+  const expectedSitemapLine = `Sitemap: ${SITE_URL}${BASE_PATH}/sitemap-index.xml`;
   check(
     `dist/robots.txt contains "${expectedSitemapLine}"`,
     robotsContent.includes(expectedSitemapLine)
   );
 } else {
-  // Mark the sitemap-line check as failed too since we can't read the file
   check(
-    `dist/robots.txt contains "Sitemap: ${SITE_URL}/sitemap-index.xml"`,
+    `dist/robots.txt contains "Sitemap: ${SITE_URL}${BASE_PATH}/sitemap-index.xml"`,
     false
   );
 }

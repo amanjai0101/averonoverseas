@@ -7,6 +7,8 @@ interface Props {
 
 const { lang = 'en' } = Astro.props;
 const t = useTranslations(lang);
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <footer
@@ -36,9 +38,9 @@ const t = useTranslations(lang);
 
     <nav aria-label="Footer" class="footer-nav">
       <ul>
-        <li><a href="/products/">{t('footer.links.products')}</a></li>
-        <li><a href="/privacy/">{t('footer.links.privacy')}</a></li>
-        <li><a href="/sitemap.xml">{t('footer.links.sitemap')}</a></li>
+        <li><a href={`${base}/products/`}>{t('footer.links.products')}</a></li>
+        <li><a href={`${base}/privacy/`}>{t('footer.links.privacy')}</a></li>
+        <li><a href={`${base}/sitemap.xml`}>{t('footer.links.sitemap')}</a></li>
       </ul>
     </nav>
   </div>

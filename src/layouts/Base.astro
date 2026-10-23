@@ -18,7 +18,7 @@ interface Props {
  * Forces "rtl" when the BCP 47 base language subtag is ar, he, fa, or ur,
  * regardless of the dir prop value.
  */
-function resolveDir(lang: string, dir: string): string {
+export function resolveDir(lang: string, dir: string): string {
   const RTL_LANGS = new Set(['ar', 'he', 'fa', 'ur']);
   const baseSubtag = lang.split('-')[0].toLowerCase();
   return RTL_LANGS.has(baseSubtag) ? 'rtl' : dir;
@@ -35,6 +35,10 @@ const {
 } = Astro.props;
 
 const resolvedDir = resolveDir(lang, dirProp);
+
+// BASE_URL is injected by Astro from astro.config base; always ends with '/'.
+// Strip trailing slash for use in @font-face src paths.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const orgJsonLd = {
   '@context': 'https://schema.org',
@@ -81,6 +85,16 @@ const orgJsonLd = {
     <Footer lang={lang} />
   </body>
 </html>
+
+<!-- @font-face rules injected inline so BASE_URL is resolved at build time -->
+<style is:inline set:html={`
+@font-face{font-family:'Young Serif';font-weight:400;font-style:normal;font-display:swap;src:url('${base}/fonts/young-serif-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Hanken Grotesk';font-weight:400;font-style:normal;font-display:swap;src:url('${base}/fonts/hanken-grotesk-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Hanken Grotesk';font-weight:500;font-style:normal;font-display:swap;src:url('${base}/fonts/hanken-grotesk-latin-500-normal.woff2') format('woff2')}
+@font-face{font-family:'Hanken Grotesk';font-weight:700;font-style:normal;font-display:swap;src:url('${base}/fonts/hanken-grotesk-latin-700-normal.woff2') format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-weight:400;font-style:normal;font-display:swap;src:url('${base}/fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-weight:500;font-style:normal;font-display:swap;src:url('${base}/fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2')}
+`} />
 
 <style>
   /* ── Global reset ────────────────────────────────────── */

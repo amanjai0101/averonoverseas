@@ -1,60 +1,9 @@
 /* ==========================================================================
    src/styles/tokens.css
-   Design tokens: @font-face declarations, CSS custom properties,
-   dark-mode overrides, and reduced-motion reset.
+   Design tokens: CSS custom properties, dark-mode overrides, reduced-motion.
+   NOTE: @font-face rules are declared in src/layouts/Base.astro using
+   import.meta.env.BASE_URL so font paths are correct under any base path.
    ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   @font-face — self-hosted WOFF2 variants (font-display: swap for CLS safety)
-   -------------------------------------------------------------------------- */
-
-@font-face {
-  font-family: 'Young Serif';
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  src: url('/fonts/young-serif-latin-400-normal.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Hanken Grotesk';
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  src: url('/fonts/hanken-grotesk-latin-400-normal.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Hanken Grotesk';
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-  src: url('/fonts/hanken-grotesk-latin-500-normal.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Hanken Grotesk';
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-  src: url('/fonts/hanken-grotesk-latin-700-normal.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  src: url('/fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-  src: url('/fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2');
-}
 
 /* --------------------------------------------------------------------------
    :root — light-mode tokens (default)
