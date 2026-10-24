@@ -1,46 +1,160 @@
 ---
 import Base from '../layouts/Base.astro';
+import ProductImage from '../components/ProductImage.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const site = (import.meta.env.SITE ?? '').replace(/\/$/, '');
 const canonicalURL = `${site}${base}/about/`;
+
+const whyPoints = [
+  { label: 'One partner for packaging and raw materials', desc: 'Source primary packaging and APIs, excipients and vitamins through a single contact.' },
+  { label: 'Specification-led sourcing',                  desc: 'Every product is matched to a qualified partner and confirmed against supplier drawings.' },
+  { label: 'Custom sizes, colours and printing on request', desc: 'We confirm what is available and coordinate with the manufacturing partner.' },
+  { label: 'Documents shared at the point you need them', desc: 'CoA, TDS and SDS provided on request at enquiry or order stage.' },
+  { label: 'Responsive, flexible order support',          desc: 'We coordinate supply from enquiry through to delivery.' },
+];
+
+const categories = [
+  { name: 'Injectables',          slug: 'injectables' },
+  { name: 'Bottles & Containers', slug: 'bottles-containers' },
+  { name: 'Closures & Caps',      slug: 'closures-caps' },
+  { name: 'Blister Films & Foils',slug: 'blister-films-foils' },
+  { name: 'Dosing & Dispensing',  slug: 'dosing-dispensing' },
+  { name: 'Raw Materials',        slug: null },
+];
 ---
-<Base title="About Averon Overseas" description="Averon Overseas is a sourcing and supply company for pharmaceutical primary packaging and raw materials, based in Jaipur, India." canonicalURL={canonicalURL}>
-  <div class="wrap page-wrap">
-    <nav aria-label="Breadcrumb" class="breadcrumb">
-      <ol><li><a href={`${base}/`}>Home</a></li><li aria-current="page">About</li></ol>
-    </nav>
-    <div class="about-grid">
-      <div class="about-text">
-        <h1>About Averon Overseas</h1>
-        <p>Averon Overseas is a sourcing and supply company for pharmaceutical primary packaging and raw materials, based in Jaipur, Rajasthan, India.</p>
-        <p>We connect pharma manufacturers and brand owners with qualified manufacturing partners, providing clear specifications and documentation at every stage — from enquiry through to delivery.</p>
-        <h2>What we do</h2>
-        <p>We source packaging — vials, ampoules, bottles, closures, blister films and dosing devices — and pharmaceutical raw materials including APIs, excipients, vitamins and chemicals, all from verified partners supplying in BP, USP, EP and IP grades.</p>
-        <h2>How we work</h2>
-        <p>Every enquiry is matched to a qualified supplier. Specifications are confirmed against supplier drawings before order. CoA, TDS and SDS documents are shared on request. We coordinate supply from order to delivery.</p>
-        <div class="contact-block">
-          <p><a href="mailto:info@averonoverseas.com">info@averonoverseas.com</a></p>
-          <p><a href="tel:+918591104074">+91-85911-04074</a> &nbsp;·&nbsp; <a href="tel:+917073857555">+91-70738-57555</a></p>
-          <p class="muted">Jaipur, Rajasthan 302012, India</p>
+<Base
+  title="About Averon Overseas"
+  description="Averon Overseas is a sourcing and supply company for pharmaceutical primary packaging and raw materials, based in Jaipur, India."
+  canonicalURL={canonicalURL}
+>
+  <div class="page-wrap">
+
+    <!-- Vision + Mission panels -->
+    <section class="vm-section" aria-label="Vision and Mission">
+      <div class="wrap">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <ol><li><a href={`${base}/`}>Home</a></li><li aria-current="page">About</li></ol>
+        </nav>
+        <div class="vm-grid">
+          <div class="vm-panel">
+            <p class="vm-eyebrow">Vision</p>
+            <p class="vm-statement">To be the trusted single-source partner for pharmaceutical packaging and raw-material sourcing.</p>
+          </div>
+          <div class="vm-panel">
+            <p class="vm-eyebrow">Mission</p>
+            <p class="vm-statement">Simplify global sourcing with clear specifications and honest communication. Keep documentation and supply coordination transparent from enquiry to delivery.</p>
+          </div>
         </div>
       </div>
-      <div class="about-cta">
-        <a href={`${base}/rfq/`} class="btn btn-primary">Request a quote</a>
-        <a href={`${base}/products/`} class="btn btn-secondary" style="margin-top:12px">Browse products</a>
+    </section>
+
+    <!-- About text + scene image -->
+    <section class="about-section">
+      <div class="wrap about-grid">
+        <div class="about-text">
+          <h1>About Averon Overseas</h1>
+          <p>Averon Overseas is a sourcing and supply company for pharmaceutical primary packaging and raw materials, based in Jaipur, Rajasthan, India.</p>
+          <p>We connect pharma manufacturers and brand owners with qualified manufacturing partners, with clear specifications and documents shared on request.</p>
+          <p>From vials and ampoules to blister films, closures, dosing devices and raw materials — we source across six product families for customers in India and internationally.</p>
+          <div class="contact-detail">
+            <p><a href="mailto:info@averonoverseas.com">info@averonoverseas.com</a></p>
+            <p><a href="tel:+918591104074">+91-85911-04074</a>&emsp;<a href="tel:+917073857555">+91-70738-57555</a></p>
+            <p class="muted">Jaipur, Rajasthan 302012, India</p>
+          </div>
+        </div>
+        <div class="about-img">
+          <ProductImage src="scene-sample-inspection.webp" alt="Sample inspection of pharmaceutical packaging" aspectRatio="4/3" loading="lazy" />
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Why choose Averon -->
+    <section class="why-section" aria-labelledby="why-heading">
+      <div class="wrap">
+        <div class="section-head-split">
+          <h2 id="why-heading">Why choose Averon</h2>
+          <p>Five reasons buyers work with us.</p>
+        </div>
+        <div class="why-list">
+          {whyPoints.map(p => (
+            <div class="why-row">
+              <p class="why-label">{p.label}</p>
+              <p class="why-desc muted">{p.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- What we source links + scene image -->
+    <section class="source-section section-band" aria-labelledby="source-heading">
+      <div class="wrap source-grid">
+        <div class="source-text">
+          <h2 id="source-heading">What we source</h2>
+          <ul class="source-list">
+            {categories.map(c => (
+              <li>
+                {c.slug
+                  ? <a href={`${base}/products/${c.slug}/`}>{c.name} →</a>
+                  : <a href={`${base}/raw-materials/`}>{c.name} →</a>
+                }
+              </li>
+            ))}
+          </ul>
+          <a href={`${base}/rfq/`} class="btn btn-primary" style="margin-top:2rem">Request a quote</a>
+        </div>
+        <div class="source-img">
+          <ProductImage src="scene-documents-desk.webp" alt="Document review at a desk" aspectRatio="4/3" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
   </div>
 </Base>
+
 <style>
-  .page-wrap { padding-top: clamp(40px,6vw,72px); padding-bottom: clamp(64px,8vw,112px); }
-  .about-grid { display: grid; grid-template-columns: 2fr 1fr; gap: clamp(32px,5vw,64px); align-items: start; }
+  .page-wrap { padding-bottom: clamp(64px,8vw,112px); }
+
+  /* Vision / Mission */
+  .vm-section { background: var(--navy); color: #EEF3F7; padding: clamp(48px,6vw,80px) 0; }
+  .vm-section .breadcrumb, .vm-section .breadcrumb a, .vm-section .breadcrumb li+li::before { color: rgba(238,243,247,0.5); }
+  .vm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(238,243,247,0.15); border: 1px solid rgba(238,243,247,0.15); margin-top: 1.5rem; }
+  .vm-panel { padding: clamp(28px,4vw,48px); background: var(--navy); }
+  .vm-eyebrow { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem; font-family: var(--sans); font-weight: 600; }
+  .vm-statement { font-family: var(--serif); font-size: clamp(18px,2.5vw,26px); color: #EEF3F7; line-height: 1.35; margin: 0; }
+
+  /* About */
+  .about-section { padding: clamp(56px,7vw,96px) 0; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px,5vw,72px); align-items: start; }
   h1 { margin-bottom: 1.25rem; }
-  h2 { font-size: 1.375rem; margin: 2rem 0 0.75rem; }
-  p { color: var(--muted); line-height: 1.65; margin-bottom: 0.875rem; max-width: 60ch; }
-  .contact-block { margin-top: 2rem; border-top: 1px solid var(--hair); padding-top: 1.5rem; }
-  .contact-block p { margin-bottom: 0.375rem; }
-  .contact-block a { color: var(--ink); text-decoration: none; font-weight: 500; }
-  .contact-block a:hover { text-decoration: underline; }
-  .about-cta { display: flex; flex-direction: column; align-items: flex-start; position: sticky; top: 100px; }
-  @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } .about-cta { position: static; flex-direction: row; gap: 12px; } }
+  .about-text p { color: var(--muted); line-height: 1.65; margin-bottom: 0.875rem; max-width: 56ch; }
+  .contact-detail { margin-top: 1.75rem; border-top: 1px solid var(--hair); padding-top: 1.25rem; }
+  .contact-detail p { font-size: 0.9375rem; margin-bottom: 0.375rem; }
+  .contact-detail a { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .contact-detail a:hover { text-decoration: underline; }
+
+  /* Why */
+  .why-section { padding: clamp(56px,7vw,96px) 0; background: var(--band); }
+  .section-head-split { display: grid; grid-template-columns: 5fr 7fr; gap: 32px; align-items: end; margin-bottom: 2.5rem; }
+  .section-head-split p { color: var(--muted); margin: 0; }
+  .why-list { border-top: 1px solid var(--hair); }
+  .why-row { display: grid; grid-template-columns: 5fr 7fr; gap: 24px; align-items: baseline; padding: 1.125rem 0; border-bottom: 1px solid var(--hair); }
+  .why-label { font-family: var(--serif); font-size: 1.0625rem; color: var(--ink); margin: 0; }
+  .why-desc { font-size: 0.9375rem; line-height: 1.55; margin: 0; }
+
+  /* What we source */
+  .source-section { padding: clamp(56px,7vw,96px) 0; }
+  .source-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px,5vw,72px); align-items: center; }
+  .source-text h2 { margin-bottom: 1.5rem; }
+  .source-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; border-top: 1px solid var(--hair); }
+  .source-list li { border-bottom: 1px solid var(--hair); }
+  .source-list a { display: flex; align-items: center; min-height: 48px; font-family: var(--serif); font-size: 1.0625rem; color: var(--ink); text-decoration: none; padding: 0; transition: color 0.12s; }
+  .source-list a:hover { color: var(--accent); }
+
+  @media (max-width: 860px) {
+    .vm-grid { grid-template-columns: 1fr; }
+    .about-grid, .source-grid { grid-template-columns: 1fr; }
+    .section-head-split { grid-template-columns: 1fr; gap: 12px; }
+    .why-row { grid-template-columns: 1fr; gap: 4px; }
+  }
 </style>

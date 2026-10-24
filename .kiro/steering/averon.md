@@ -52,20 +52,22 @@ Every product page: image, one-line summary, spec table, available sizes, "Reque
 
 ## 6. Design rules
 
-> **`reference/design.html` is SUPERSEDED for look and feel.** Its notation and spec-formatting rules (section 4) remain in effect. Do not copy styles from it.
+> **`reference/design.html` is SUPERSEDED for look and feel.** Its notation and spec-formatting rules (section 4) remain in effect.
 
 **Direction: classy, calm, light, photo-led, editorial — a trading house catalogue, not a SaaS template.**
 
-- **Theme: LIGHT ONLY.** No dark mode, no `prefers-color-scheme` dark, no `data-theme` dark logic.
-- **Tokens:** `--bg: #FAFBFC` · `--band: #EEF3F7` · `--ink: #12263F` · `--muted: #566577` · `--hair: #D5DEE6` · `--accent: #E58C6B`
-- Accent (`#E58C6B`) is used **only** for the primary "Request a quote" button and small highlights. Nowhere else.
-- Footer: pale `#EEF3F7` band. No dark footer.
-- **Typography:** Young Serif for headlines (hero ≤ 56 px), Hanken Grotesk body 17 px/1.65, JetBrains Mono for size ranges and spec values only. Generous whitespace (sections 96–128 px). No all-caps eyebrow labels.
-- **Lines:** Max 1 px `#D5DEE6` hairlines only. No thick rules or borders.
-- **Remove** from homepage: all technical SVG line diagrams, spec-spotlight section.
-- **Images:** object-fit `contain` inside a `#EEF3F7` frame. No cropping of products. Placeholders: quiet neutral frame with product name, no dashed outlines.
-- **Avoid:** uniform card grids, identical rounded boxes, icon-in-circle rows, gradients, glow, badge spam, emoji.
-- **Logo:** `AveronLogo.webp`, height 40 px in header, in footer. Mobile: logo + hamburger.
+- **Theme:**
+  - Page background: `#F3F6F9`
+  - Alternating bands: `#E6EDF3`
+  - White panels: for image frames and forms
+  - ONE deep navy (`#12263F`) band: home page process section only
+  - Soft peach tint (`#FBEFE9`): quote band
+  - Accent (`#E58C6B`): primary "Request a quote" button ONLY
+  - No dark mode. No gradients. No icon-circles. No uniform rounded cards.
+- **Tokens:** `--bg: #F3F6F9` · `--band: #E6EDF3` · `--panel: #FFFFFF` · `--ink: #12263F` · `--muted: #566577` · `--hair: #D5DEE6` · `--accent: #E58C6B` · `--navy: #12263F` · `--peach-tint: #FBEFE9`
+- **Typography:** Young Serif headlines (hero ≤ 56 px), Hanken Grotesk body 17 px/1.65, JetBrains Mono for size ranges and spec values only. Generous whitespace (sections 96–128 px). No all-caps labels.
+- **Rhythm:** Image frames overlap band edges by 32 px. Section headings large-serif split left, intro text right. Hover on tiles reveals "View sizes →". Max 1 px `#D5DEE6` hairlines.
+- **Images:** `object-fit: contain` on white (`#FFFFFF`) frame. Pure white seamless backdrop on all product/category photos. Placeholder = quiet frame with product name, no dashed outlines.
 - **Accessibility:** WCAG AA contrast, visible focus (2 px solid accent), skip link, reduced motion respected, forms fully labelled, 44 px min touch targets.
 
 ## 7. Forms and analytics (static-compatible)

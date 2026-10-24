@@ -1,0 +1,17 @@
+{
+  "companyName": "Averon Overseas",
+  "tagline": "Enable Better Reach",
+  "description": "Sourcing and supply company for pharmaceutical primary packaging and raw materials.",
+  "address": {
+    "street": "",
+    "city": "Jaipur",
+    "state": "Rajasthan",
+    "postcode": "302012",
+    "country": "India",
+    "countryCode": "IN"
+  },
+  "email": "info@averonoverseas.com",
+  "phones": ["+91-85911-04074", "+91-70738-57555"],
+  "mapEmbedUrl": "",
+  "mapLinkUrl": "https://maps.google.com/?q=Jaipur,+Rajasthan+302012,+India"
+}

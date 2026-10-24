@@ -244,7 +244,9 @@ const breadcrumbJsonLd = {
 
     <!-- Final CTA -->
     <div class="final-cta">
-      <p>Ready to enquire about <strong>{product.name}</strong>?</p>
+      <div class="callout" style="margin:0;flex:1">
+        <p>Standard sizes shown. Need a different size, colour or printing? <a href={`${base}/rfq/?product=${encodeURIComponent(product.slug)}`}>Tell us and we will confirm options →</a></p>
+      </div>
       <a href={`${base}/rfq/?product=${encodeURIComponent(product.slug)}`} class="btn btn-primary">
         Request a quote
       </a>

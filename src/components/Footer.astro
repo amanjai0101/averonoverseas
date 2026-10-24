@@ -1,9 +1,7 @@
 ---
 import { getCategories } from '../data/index.ts';
-
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 interface Props { lang?: string; }
-
 const categories = await getCategories();
 const year = new Date().getFullYear();
 ---
@@ -14,28 +12,30 @@ const year = new Date().getFullYear();
     <!-- Col 1: Brand -->
     <div class="footer-brand">
       <a href={`${base}/`} class="footer-logo-link" aria-label="Averon Overseas — home">
-        <img src={`${base}/images/averon-logo.webp`} alt="Averon Overseas" width="100" height="34" loading="lazy" />
+        <img src={`${base}/images/averon-logo.webp`} alt="Averon Overseas" width="36" height="36" loading="lazy" />
+        <span class="footer-wm">AVERON OVERSEAS</span>
       </a>
-      <p class="footer-tagline">Sourcing and supply company for pharmaceutical primary packaging and raw materials.</p>
-      <address class="footer-address">
-        Jaipur, Rajasthan 302012, India
-      </address>
+      <p class="footer-desc">Sourcing and supply company for pharmaceutical primary packaging and raw materials.</p>
+      <address class="footer-addr">Jaipur, Rajasthan 302012, India</address>
+      <a href={`${base}/downloads/averon-overseas-product-catalogue-2026.pdf`} class="footer-cat-link" download>
+        ↓ Download catalogue
+      </a>
     </div>
 
     <!-- Col 2: Products -->
     <nav aria-label="Product categories">
-      <p class="footer-col-heading">Products</p>
+      <p class="footer-col-head">Products</p>
       <ul>
         {categories.map(c => (
           <li><a href={`${base}/products/${c.slug}/`}>{c.name}</a></li>
         ))}
-        <li><a href={`${base}/products/`}>All products</a></li>
+        <li><a href={`${base}/products/`}>All products →</a></li>
       </ul>
     </nav>
 
     <!-- Col 3: Company -->
     <nav aria-label="Company links">
-      <p class="footer-col-heading">Company</p>
+      <p class="footer-col-head">Company</p>
       <ul>
         <li><a href={`${base}/about/`}>About</a></li>
         <li><a href={`${base}/raw-materials/`}>Raw Materials</a></li>
@@ -47,7 +47,7 @@ const year = new Date().getFullYear();
 
     <!-- Col 4: Contact -->
     <div class="footer-contact">
-      <p class="footer-col-heading">Contact</p>
+      <p class="footer-col-head">Contact</p>
       <ul>
         <li><a href="mailto:info@averonoverseas.com">info@averonoverseas.com</a></li>
         <li><a href="tel:+918591104074">+91-85911-04074</a></li>
@@ -75,31 +75,32 @@ const year = new Date().getFullYear();
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   .footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 40px;
-    padding-bottom: 48px;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px; padding-bottom: 48px;
   }
-  .footer-logo-link { display: inline-block; margin-bottom: 12px; }
+  .footer-logo-link {
+    display: inline-flex; align-items: center; gap: 10px;
+    text-decoration: none; margin-bottom: 12px;
+  }
+  .footer-logo-link img { width: 36px; height: 36px; object-fit: contain; background: transparent; }
   .footer-logo-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  .footer-logo-link img { height: 34px; width: auto; }
-  .footer-tagline { font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin: 0 0 8px; max-width: 32ch; }
-  address { font-style: normal; font-size: 0.875rem; color: var(--muted); }
+  .footer-wm { font-family: var(--serif); font-size: 0.9375rem; color: var(--ink); letter-spacing: 0.06em; }
+  .footer-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; margin: 0 0 8px; max-width: 32ch; }
+  address { font-style: normal; font-size: 0.875rem; color: var(--muted); margin-bottom: 10px; }
+  .footer-cat-link { font-size: 0.8125rem; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .footer-cat-link:hover { text-decoration: underline; }
 
-  .footer-col-heading { font-weight: 600; font-size: 0.8125rem; color: var(--ink); margin: 0 0 12px; }
-
+  .footer-col-head { font-weight: 600; font-size: 0.8125rem; color: var(--ink); margin: 0 0 12px; }
   nav ul, .footer-contact ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
   nav a, .footer-contact a {
-    font-size: 0.9rem; color: var(--muted); text-decoration: none;
-    padding: 2px 0; display: block; min-height: 28px; display: flex; align-items: center;
+    font-size: 0.875rem; color: var(--muted); text-decoration: none;
+    padding: 2px 0; min-height: 28px; display: flex; align-items: center;
+    transition: color 0.12s;
   }
   nav a:hover, .footer-contact a:hover { color: var(--ink); }
   nav a:focus-visible, .footer-contact a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  .footer-legal {
-    border-top: 1px solid var(--hair);
-    padding: 16px 0;
-  }
+  .footer-legal { border-top: 1px solid var(--hair); padding: 16px 0; }
   .footer-legal-inner {
     display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
     font-size: 0.8125rem; color: var(--muted);
@@ -107,11 +108,6 @@ const year = new Date().getFullYear();
   .footer-legal-inner a { color: inherit; text-decoration: none; }
   .footer-legal-inner a:hover { text-decoration: underline; }
 
-  @media (max-width: 860px) {
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    .footer-brand { grid-column: 1 / -1; }
-  }
-  @media (max-width: 540px) {
-    .footer-grid { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 860px) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-brand { grid-column: 1/-1; } }
+  @media (max-width: 540px) { .footer-grid { grid-template-columns: 1fr; } }
 </style>

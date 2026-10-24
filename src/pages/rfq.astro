@@ -1,98 +1,136 @@
 ---
 import Base from '../layouts/Base.astro';
+import ProductImage from '../components/ProductImage.astro';
+import { getProducts } from '../data/index.ts';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const site = (import.meta.env.SITE ?? '').replace(/\/$/, '');
 const canonicalURL = `${site}${base}/rfq/`;
-
-// Pre-fill product name from ?product= query param (read at runtime via inline script)
+const allProducts = await getProducts();
+const productNames = allProducts.map(p => p.name).sort();
+const web3key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 ---
 <Base title="Request a Quote – Averon Overseas" description="Send a quote enquiry for pharmaceutical packaging or raw materials. Averon Overseas, Jaipur, India." canonicalURL={canonicalURL}>
   <div class="wrap page-wrap">
     <nav aria-label="Breadcrumb" class="breadcrumb">
-      <ol>
-        <li><a href={`${base}/`}>Home</a></li>
-        <li aria-current="page">Request a quote</li>
-      </ol>
+      <ol><li><a href={`${base}/`}>Home</a></li><li aria-current="page">Request a quote</li></ol>
     </nav>
+
     <div class="rfq-grid">
-      <div class="rfq-intro">
-        <h1>Request a quote</h1>
-        <p>Tell us the product, size and quantity. We will come back with options.</p>
-        <p>Prefer email? Write to <a href="mailto:info@averonoverseas.com">info@averonoverseas.com</a></p>
-        <p><a href="tel:+918591104074">+91-85911-04074</a><br /><a href="tel:+917073857555">+91-70738-57555</a></p>
+      <!-- Left tinted panel -->
+      <div class="rfq-left">
+        <div class="rfq-guide">
+          <h2>What to include</h2>
+          <ul>
+            <li><strong>Product and size</strong><br />Name, neck finish, capacity or thickness</li>
+            <li><strong>Quantity</strong><br />Estimated units per order or per year</li>
+            <li><strong>Destination country</strong><br />Helps us identify the right grade and documentation</li>
+            <li><strong>Target specifications</strong><br />Any regulatory grade (BP, USP, EP, IP), colour or printing requirements</li>
+          </ul>
+          <div class="rfq-contact">
+            <p>Prefer email?</p>
+            <p><a href="mailto:info@averonoverseas.com">info@averonoverseas.com</a></p>
+            <p><a href="tel:+918591104074">+91-85911-04074</a></p>
+            <p><a href="tel:+917073857555">+91-70738-57555</a></p>
+          </div>
+        </div>
+        <div class="rfq-scene">
+          <ProductImage src="scene-sample-inspection.webp" alt="Sample inspection" aspectRatio="4/3" loading="lazy" />
+        </div>
       </div>
-      <form class="rfq-form" action="https://formspree.io/f/REPLACE_ME" method="POST" aria-label="Request a quote">
-        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
-        <div class="form-field">
-          <label for="rf-name">Name</label>
-          <input id="rf-name" name="name" type="text" autocomplete="name" required />
-        </div>
-        <div class="form-field">
-          <label for="rf-company">Company</label>
-          <input id="rf-company" name="company" type="text" autocomplete="organization" />
-        </div>
-        <div class="form-field">
-          <label for="rf-email">Work email</label>
-          <input id="rf-email" name="email" type="email" autocomplete="email" required />
-        </div>
-        <div class="form-field" id="product-field">
-          <label for="rf-product">Product and size</label>
-          <input id="rf-product" name="product" type="text" placeholder="e.g. 28 mm CRC cap, white" />
-        </div>
-        <div class="form-field">
-          <label for="rf-qty">Quantity</label>
-          <input id="rf-qty" name="quantity" type="text" />
-        </div>
-        <div class="form-field">
-          <label for="rf-country">Destination country</label>
-          <input id="rf-country" name="country" type="text" autocomplete="country-name" />
-        </div>
-        <div class="form-field form-field--full">
-          <label for="rf-notes">Notes</label>
-          <textarea id="rf-notes" name="notes" rows="3"></textarea>
-        </div>
-        <div class="form-field form-field--full form-consent">
-          <label class="checkbox-label">
+
+      <!-- Right form -->
+      <div class="rfq-right">
+        <h1>Request a quote</h1>
+        <p class="rfq-sub">Tell us the product, size and quantity. We will come back with options.</p>
+
+        <form id="rfq-form" method="POST" action="https://api.web3forms.com/submit" aria-label="Request a quote" novalidate>
+          <input type="hidden" name="access_key" value={web3key || 'REPLACE_WITH_KEY'} />
+          <input type="hidden" name="subject" value="Quote request from averonoverseas.com" />
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+
+          <div class="form-row-2">
+            <div class="form-field"><label for="rf-name">Name</label><input id="rf-name" name="name" type="text" autocomplete="name" required /></div>
+            <div class="form-field"><label for="rf-company">Company</label><input id="rf-company" name="company" type="text" autocomplete="organization" /></div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-field"><label for="rf-email">Work email</label><input id="rf-email" name="email" type="email" autocomplete="email" required /></div>
+            <div class="form-field"><label for="rf-country">Destination country</label><input id="rf-country" name="country" type="text" autocomplete="country-name" /></div>
+          </div>
+          <div class="form-field">
+            <label for="rf-product">Product and size</label>
+            <input id="rf-product" name="product" type="text" list="product-list" placeholder="e.g. 28 mm CRC cap, white" />
+            <datalist id="product-list">
+              {productNames.map(n => <option value={n} />)}
+            </datalist>
+          </div>
+          <div class="form-row-2">
+            <div class="form-field"><label for="rf-qty">Quantity</label><input id="rf-qty" name="quantity" type="text" /></div>
+            <div class="form-field"><label for="rf-grade">Grade (if applicable)</label><input id="rf-grade" name="grade" type="text" placeholder="e.g. BP, USP" /></div>
+          </div>
+          <div class="form-field"><label for="rf-notes">Notes</label><textarea id="rf-notes" name="notes" rows="3" placeholder="Colour, printing, specification requirements…"></textarea></div>
+
+          <label class="checkbox-row">
             <input type="checkbox" name="consent" required />
-            I agree to Averon Overseas processing my details to respond to this enquiry. See <a href={`${base}/privacy/`}>Privacy Policy</a>.
+            <span>I agree to Averon Overseas processing my enquiry details. <a href={`${base}/privacy/`}>Privacy Policy</a>.</span>
           </label>
-        </div>
-        <div class="form-field form-field--full">
+
+          <div id="rfq-msg" class="form-msg" aria-live="polite"></div>
           <button type="submit" class="btn btn-primary btn-block">Send quote request</button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-  <script>
-    // Pre-fill product field from ?product= URL param
-    const params = new URLSearchParams(window.location.search);
-    const product = params.get('product');
-    if (product) {
-      const el = document.getElementById('rf-product') as HTMLInputElement | null;
-      if (el) el.value = product;
-    }
-  </script>
 </Base>
-<style>
-  .page-wrap { padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(64px, 8vw, 112px); }
-  .rfq-grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 5vw, 72px); margin-top: 2rem; }
-  h1 { margin-bottom: 1rem; }
-  .rfq-intro p { color: var(--muted); margin-bottom: 0.75rem; line-height: 1.65; }
-  .rfq-intro a { color: var(--ink); }
-  .rfq-form { display: flex; flex-direction: column; gap: 18px; }
-  .form-field { display: flex; flex-direction: column; gap: 6px; }
-  .form-field--full { grid-column: 1 / -1; }
-  .form-field label { font-size: 0.8125rem; font-weight: 600; color: var(--ink); }
-  .form-field input, .form-field textarea {
-    font: inherit; font-size: 0.9375rem; color: var(--ink);
-    background: transparent; border: 0;
-    border-bottom: 1.5px solid var(--hair); padding: 8px 0; outline: none; width: 100%; resize: vertical;
+
+<script>
+  // Pre-fill product field from ?product= URL param
+  const params = new URLSearchParams(window.location.search);
+  const product = params.get('product');
+  if (product) {
+    const el = document.getElementById('rf-product') as HTMLInputElement | null;
+    if (el) el.value = product;
   }
-  .form-field input:focus, .form-field textarea:focus { border-bottom-color: var(--accent); }
-  .form-field input::placeholder { color: var(--muted); }
-  .form-consent { font-size: 0.875rem; color: var(--muted); }
-  .checkbox-label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
-  .checkbox-label input { margin-top: 3px; flex-shrink: 0; accent-color: var(--accent); }
-  .checkbox-label a { color: var(--ink); }
-  @media (max-width: 768px) { .rfq-grid { grid-template-columns: 1fr; } }
+
+  const form = document.getElementById('rfq-form') as HTMLFormElement;
+  const msg  = document.getElementById('rfq-msg') as HTMLElement;
+  if (form && msg) {
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      msg.textContent = 'Sending…'; msg.className = 'form-msg';
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(form) });
+        if (res.ok) { msg.textContent = 'Thank you — we will be in touch shortly.'; msg.className = 'form-msg form-msg--ok'; form.reset(); }
+        else { msg.textContent = 'Something went wrong. Please email us directly.'; msg.className = 'form-msg form-msg--err'; }
+      } catch { msg.textContent = 'Could not send. Please email info@averonoverseas.com.'; msg.className = 'form-msg form-msg--err'; }
+    });
+  }
+</script>
+
+<style>
+  .page-wrap { padding-top: clamp(40px,6vw,72px); padding-bottom: clamp(64px,8vw,112px); }
+  .rfq-grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px,5vw,72px); margin-top: 2rem; align-items: start; }
+
+  /* Left panel */
+  .rfq-left { display: flex; flex-direction: column; gap: 24px; }
+  .rfq-guide { background: var(--band); padding: 28px; }
+  .rfq-guide h2 { font-size: 1.125rem; margin-bottom: 1rem; }
+  .rfq-guide ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--hair); padding-top: 1rem; }
+  .rfq-guide li { font-size: 0.9rem; color: var(--muted); line-height: 1.55; padding-bottom: 14px; border-bottom: 1px solid var(--hair); }
+  .rfq-guide li strong { display: block; color: var(--ink); font-size: 0.9375rem; margin-bottom: 2px; }
+  .rfq-guide li:last-child { border-bottom: none; }
+  .rfq-contact { margin-top: 1.25rem; border-top: 1px solid var(--hair); padding-top: 1rem; }
+  .rfq-contact p { font-size: 0.875rem; color: var(--muted); margin-bottom: 4px; }
+  .rfq-contact a { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .rfq-contact a:hover { text-decoration: underline; }
+
+  /* Right form */
+  h1 { margin-bottom: 0.5rem; }
+  .rfq-sub { color: var(--muted); margin-bottom: 1.5rem; }
+  form { display: flex; flex-direction: column; gap: 16px; }
+  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-msg { font-size: 0.875rem; min-height: 1.4em; }
+  .form-msg--ok  { color: #1a6632; }
+  .form-msg--err { color: #8b1a1a; }
+
+  @media (max-width: 860px) { .rfq-grid { grid-template-columns: 1fr; } .form-row-2 { grid-template-columns: 1fr; } }
 </style>

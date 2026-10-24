@@ -3,12 +3,15 @@
    ========================================================================== */
 
 :root {
-  --bg:     #bcdaf7;
-  --band:   #EEF3F7;
-  --ink:    #12263F;
-  --muted:  #566577;
-  --hair:   #D5DEE6;
-  --accent: #E58C6B;
+  --bg:         #F3F6F9;
+  --band:       #E6EDF3;
+  --panel:      #FFFFFF;
+  --ink:        #12263F;
+  --muted:      #566577;
+  --hair:       #D5DEE6;
+  --accent:     #E58C6B;
+  --navy:       #12263F;
+  --peach-tint: #FBEFE9;
 
   --serif: 'Young Serif', Georgia, serif;
   --sans:  'Hanken Grotesk', system-ui, sans-serif;

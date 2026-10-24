@@ -20,17 +20,17 @@ export interface ProductVariant {
   status?: 'verified' | 'to-verify';
   docRef?: string;
   attrs: Record<string, string | number>;
-  specs?: ProductSpec[];  // per-variant specs (backward-compatible)
+  specs?: ProductSpec[];
 }
 
 export interface Product {
   slug: string;
   category: string;
   name: string;
-  summary: string;       // max 160 chars
+  summary: string;
   materials: string[];
   variants: ProductVariant[];
-  specs: ProductSpec[];  // top-level specs (used when variants share the same specs)
+  specs: ProductSpec[];
   sizeRange: string;
   colours: string[];
   standards: string[];
@@ -38,12 +38,12 @@ export interface Product {
   images: string[];
   status: 'verified' | 'to-verify';
   tags: string[];
-  docRef?: string;       // document reference number if applicable
+  docRef?: string;
 }
 
 export interface MaterialItem {
   name: string;
-  category?: string;     // sub-category within the group (e.g. therapeutic category for APIs)
+  category?: string;
 }
 
 export interface RawMaterial {
@@ -53,4 +53,33 @@ export interface RawMaterial {
   items: MaterialItem[];
   grades: string[];
   docs: string[];
+}
+
+export interface DownloadDocument {
+  title: string;
+  description: string;
+  file: string;
+  type: string;
+  size: string;
+  updated: string;
+}
+
+export interface SiteAddress {
+  street: string;
+  city: string;
+  state: string;
+  postcode: string;
+  country: string;
+  countryCode: string;
+}
+
+export interface SiteConfig {
+  companyName: string;
+  tagline: string;
+  description: string;
+  address: SiteAddress;
+  email: string;
+  phones: string[];
+  mapEmbedUrl: string;
+  mapLinkUrl: string;
 }

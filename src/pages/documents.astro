@@ -1,46 +1,88 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getDocuments } from '../data/index.ts';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const site = (import.meta.env.SITE ?? '').replace(/\/$/, '');
 const canonicalURL = `${site}${base}/documents/`;
+const downloads = await getDocuments();
+
 const docTypes = [
   { label: 'Certificate of Analysis (CoA)', desc: 'Confirms the product meets specification at time of manufacture.' },
-  { label: 'Technical Data Sheet (TDS)', desc: 'Physical, chemical and performance properties of the material.' },
-  { label: 'Safety Data Sheet (SDS)', desc: 'Handling, storage, disposal and safety information per GHS/REACH.' },
-  { label: 'Technical Drawing', desc: 'Dimensional drawing with tolerances, confirmed at order stage.' },
-  { label: 'Specification Sheet', desc: 'Agreed specification document for the product and supplier.' },
+  { label: 'Technical Data Sheet (TDS)',     desc: 'Physical, chemical and performance properties of the material or packaging.' },
+  { label: 'Safety Data Sheet (SDS)',         desc: 'Handling, storage, disposal and safety information per GHS/REACH.' },
+  { label: 'Technical Drawing',               desc: 'Dimensional drawing with tolerances, confirmed against supplier drawing at order stage.' },
+  { label: 'Specification Sheet',             desc: 'Agreed specification document for the product and supplier.' },
 ];
 ---
-<Base title="Documents – Averon Overseas" description="CoA, TDS, SDS, drawings and specification sheets shared on request for all products. Averon Overseas, Jaipur, India." canonicalURL={canonicalURL}>
+<Base title="Documents – Averon Overseas" description="CoA, TDS, SDS, drawings and specification sheets available on request. Download the 2026 product catalogue." canonicalURL={canonicalURL}>
   <div class="wrap page-wrap">
     <nav aria-label="Breadcrumb" class="breadcrumb">
       <ol><li><a href={`${base}/`}>Home</a></li><li aria-current="page">Documents</li></ol>
     </nav>
-    <h1>Documents</h1>
-    <p class="page-lead">We share the following documentation on request for all products. No private supplier documents are available for download on this site.</p>
-    <div class="doc-list">
+    <div class="page-head-split">
+      <h1>Documents</h1>
+      <p class="page-lead">We share the following documentation on request for all products. No private supplier documents are available for download on this site.</p>
+    </div>
+
+    <div class="doc-types">
       {docTypes.map(d => (
-        <div class="doc-item">
+        <div class="doc-type-row">
           <h2>{d.label}</h2>
           <p>{d.desc}</p>
         </div>
       ))}
     </div>
+
+    {downloads.length > 0 && (
+      <section class="downloads-section" aria-labelledby="dl-heading">
+        <h2 id="dl-heading">Downloads</h2>
+        <div class="downloads-list">
+          {downloads.map(d => (
+            <div class="download-row">
+              <div class="dl-info">
+                <p class="dl-title">{d.title}</p>
+                <p class="dl-desc muted">{d.description}</p>
+                <p class="dl-meta muted">{d.type} · {d.size} · Updated {d.updated}</p>
+              </div>
+              <a
+                href={`${base}/downloads/${d.file}`}
+                class="btn btn-secondary"
+                download
+                aria-label={`Download ${d.title}`}
+              >
+                ↓ Download
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
     <div class="rfq-nudge">
-      <p>To request any document, send a quote enquiry or contact us directly.</p>
+      <p>To request a CoA, TDS, SDS or technical drawing for a specific product, send a quote enquiry.</p>
       <a href={`${base}/rfq/`} class="btn btn-primary">Request documents</a>
     </div>
   </div>
 </Base>
 <style>
   .page-wrap { padding-top: clamp(40px,6vw,72px); padding-bottom: clamp(64px,8vw,112px); }
-  h1 { margin-bottom: 0.875rem; }
-  .page-lead { color: var(--muted); max-width: 60ch; line-height: 1.65; margin-bottom: 2.5rem; }
-  .doc-list { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--hair); border: 1px solid var(--hair); margin-bottom: 2.5rem; }
-  .doc-item { background: var(--bg); padding: 24px 28px; }
-  .doc-item h2 { font-size: 1.0625rem; margin-bottom: 0.5rem; }
-  .doc-item p { color: var(--muted); font-size: 0.9375rem; line-height: 1.55; margin: 0; }
+  .page-head-split { display: grid; grid-template-columns: 5fr 7fr; gap: 32px; align-items: end; margin-bottom: 2.5rem; }
+  h1 { margin: 0; }
+  .page-lead { color: var(--muted); line-height: 1.65; margin: 0; }
+  .doc-types { border-top: 1px solid var(--hair); margin-bottom: 2.5rem; }
+  .doc-type-row { padding: 1.25rem 0; border-bottom: 1px solid var(--hair); display: grid; grid-template-columns: 5fr 7fr; gap: 24px; align-items: baseline; }
+  .doc-type-row h2 { font-size: 1.0625rem; margin: 0; }
+  .doc-type-row p { color: var(--muted); font-size: 0.9375rem; margin: 0; line-height: 1.55; }
+  .downloads-section { margin-bottom: 2.5rem; }
+  .downloads-section > h2 { font-size: 1.375rem; margin-bottom: 1.25rem; }
+  .downloads-list { border: 1px solid var(--hair); }
+  .download-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 24px; border-bottom: 1px solid var(--hair); flex-wrap: wrap; }
+  .download-row:last-child { border-bottom: none; }
+  .dl-info { flex: 1; }
+  .dl-title { font-weight: 600; font-size: 1rem; margin: 0 0 4px; }
+  .dl-desc { font-size: 0.9rem; margin: 0 0 4px; }
+  .dl-meta { font-size: 0.8125rem; margin: 0; }
   .rfq-nudge { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; border-top: 1px solid var(--hair); padding-top: 2rem; }
-  .rfq-nudge p { color: var(--muted); font-size: 0.9375rem; margin: 0; }
-  @media (max-width: 680px) { .doc-list { grid-template-columns: 1fr; } .rfq-nudge { flex-direction: column; align-items: flex-start; } }
+  .rfq-nudge p { color: var(--muted); font-size: 0.9375rem; margin: 0; max-width: 60ch; }
+  @media (max-width: 860px) { .page-head-split { grid-template-columns: 1fr; gap: 12px; } .doc-type-row { grid-template-columns: 1fr; gap: 6px; } .rfq-nudge { flex-direction: column; align-items: flex-start; } }
 </style>

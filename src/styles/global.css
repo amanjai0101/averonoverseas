@@ -43,9 +43,13 @@ p  { margin: 0; }
 .btn-primary:hover  { background: #d97a59; border-color: #d97a59; }
 .btn-secondary { background: transparent; border-color: var(--ink); color: var(--ink); }
 .btn-secondary:hover { background: var(--band); }
+.btn-ghost { background: transparent; border-color: rgba(255,255,255,0.4); color: #fff; }
+.btn-ghost:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.7); }
 .btn-block { width: 100%; }
-.btn-text { background: none; border-color: transparent; color: var(--ink); padding-left: 0; padding-right: 0; font-weight: 400; }
+.btn-text { background: none; border-color: transparent; color: var(--ink); padding-left: 0; padding-right: 0; font-weight: 500; }
 .btn-text:hover { color: var(--accent); background: none; }
+.btn-text-white { background: none; border-color: transparent; color: #fff; padding-left: 0; padding-right: 0; font-weight: 500; opacity: 0.85; }
+.btn-text-white:hover { opacity: 1; background: none; }
 
 /* ── Tables ──────────────────────────────────────────────────────────────── */
 table { border-collapse: collapse; width: 100%; }
@@ -57,6 +61,37 @@ thead th { font-size: 0.8125rem; font-weight: 600; color: var(--muted); }
 th[scope=row] { font-weight: 400; color: var(--muted); width: 44%; }
 td.mono { font-family: var(--mono); font-size: 0.9rem; }
 
+/* ── Forms ───────────────────────────────────────────────────────────────── */
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label { font-size: 0.8125rem; font-weight: 600; color: var(--ink); }
+.form-field input,
+.form-field textarea,
+.form-field select {
+  font: inherit; font-size: 0.9375rem; color: var(--ink);
+  background: var(--panel); border: 0;
+  border-bottom: 1.5px solid var(--hair);
+  padding: 9px 0; outline: none; width: 100%; resize: vertical;
+  border-radius: 0;
+}
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus { border-bottom-color: var(--accent); }
+.form-field input::placeholder,
+.form-field textarea::placeholder { color: var(--muted); }
+
+/* Consent checkbox row */
+.form-consent { }
+.checkbox-row {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 0.875rem; color: var(--muted); cursor: pointer;
+}
+.checkbox-row input[type=checkbox] {
+  flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px;
+  accent-color: var(--accent); border: 0; padding: 0;
+  border-bottom: 0; background: none;
+}
+.checkbox-row a { color: var(--ink); }
+
 /* ── Skip link ───────────────────────────────────────────────────────────── */
 .skip-link {
   position: absolute; left: -9999px; top: auto;
@@ -65,7 +100,7 @@ td.mono { font-family: var(--mono); font-size: 0.9rem; }
 .skip-link:focus {
   position: fixed; left: 1rem; top: 1rem;
   width: auto; height: auto; overflow: visible; z-index: 200;
-  background: var(--bg); color: var(--ink);
+  background: var(--panel); color: var(--ink);
   padding: 10px 20px; border: 1.5px solid var(--accent);
   font-family: var(--sans); text-decoration: none;
 }
@@ -83,7 +118,15 @@ td.mono { font-family: var(--mono); font-size: 0.9rem; }
   .sticky-bar {
     display: block; position: fixed; left: 0; right: 0; bottom: 0;
     padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
-    background: var(--bg); border-top: 1px solid var(--hair); z-index: 30;
+    background: var(--panel); border-top: 1px solid var(--hair); z-index: 30;
   }
   body { padding-bottom: 72px; }
 }
+
+/* ── Callout box ─────────────────────────────────────────────────────────── */
+.callout {
+  background: var(--band); border-left: 3px solid var(--accent);
+  padding: 16px 20px; margin: 1.5rem 0;
+}
+.callout p { font-size: 0.9375rem; color: var(--ink); line-height: 1.6; margin: 0; }
+.callout a { color: var(--ink); font-weight: 500; }

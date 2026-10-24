@@ -9,8 +9,9 @@ const canonicalURL = `${site}${base}/`;
 
 const categories = await getCategories();
 const allProducts = await getProducts();
+const materials = await getMaterials();
 
-// Compute size range per category (first product's sizeRange or blank)
+// Compute first sizeRange per category
 const catRanges = new Map<string, string>();
 for (const p of allProducts) {
   if (!catRanges.has(p.category) && p.sizeRange && p.sizeRange !== 'to-verify') {
@@ -18,8 +19,25 @@ for (const p of allProducts) {
   }
 }
 
-const materialGroups = await getMaterials();
-const groupNames = materialGroups.map(m => m.name);
+// Build size chips: first variant label per product where it's short and useful
+const chips: string[] = [];
+for (const p of allProducts) {
+  if (p.sizeRange && p.sizeRange !== 'to-verify' && p.sizeRange.length < 30) {
+    const label = `${p.sizeRange} ${p.name.replace(/\(.*\)/g,'').trim()}`;
+    if (chips.length < 14) chips.push(label);
+  }
+}
+
+const materialGroupNames = materials.map(m => m.name);
+
+// Hero slideshow images (CSS-only crossfade)
+const heroSlides = [
+  { file: 'home-cover.webp',               caption: 'Pharmaceutical packaging',   link: `${base}/products/` },
+  { file: 'injectables-hero.webp',          caption: 'Injectables',                link: `${base}/products/injectables/` },
+  { file: 'bottles-containers-hero.webp',   caption: 'Bottles & Containers',       link: `${base}/products/bottles-containers/` },
+  { file: 'closures-caps-hero.webp',        caption: 'Closures & Caps',            link: `${base}/products/closures-caps/` },
+  { file: 'blister-films-foils-hero.webp',  caption: 'Blister Films & Foils',      link: `${base}/products/blister-films-foils/` },
+];
 
 const websiteJsonLd = {
   '@context': 'https://schema.org',
@@ -33,32 +51,45 @@ const websiteJsonLd = {
   title="Pharmaceutical Packaging Supplier – Averon Overseas"
   description="Averon Overseas sources pharmaceutical primary packaging and raw materials for manufacturers and brand owners worldwide. Jaipur, India."
   canonicalURL={canonicalURL}
-  ogImage={`${site}${base}/images/home-cover.webp`}
+  ogImage={`${site}${base}/images/og-default.webp`}
 >
   <Fragment slot="jsonld">
     <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
   </Fragment>
 
   <!-- ── 1. Hero ──────────────────────────────────────────── -->
-  <section class="hero" aria-label="Introduction">
+  <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-text">
         <h1>Pharmaceutical packaging and raw materials, sourced with clarity.</h1>
-        <p class="hero-lead">Averon Overseas connects manufacturers and brand owners with qualified packaging and material partners.</p>
+        <p class="hero-sub">Averon Overseas connects manufacturers and brand owners with qualified packaging and material partners.</p>
         <div class="hero-actions">
           <a href={`${base}/rfq/`} class="btn btn-primary">Request a quote</a>
-          <a href={`${base}/products/`} class="btn btn-text">Browse products &rarr;</a>
+          <a href={`${base}/downloads/averon-overseas-product-catalogue-2026.pdf`} class="btn-text-dl" download>
+            ↓ Download catalogue
+          </a>
         </div>
       </div>
-      <div class="hero-mosaic" aria-hidden="true">
-        <div class="mosaic-a">
-          <ProductImage src="injectables-glass-vials-1.webp" alt="Glass vials" aspectRatio="4/3" loading="eager" />
+
+      <div class="hero-slides-wrap">
+        <div class="hero-slides" role="img" aria-label="Product photography slideshow">
+          {heroSlides.map((s, i) => (
+            <div class={`slide slide-${i}`}>
+              <ProductImage
+                src={s.file}
+                alt={s.caption}
+                aspectRatio="3/2"
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            </div>
+          ))}
         </div>
-        <div class="mosaic-b">
-          <ProductImage src="closures-caps-crc-1.webp" alt="CRC closures" aspectRatio="1/1" loading="eager" />
-        </div>
-        <div class="mosaic-c">
-          <ProductImage src="blister-films-foils-hero.webp" alt="Blister films" aspectRatio="3/2" loading="eager" />
+        <div class="hero-caption">
+          {heroSlides.map((s, i) => (
+            <span class={`cap cap-${i}`}>
+              <a href={s.link}>{s.caption} →</a>
+            </span>
+          ))}
         </div>
       </div>
     </div>
@@ -67,82 +98,94 @@ const websiteJsonLd = {
   <!-- ── 2. What we source ────────────────────────────────── -->
   <section class="section-band" aria-labelledby="range-heading">
     <div class="wrap">
-      <h2 id="range-heading">What we source</h2>
-      <p class="section-sub">Six product families for pharmaceutical primary packaging and raw materials.</p>
-      <div class="cat-tiles">
-        {categories.map((cat, i) => (
-          <a
-            href={`${base}/products/${cat.slug}/`}
-            class={`cat-tile ${i === 0 ? 'cat-tile--large' : ''}`}
-            aria-label={cat.name}
-          >
+      <div class="section-head-split">
+        <h2 id="range-heading">What we source</h2>
+        <p>Six families of pharmaceutical primary packaging. Sizes and grades confirmed per order.</p>
+      </div>
+      <div class="cat-grid">
+        {categories.map(cat => (
+          <a href={`${base}/products/${cat.slug}/`} class="cat-tile" aria-label={`${cat.name} — view sizes`}>
             <div class="cat-tile-img">
-              <ProductImage
-                src={cat.image}
-                alt={cat.name}
-                aspectRatio="4/3"
-                loading="lazy"
-              />
+              <ProductImage src={cat.image} alt={cat.name} aspectRatio="4/3" loading="lazy" />
             </div>
             <div class="cat-tile-meta">
               <span class="cat-tile-name">{cat.name}</span>
               {catRanges.get(cat.slug) && (
                 <span class="cat-tile-range mono muted">{catRanges.get(cat.slug)}</span>
               )}
+              <span class="cat-tile-hover" aria-hidden="true">View sizes →</span>
             </div>
           </a>
         ))}
+        <!-- Raw Materials tile -->
+        <a href={`${base}/raw-materials/`} class="cat-tile" aria-label="Raw Materials — view range">
+          <div class="cat-tile-img">
+            <ProductImage src="raw-materials-hero.webp" alt="Pharmaceutical raw materials" aspectRatio="4/3" loading="lazy" />
+          </div>
+          <div class="cat-tile-meta">
+            <span class="cat-tile-name">Raw Materials</span>
+            <span class="cat-tile-range mono muted">APIs, excipients, vitamins, chemicals</span>
+            <span class="cat-tile-hover" aria-hidden="true">View range →</span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- ── 3. Photo band ────────────────────────────────────── -->
-  <section class="photo-band" aria-label="Sourcing approach">
-    <ProductImage
-      src="home-cover.webp"
-      alt="Pharmaceutical packaging products arranged on a surface"
-      aspectRatio="21/7"
-      loading="lazy"
-      class="photo-band-img"
-    />
-    <div class="photo-band-caption">
-      <p>Specification-led sourcing, from enquiry to delivery.</p>
+  <!-- ── 3. Size chips ────────────────────────────────────── -->
+  <section class="section-white chips-section" aria-labelledby="sizes-heading">
+    <div class="wrap">
+      <div class="section-head-split">
+        <h2 id="sizes-heading">Standard sizes</h2>
+        <p>Custom sizes, colours and printing available on request. <a href={`${base}/rfq/`}>Tell us what you need →</a></p>
+      </div>
+      <div class="chips-list" role="list">
+        {chips.map(c => <span class="chip mono" role="listitem">{c}</span>)}
+      </div>
     </div>
   </section>
 
-  <!-- ── 4. Raw materials band ────────────────────────────── -->
-  <section class="section-white" aria-labelledby="rm-heading">
-    <div class="wrap rm-grid">
-      <div class="rm-img">
+  <!-- ── 4. Process + scene (navy band) ───────────────────── -->
+  <section class="section-navy" aria-labelledby="process-heading">
+    <div class="wrap process-grid">
+      <div class="process-scene">
         <ProductImage
-          src="raw-materials-hero.webp"
-          alt="Pharmaceutical raw material powders"
+          src="scene-warehouse-qc.webp"
+          alt="Quality control inspection of pharmaceutical packaging"
           aspectRatio="4/3"
           loading="lazy"
+          class="scene-img"
         />
+      </div>
+      <div class="process-content">
+        <h2 id="process-heading">From enquiry to delivery</h2>
+        <p class="process-intro">Four steps, with documents shared at the point you need them.</p>
+        <ol class="process-steps">
+          <li><span class="ps-n">1</span><span class="ps-label">Enquiry</span><span class="ps-desc">Send product, size and quantity.</span></li>
+          <li><span class="ps-n">2</span><span class="ps-label">Specification</span><span class="ps-desc">We match it to a qualified partner and confirm the drawing.</span></li>
+          <li><span class="ps-n">3</span><span class="ps-label">Documents</span><span class="ps-desc">CoA, TDS and SDS shared on request.</span></li>
+          <li><span class="ps-n">4</span><span class="ps-label">Supply</span><span class="ps-desc">Order coordination through to delivery.</span></li>
+        </ol>
+        <a href={`${base}/rfq/`} class="btn btn-ghost" style="margin-top:1.5rem">Request a quote</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5. Raw materials band ────────────────────────────── -->
+  <section class="section-band" aria-labelledby="rm-heading">
+    <div class="wrap rm-grid">
+      <div class="rm-img">
+        <ProductImage src="raw-materials-hero.webp" alt="Pharmaceutical raw material powders" aspectRatio="4/3" loading="lazy" />
       </div>
       <div class="rm-content">
         <h2 id="rm-heading">Pharma raw materials</h2>
-        <p>APIs, excipients, vitamins, minerals and chemicals sourced in BP, USP, EP and IP grades.</p>
+        <p>APIs, excipients, vitamins, minerals and chemicals in BP, USP, EP and IP grades from qualified manufacturing partners.</p>
         <div class="rm-chips" role="list">
-          {groupNames.map(g => <span class="rm-chip" role="listitem">{g}</span>)}
+          {materialGroupNames.map(g => <span class="rm-chip" role="listitem">{g}</span>)}
         </div>
-        <p class="rm-docs muted">CoA, TDS, SDS available on request.</p>
-        <a href={`${base}/raw-materials/`} class="btn btn-secondary" style="margin-top:1.25rem;">View raw materials</a>
+        <p class="rm-note muted">CoA, TDS, SDS available on request.</p>
+        <a href={`${base}/raw-materials/`} class="btn btn-secondary" style="margin-top:1.5rem">View raw materials</a>
       </div>
-    </div>
-  </section>
-
-  <!-- ── 5. Process steps ─────────────────────────────────── -->
-  <section class="section-band" aria-labelledby="process-heading">
-    <div class="wrap">
-      <h2 id="process-heading">How we source</h2>
-      <ol class="process-list">
-        <li><span class="process-n">1</span><span class="process-label">Enquiry</span><span class="process-desc">Send product, size and quantity.</span></li>
-        <li><span class="process-n">2</span><span class="process-label">Specification</span><span class="process-desc">We match it to a qualified partner and confirm the drawing.</span></li>
-        <li><span class="process-n">3</span><span class="process-label">Documents</span><span class="process-desc">CoA, TDS and SDS shared on request.</span></li>
-        <li><span class="process-n">4</span><span class="process-label">Supply</span><span class="process-desc">Order coordination through to delivery.</span></li>
-      </ol>
     </div>
   </section>
 
@@ -153,161 +196,199 @@ const websiteJsonLd = {
         <h2 id="quote-heading">Tell us your product, size and quantity.</h2>
         <p>We will come back with options. Or write to <a href="mailto:info@averonoverseas.com">info@averonoverseas.com</a></p>
       </div>
-      <form class="quote-form" action={`${base}/rfq/`} method="GET" aria-label="Quick quote enquiry">
-        <!-- honeypot -->
+      <form class="quote-form" id="home-quote-form" method="POST" action="https://api.web3forms.com/submit" aria-label="Quick quote enquiry" novalidate>
+        <input type="hidden" name="access_key" value={import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'REPLACE_WITH_KEY'} />
+        <input type="hidden" name="subject" value="Quote enquiry from averonoverseas.com" />
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
-        <div class="form-row">
+        <div class="form-row-2">
           <div class="form-field">
-            <label for="qf-name">Name</label>
-            <input id="qf-name" name="name" type="text" autocomplete="name" required />
+            <label for="hq-name">Name</label>
+            <input id="hq-name" name="name" type="text" autocomplete="name" required />
           </div>
           <div class="form-field">
-            <label for="qf-email">Work email</label>
-            <input id="qf-email" name="email" type="email" autocomplete="email" required />
+            <label for="hq-email">Work email</label>
+            <input id="hq-email" name="email" type="email" autocomplete="email" required />
           </div>
           <div class="form-field">
-            <label for="qf-product">Product</label>
-            <input id="qf-product" name="product" type="text" placeholder="e.g. 28 mm CRC cap, white" />
+            <label for="hq-product">Product</label>
+            <input id="hq-product" name="product" type="text" placeholder="e.g. 28 mm CRC cap, white" />
           </div>
           <div class="form-field">
-            <label for="qf-qty">Quantity</label>
-            <input id="qf-qty" name="quantity" type="text" />
+            <label for="hq-qty">Quantity</label>
+            <input id="hq-qty" name="quantity" type="text" />
           </div>
         </div>
+        <label class="checkbox-row form-consent">
+          <input type="checkbox" name="consent" required />
+          <span>I agree to Averon Overseas processing my enquiry details. <a href={`${base}/privacy/`}>Privacy Policy</a>.</span>
+        </label>
+        <div id="hq-msg" class="form-msg" aria-live="polite"></div>
         <button type="submit" class="btn btn-primary">Send enquiry</button>
       </form>
     </div>
   </section>
 
-  <!-- Mobile sticky -->
   <div class="sticky-bar">
     <a href={`${base}/rfq/`} class="btn btn-primary btn-block">Request a quote</a>
   </div>
 </Base>
 
+<script>
+  const form = document.getElementById('home-quote-form') as HTMLFormElement;
+  const msg  = document.getElementById('hq-msg') as HTMLElement;
+  if (form && msg) {
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      msg.textContent = 'Sending…'; msg.className = 'form-msg';
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: new FormData(form),
+        });
+        if (res.ok) {
+          msg.textContent = 'Thank you — we will be in touch shortly.';
+          msg.className = 'form-msg form-msg--ok';
+          form.reset();
+        } else {
+          msg.textContent = 'Something went wrong. Please email us directly.';
+          msg.className = 'form-msg form-msg--err';
+        }
+      } catch {
+        msg.textContent = 'Could not send. Please email info@averonoverseas.com.';
+        msg.className = 'form-msg form-msg--err';
+      }
+    });
+  }
+</script>
+
 <style>
   /* ── Hero ───────────────────────────────────────────────── */
-  .hero { padding: clamp(64px, 9vw, 112px) 0; }
-  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
-  .hero h1 { font-size: clamp(30px, 4.5vw, 52px); margin-bottom: 1.25rem; max-width: 18ch; }
-  .hero-lead { color: var(--muted); font-size: 1.0625rem; max-width: 46ch; line-height: 1.7; margin-bottom: 2rem; }
-  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .hero { padding: 48px 0 clamp(56px, 7vw, 96px); }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+  .hero h1 { font-size: clamp(28px, 4vw, 52px); max-width: 18ch; margin-bottom: 1rem; }
+  .hero-sub { color: var(--muted); font-size: 1.0625rem; max-width: 44ch; line-height: 1.7; margin-bottom: 2rem; }
+  .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-text-dl { font-size: 0.9375rem; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .btn-text-dl:hover { color: var(--accent); }
 
-  .hero-mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 8px; }
-  .mosaic-a { grid-column: 1; grid-row: 1; }
-  .mosaic-b { grid-column: 2; grid-row: 1; }
-  .mosaic-c { grid-column: 1 / -1; grid-row: 2; }
-  .hero-mosaic .pi-frame { border-radius: 0; }
+  /* Slideshow (CSS-only crossfade) */
+  .hero-slides-wrap { position: relative; }
+  .hero-slides { position: relative; }
+  .slide { position: absolute; top: 0; left: 0; width: 100%; opacity: 0; animation: xfade 25s infinite; }
+  .slide-0 { position: relative; opacity: 1; animation-delay: 0s; }
+  .slide-1 { animation-delay: 5s; }
+  .slide-2 { animation-delay: 10s; }
+  .slide-3 { animation-delay: 15s; }
+  .slide-4 { animation-delay: 20s; }
+  @keyframes xfade {
+    0%   { opacity: 0; }
+    4%   { opacity: 1; }
+    20%  { opacity: 1; }
+    24%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  .hero-caption { margin-top: 8px; font-size: 0.8125rem; color: var(--muted); min-height: 1.4em; position: relative; }
+  .cap { position: absolute; left: 0; opacity: 0; animation: xfade 25s infinite; }
+  .cap-0 { position: relative; opacity: 1; animation-delay: 0s; }
+  .cap-1 { animation-delay: 5s; }
+  .cap-2 { animation-delay: 10s; }
+  .cap-3 { animation-delay: 15s; }
+  .cap-4 { animation-delay: 20s; }
+  .hero-caption a { color: var(--muted); text-decoration: none; }
+  .hero-caption a:hover { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide, .cap { animation: none !important; opacity: 0; }
+    .slide-0, .cap-0 { opacity: 1 !important; }
+  }
 
   /* ── Sections ───────────────────────────────────────────── */
-  .section-band { background: var(--band); padding: clamp(64px, 8vw, 112px) 0; }
-  .section-white { padding: clamp(64px, 8vw, 112px) 0; }
-  .section-sub { color: var(--muted); margin: 0.75rem 0 2.5rem; max-width: 56ch; }
+  .section-band { background: var(--band); padding: clamp(56px, 8vw, 112px) 0; }
+  .section-white { padding: clamp(56px, 8vw, 112px) 0; }
+  .chips-section { padding: clamp(40px, 5vw, 72px) 0; }
 
-  /* ── Category tiles ─────────────────────────────────────── */
-  .cat-tiles {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-top: 2rem;
+  .section-head-split { display: grid; grid-template-columns: 5fr 7fr; gap: 32px; align-items: end; margin-bottom: 2.5rem; }
+  .section-head-split p { color: var(--muted); margin: 0; line-height: 1.6; }
+  .section-head-split a { color: var(--ink); font-weight: 500; }
+
+  /* ── Category grid ──────────────────────────────────────── */
+  .cat-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--hair);
+    border: 1px solid var(--hair);
   }
-  .cat-tile--large { grid-column: span 2; }
-
   .cat-tile {
+    background: var(--panel);
     text-decoration: none; color: inherit;
     display: flex; flex-direction: column;
-    border: 1px solid var(--hair);
-    background: #FAFBFC;
-    transition: border-color 0.15s;
+    transition: background 0.12s;
+    position: relative;
   }
-  .cat-tile:hover { border-color: var(--ink); }
+  .cat-tile:hover { background: var(--band); }
   .cat-tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .cat-tile-img { overflow: hidden; }
-  .cat-tile-img .pi-frame { width: 100%; }
   .cat-tile-meta { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; }
-  .cat-tile-name { font-family: var(--serif); font-size: 1.0625rem; font-weight: 400; color: var(--ink); }
+  .cat-tile-name { font-family: var(--serif); font-size: 1.0625rem; color: var(--ink); }
   .cat-tile-range { font-size: 0.8125rem; }
+  .cat-tile-hover { font-size: 0.8125rem; color: var(--accent); opacity: 0; transition: opacity 0.12s; margin-top: 2px; }
+  .cat-tile:hover .cat-tile-hover { opacity: 1; }
 
-  /* ── Photo band ─────────────────────────────────────────── */
-  .photo-band { position: relative; overflow: hidden; }
-  .photo-band .pi-frame { aspect-ratio: 21/7 !important; width: 100%; max-height: 380px; }
-  .photo-band .pi-img { object-fit: cover !important; }
-  .photo-band-caption {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(18, 38, 63, 0.38);
+  /* ── Size chips ─────────────────────────────────────────── */
+  .chips-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem; }
+  .chip {
+    background: var(--panel); border: 1px solid var(--hair);
+    padding: 6px 14px; font-size: 0.8125rem; color: var(--ink);
   }
-  .photo-band-caption p {
-    font-family: var(--serif); font-size: clamp(18px, 2.5vw, 28px);
-    color: #fff; text-align: center; max-width: 48ch; padding: 0 24px; margin: 0;
+
+  /* ── Navy process band ──────────────────────────────────── */
+  .section-navy { background: var(--navy); color: #EEF3F7; padding: clamp(56px, 8vw, 112px) 0; }
+  .process-grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .process-scene .pi-frame { background: #1a3050; }
+  .section-navy h2 { color: #EEF3F7; margin-bottom: 0.875rem; }
+  .process-intro { color: rgba(238,243,247,0.75); margin-bottom: 1.75rem; }
+  .process-steps {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-direction: column; gap: 0;
+    border-top: 1px solid rgba(238,243,247,0.2);
   }
-  /* If no image, make band a solid-colour block */
-  .photo-band .pi-placeholder {
-    min-height: 220px; background: var(--ink); color: rgba(255,255,255,0.7);
-    font-family: var(--serif); font-size: clamp(18px, 2.5vw, 28px);
-    display: flex; align-items: center; justify-content: center; text-align: center; padding: 48px 24px;
-    aspect-ratio: 21/7;
+  .process-steps li {
+    display: grid; grid-template-columns: 24px 1fr;
+    gap: 0 16px; align-items: baseline;
+    padding: 14px 0; border-bottom: 1px solid rgba(238,243,247,0.15);
   }
+  .ps-n { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); }
+  .ps-label { font-family: var(--serif); font-size: 1.0625rem; color: #EEF3F7; }
+  .ps-desc { grid-column: 2; font-size: 0.875rem; color: rgba(238,243,247,0.65); line-height: 1.5; margin-top: 2px; }
 
   /* ── Raw materials ──────────────────────────────────────── */
   .rm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
-  .rm-content h2 { margin-bottom: 1rem; }
-  .rm-content > p { color: var(--muted); margin-bottom: 1.5rem; }
+  .rm-content h2 { margin-bottom: 0.875rem; }
+  .rm-content > p { color: var(--muted); margin-bottom: 1.25rem; line-height: 1.65; }
   .rm-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 0.75rem; }
-  .rm-chip {
-    background: var(--band); color: var(--ink);
-    font-size: 0.8125rem; font-weight: 500;
-    padding: 6px 14px; border: 1px solid var(--hair);
-  }
-  .rm-docs { font-size: 0.875rem; }
-
-  /* ── Process ────────────────────────────────────────────── */
-  .section-band h2 { margin-bottom: 2rem; }
-  .process-list {
-    list-style: none; margin: 0; padding: 0;
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    border-top: 1px solid var(--hair); gap: 0;
-  }
-  .process-list li {
-    padding: 24px 24px 0 0;
-    display: flex; flex-direction: column; gap: 6px;
-  }
-  .process-n { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
-  .process-label { font-family: var(--serif); font-size: 1.125rem; color: var(--ink); }
-  .process-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.5; }
+  .rm-chip { background: var(--panel); border: 1px solid var(--hair); padding: 6px 14px; font-size: 0.8125rem; font-weight: 500; color: var(--ink); }
+  .rm-note { font-size: 0.875rem; }
 
   /* ── Quote band ─────────────────────────────────────────── */
-  .quote-band { background: #FBEFE9; padding: clamp(56px, 7vw, 96px) 0; }
+  .quote-band { background: var(--peach-tint); padding: clamp(56px, 7vw, 96px) 0; }
   .quote-grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
-  .quote-intro h2 { margin-bottom: 0.75rem; }
+  .quote-intro h2 { margin-bottom: 0.875rem; }
   .quote-intro p { color: var(--muted); font-size: 0.9375rem; }
-  .quote-intro a { color: var(--ink); font-weight: 500; }
+  .quote-intro a { color: var(--ink); }
   .quote-form { display: flex; flex-direction: column; gap: 16px; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .form-field { display: flex; flex-direction: column; gap: 6px; }
-  .form-field label { font-size: 0.8125rem; font-weight: 600; color: var(--ink); }
-  .form-field input {
-    font: inherit; font-size: 0.9375rem; color: var(--ink);
-    background: transparent; border: 0;
-    border-bottom: 1.5px solid var(--ink);
-    padding: 8px 0; outline: none; width: 100%;
-  }
-  .form-field input::placeholder { color: var(--muted); }
-  .form-field input:focus { border-bottom-color: var(--accent); }
+  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-msg { font-size: 0.875rem; min-height: 1.4em; }
+  .form-msg--ok  { color: #1a6632; }
+  .form-msg--err { color: #8b1a1a; }
 
   /* ── Responsive ─────────────────────────────────────────── */
   @media (max-width: 860px) {
-    .hero-grid, .rm-grid, .quote-grid { grid-template-columns: 1fr; }
-    .cat-tiles { grid-template-columns: 1fr 1fr; }
-    .cat-tile--large { grid-column: span 2; }
-    .process-list { grid-template-columns: 1fr 1fr; }
-    .form-row { grid-template-columns: 1fr; }
+    .hero-grid, .process-grid, .rm-grid, .quote-grid { grid-template-columns: 1fr; }
+    .section-head-split { grid-template-columns: 1fr; gap: 12px; }
+    .cat-grid { grid-template-columns: 1fr 1fr; }
+    .form-row-2 { grid-template-columns: 1fr; }
   }
   @media (max-width: 540px) {
-    .cat-tiles { grid-template-columns: 1fr; }
-    .cat-tile--large { grid-column: span 1; }
-    .hero-mosaic { grid-template-columns: 1fr; }
-    .mosaic-c { grid-column: 1; }
-    .process-list { grid-template-columns: 1fr; }
+    .cat-grid { grid-template-columns: 1fr; }
   }
 </style>
