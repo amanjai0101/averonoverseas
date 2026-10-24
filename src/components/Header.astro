@@ -1,80 +1,64 @@
 ---
-import { useTranslations } from '../i18n/index.ts';
-
-interface Props {
-  lang?: string;
-}
-
-const { lang = 'en' } = Astro.props;
-const t = useTranslations(lang);
-
-// BASE_URL always ends with '/'; strip it so we can append paths cleanly.
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const navLinks = [
-  { key: 'nav.products',       href: `${base}/products/` },
-  { key: 'nav.specifications', href: `${base}/specifications/` },
-  { key: 'nav.howWeSource',    href: `${base}/how-we-source/` },
-  { key: 'nav.about',          href: `${base}/about/` },
-  { key: 'nav.contact',        href: `${base}/contact/` },
-] as const;
+interface Props { lang?: string; }
+const { lang = 'en' } = Astro.props;
 
-const langOptions = [
-  { value: 'en', disabled: false },
-  { value: 'hi', disabled: true },
-  { value: 'ar', disabled: true },
-  { value: 'fr', disabled: true },
-  { value: 'es', disabled: true },
-] as const;
+const nav = [
+  { label: 'Products',      href: `${base}/products/` },
+  { label: 'Raw Materials', href: `${base}/raw-materials/` },
+  { label: 'Documents',     href: `${base}/documents/` },
+  { label: 'About',         href: `${base}/about/` },
+  { label: 'Contact',       href: `${base}/contact/` },
+];
 ---
 
-<header role="banner" class="site-header">
-  <div class="header-inner">
+<header class="site-header">
+  <div class="wrap header-inner">
 
-    <!-- Wordmark -->
-    <a href={`${base}/`} class="wordmark-link" aria-label="Averon Overseas – home">
-      <span class="wordmark">AVERON OVERSEAS</span>
-      <span class="tagline">Enable Better Reach</span>
+    <!-- Logo + wordmark -->
+    <a href={`${base}/`} class="logo-link" aria-label="Averon Overseas — home">
+      <img
+        src={`${base}/images/averon-logo.webp`}
+        alt="Averon Overseas logo"
+        width="120"
+        height="40"
+        class="logo-img"
+        loading="eager"
+      />
     </a>
 
-    <!-- Desktop primary nav -->
+    <!-- Desktop nav -->
     <nav aria-label="Main" class="desktop-nav">
       <ul>
-        {navLinks.map(({ key, href }) => (
-          <li><a href={href}>{t(key)}</a></li>
-        ))}
+        {nav.map(n => <li><a href={n.href}>{n.label}</a></li>)}
       </ul>
     </nav>
 
-    <!-- Desktop controls: language selector + CTA -->
-    <div class="desktop-controls">
-      <select aria-label={t('lang.en')} class="lang-select">
-        {langOptions.map(({ value, disabled }) => (
-          <option value={value} disabled={disabled || undefined} selected={value === lang || undefined}>
-            {t(`lang.${value}`)}
-          </option>
-        ))}
+    <!-- Language + CTA -->
+    <div class="header-end">
+      <select aria-label="Language" class="lang-select">
+        <option value="en" selected>EN</option>
+        <option disabled>हिन्दी (soon)</option>
+        <option disabled>العربية (soon)</option>
       </select>
-
-      <a href={`${base}/rfq/`} class="cta-btn">{t('nav.requestQuote')}</a>
+      <a href={`${base}/rfq/`} class="btn btn-primary cta">Request a quote</a>
     </div>
 
-    <!-- Mobile menu (details/summary — zero JS for open/close) -->
+    <!-- Mobile hamburger -->
     <details class="mobile-menu">
-      <summary aria-label={t('nav.requestQuote') ? 'Menu' : 'Menu'}>
-        <!-- Hamburger icon -->
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <rect x="3" y="6"  width="18" height="2" fill="currentColor" rx="1"/>
-          <rect x="3" y="11" width="18" height="2" fill="currentColor" rx="1"/>
-          <rect x="3" y="16" width="18" height="2" fill="currentColor" rx="1"/>
+      <summary aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false" fill="none">
+          <rect x="2" y="5"  width="18" height="1.5" fill="currentColor"/>
+          <rect x="2" y="10" width="18" height="1.5" fill="currentColor"/>
+          <rect x="2" y="15" width="18" height="1.5" fill="currentColor"/>
         </svg>
       </summary>
       <div class="mobile-dropdown">
-        <nav aria-label="Mobile main">
+        <nav aria-label="Mobile navigation">
           <ul>
-            {navLinks.map(({ key, href }) => (
-              <li><a href={href}>{t(key)}</a></li>
-            ))}
+            {nav.map(n => <li><a href={n.href}>{n.label}</a></li>)}
+            <li class="mobile-cta"><a href={`${base}/rfq/`} class="btn btn-primary btn-block">Request a quote</a></li>
           </ul>
         </nav>
       </div>
@@ -84,241 +68,73 @@ const langOptions = [
 </header>
 
 <script>
-  document.querySelectorAll('.mobile-menu a').forEach(a => {
+  // Close mobile menu when a nav link is activated
+  document.querySelectorAll('.mobile-menu nav a').forEach(a => {
     a.addEventListener('click', () => {
-      (a as HTMLAnchorElement).closest('details')?.removeAttribute('open');
+      (a as HTMLElement).closest('details')?.removeAttribute('open');
     });
   });
 </script>
 
 <style>
   .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background: var(--paper);
-    border-bottom: 1px solid var(--rule);
+    position: sticky; top: 0; z-index: 40;
+    background: #FAFBFC;
+    border-bottom: 1px solid var(--hair);
   }
-
   .header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    gap: 32px;
+    display: flex; align-items: center; gap: 32px; height: 68px;
   }
+  .logo-link { display: flex; align-items: center; flex-shrink: 0; margin-right: auto; }
+  .logo-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .logo-img { height: 40px; width: auto; object-fit: contain; }
 
-  /* ── Wordmark ─────────────────────────────────────────── */
-  .wordmark-link {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    flex-shrink: 0;
-    min-height: 44px;
-    justify-content: center;
-  }
-
-  .wordmark-link:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 2px;
-  }
-
-  .wordmark {
-    font-family: var(--serif);
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--ink);
-    letter-spacing: 0.04em;
-    line-height: 1.2;
-  }
-
-  .tagline {
-    font-family: var(--sans);
-    font-size: 0.6875rem;
-    color: var(--muted);
-    letter-spacing: 0.02em;
-    line-height: 1.3;
-  }
-
-  /* ── Desktop nav ─────────────────────────────────────── */
-  .desktop-nav {
-    flex: 1;
-  }
-
-  .desktop-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 4px;
-  }
-
+  .desktop-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; }
   .desktop-nav a {
-    font-family: var(--sans);
-    font-size: 0.875rem;
-    color: var(--ink);
-    text-decoration: none;
-    padding: 10px 12px;
-    border-radius: 2px;
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    white-space: nowrap;
+    font-size: 0.9rem; font-weight: 500; color: var(--ink);
+    text-decoration: none; padding: 8px 12px; display: flex; align-items: center; min-height: 44px;
   }
+  .desktop-nav a:hover { color: var(--accent); }
+  .desktop-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  .desktop-nav a:hover {
-    color: var(--accent);
-    background: var(--panel);
-  }
-
-  .desktop-nav a:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  /* ── Desktop controls ────────────────────────────────── */
-  .desktop-controls {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-  }
-
+  .header-end { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
   .lang-select {
-    font-family: var(--sans);
-    font-size: 0.875rem;
-    color: var(--ink);
-    background: transparent;
-    border: 1px solid var(--rule);
-    border-radius: 2px;
-    padding: 0 8px;
-    height: 44px;
-    min-width: 60px;
-    cursor: pointer;
-    appearance: auto;
+    font: inherit; font-size: 0.875rem; background: transparent; color: var(--ink);
+    border: 1px solid var(--hair); padding: 6px 8px; cursor: pointer; min-height: 44px;
   }
+  .cta { font-size: 0.875rem; padding: 10px 20px; min-height: 44px; }
 
-  .lang-select:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  .cta-btn {
-    font-family: var(--sans);
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--on-night);
-    background: var(--ink);
-    text-decoration: none;
-    padding: 0 20px;
-    height: 44px;
-    display: inline-flex;
-    align-items: center;
-    border-radius: 2px;
-    white-space: nowrap;
-    transition: background 0.15s ease;
-  }
-
-  .cta-btn:hover {
-    background: var(--accent);
-  }
-
-  .cta-btn:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-  }
-
-  /* ── Mobile menu ─────────────────────────────────────── */
-  .mobile-menu {
-    display: none;
-    margin-left: auto;
-  }
-
+  /* Mobile */
+  .mobile-menu { display: none; }
   .mobile-menu summary {
-    list-style: none;
-    cursor: pointer;
-    color: var(--ink);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 2px;
+    list-style: none; cursor: pointer; color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
   }
-
-  .mobile-menu summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .mobile-menu summary:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  .mobile-menu summary:hover {
-    background: var(--panel);
-  }
+  .mobile-menu summary::-webkit-details-marker { display: none; }
+  .mobile-menu summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   .mobile-dropdown {
-    position: absolute;
-    top: 64px;
-    left: 0;
-    right: 0;
-    background: var(--paper);
-    border-bottom: 1px solid var(--rule);
-    z-index: 19;
+    position: absolute; left: 0; right: 0;
+    top: 68px;
+    background: #FAFBFC;
+    border-bottom: 1px solid var(--hair);
+    z-index: 39;
   }
-
-  .mobile-dropdown nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 8px 24px;
-    display: flex;
-    flex-direction: column;
-  }
-
+  .mobile-dropdown ul { list-style: none; margin: 0; padding: 8px 20px 16px; display: flex; flex-direction: column; gap: 0; }
   .mobile-dropdown a {
-    font-family: var(--sans);
-    font-size: 1rem;
-    color: var(--ink);
-    text-decoration: none;
-    padding: 12px 0;
-    display: flex;
-    align-items: center;
-    min-height: 44px;
-    border-bottom: 1px solid var(--rule);
+    display: flex; align-items: center; min-height: 48px;
+    font-size: 1rem; color: var(--ink); text-decoration: none;
+    border-bottom: 1px solid var(--hair); padding: 0;
   }
+  .mobile-dropdown li:last-child a { border-bottom: none; }
+  .mobile-dropdown a:hover { color: var(--accent); }
+  .mobile-cta { padding-top: 12px; }
+  .mobile-cta a { border-bottom: none !important; justify-content: center; }
 
-  .mobile-dropdown li:last-child a {
-    border-bottom: none;
-  }
-
-  .mobile-dropdown a:hover {
-    color: var(--accent);
-  }
-
-  .mobile-dropdown a:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-
-  /* ── Responsive: ≤860 px ─────────────────────────────── */
   @media (max-width: 860px) {
-    .desktop-nav,
-    .cta-btn {
-      display: none;
-    }
-
-    .desktop-controls {
-      display: none;
-    }
-
-    .mobile-menu {
-      display: block;
-    }
+    .desktop-nav, .header-end { display: none; }
+    .mobile-menu { display: block; }
+    .logo-link { margin-right: 0; }
   }
 </style>

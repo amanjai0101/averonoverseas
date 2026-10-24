@@ -1,16 +1,7 @@
 ---
 /**
  * ProductImage — renders a product image from /public/images/.
- * If the file is not present, renders a styled SVG placeholder frame
- * with the product name labelled, so broken <img> tags never appear.
- *
- * Props:
- *   src       - filename only, e.g. "closures-caps-crc-1.webp"
- *   alt       - descriptive alt text
- *   width     - intrinsic width  (default 800)
- *   height    - intrinsic height (default 600)
- *   class     - optional extra CSS classes
- *   loading   - "lazy" | "eager" (default "lazy")
+ * Falls back to a quiet neutral placeholder (no dashed outline, no badge text).
  */
 import { existsSync } from 'fs';
 import { join } from 'path';
@@ -20,8 +11,9 @@ interface Props {
   alt: string;
   width?: number;
   height?: number;
-  class?: string;
+  aspectRatio?: string; // e.g. "4/3" or "1/1"
   loading?: 'lazy' | 'eager';
+  class?: string;
 }
 
 const {
@@ -29,77 +21,61 @@ const {
   alt,
   width = 800,
   height = 600,
-  class: extraClass = '',
+  aspectRatio = '4/3',
   loading = 'lazy',
+  class: extraClass = '',
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-
-// Resolve absolute disk path to check existence at build time
 const diskPath = join(process.cwd(), 'public', 'images', src);
-const fileExists = existsSync(diskPath);
-
+const fileExists = src && existsSync(diskPath);
 const imgSrc = `${base}/images/${src}`;
 ---
 
 {fileExists ? (
-  <img
-    src={imgSrc}
-    alt={alt}
-    width={width}
-    height={height}
-    loading={loading}
-    decoding="async"
-    class={`product-img ${extraClass}`}
-  />
+  <div class={`pi-frame ${extraClass}`} style={`aspect-ratio:${aspectRatio}`}>
+    <img
+      src={imgSrc}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      decoding="async"
+      class="pi-img"
+    />
+  </div>
 ) : (
   <div
-    class={`product-placeholder ${extraClass}`}
+    class={`pi-frame pi-placeholder ${extraClass}`}
     role="img"
     aria-label={alt}
-    style={`aspect-ratio: ${width}/${height};`}
+    style={`aspect-ratio:${aspectRatio}`}
   >
-    <svg
-      viewBox="0 0 {width} {height}"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      focusable="false"
-      style="width:100%;height:100%;display:block;"
-    >
-      <rect width="100%" height="100%" fill="var(--panel)" />
-      <rect
-        x="2" y="2"
-        width={width - 4}
-        height={height - 4}
-        fill="none"
-        stroke="var(--rule)"
-        stroke-width="1"
-        stroke-dasharray="6 4"
-      />
-      <text
-        x="50%"
-        y="50%"
-        text-anchor="middle"
-        dominant-baseline="middle"
-        font-family="var(--sans)"
-        font-size={Math.min(width, height) * 0.055}
-        fill="var(--muted)"
-      >{alt}</text>
-    </svg>
+    <span class="pi-label">{alt}</span>
   </div>
 )}
 
 <style>
-  .product-img {
-    display: block;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+  .pi-frame {
+    background: var(--band);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; width: 100%;
   }
-  .product-placeholder {
+  .pi-img {
+    width: 100%; height: 100%;
+    object-fit: contain;
     display: block;
-    width: 100%;
-    background: var(--panel);
-    overflow: hidden;
+  }
+  .pi-placeholder {
+    color: var(--muted);
+    font-size: 0.875rem;
+    font-family: var(--sans);
+    text-align: center;
+    padding: 16px;
+  }
+  .pi-label {
+    display: block;
+    max-width: 20ch;
+    line-height: 1.4;
   }
 </style>

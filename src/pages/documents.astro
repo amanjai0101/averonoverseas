@@ -1,11 +1,46 @@
 ---
-import ComingSoon from '../layouts/ComingSoon.astro';
+import Base from '../layouts/Base.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const site = import.meta.env.SITE ?? 'https://averonoverseas.github.io';
+const site = (import.meta.env.SITE ?? '').replace(/\/$/, '');
+const canonicalURL = `${site}${base}/documents/`;
+const docTypes = [
+  { label: 'Certificate of Analysis (CoA)', desc: 'Confirms the product meets specification at time of manufacture.' },
+  { label: 'Technical Data Sheet (TDS)', desc: 'Physical, chemical and performance properties of the material.' },
+  { label: 'Safety Data Sheet (SDS)', desc: 'Handling, storage, disposal and safety information per GHS/REACH.' },
+  { label: 'Technical Drawing', desc: 'Dimensional drawing with tolerances, confirmed at order stage.' },
+  { label: 'Specification Sheet', desc: 'Agreed specification document for the product and supplier.' },
+];
 ---
-<ComingSoon
-  title="Documents – CoA, TDS, SDS, Drawings – Averon Overseas"
-  heading="Documents"
-  description="Averon Overseas shares certificates of analysis (CoA), technical data sheets (TDS), safety data sheets (SDS) and technical drawings on request."
-  canonical={`${site}${base}/documents/`}
-/>
+<Base title="Documents – Averon Overseas" description="CoA, TDS, SDS, drawings and specification sheets shared on request for all products. Averon Overseas, Jaipur, India." canonicalURL={canonicalURL}>
+  <div class="wrap page-wrap">
+    <nav aria-label="Breadcrumb" class="breadcrumb">
+      <ol><li><a href={`${base}/`}>Home</a></li><li aria-current="page">Documents</li></ol>
+    </nav>
+    <h1>Documents</h1>
+    <p class="page-lead">We share the following documentation on request for all products. No private supplier documents are available for download on this site.</p>
+    <div class="doc-list">
+      {docTypes.map(d => (
+        <div class="doc-item">
+          <h2>{d.label}</h2>
+          <p>{d.desc}</p>
+        </div>
+      ))}
+    </div>
+    <div class="rfq-nudge">
+      <p>To request any document, send a quote enquiry or contact us directly.</p>
+      <a href={`${base}/rfq/`} class="btn btn-primary">Request documents</a>
+    </div>
+  </div>
+</Base>
+<style>
+  .page-wrap { padding-top: clamp(40px,6vw,72px); padding-bottom: clamp(64px,8vw,112px); }
+  h1 { margin-bottom: 0.875rem; }
+  .page-lead { color: var(--muted); max-width: 60ch; line-height: 1.65; margin-bottom: 2.5rem; }
+  .doc-list { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--hair); border: 1px solid var(--hair); margin-bottom: 2.5rem; }
+  .doc-item { background: var(--bg); padding: 24px 28px; }
+  .doc-item h2 { font-size: 1.0625rem; margin-bottom: 0.5rem; }
+  .doc-item p { color: var(--muted); font-size: 0.9375rem; line-height: 1.55; margin: 0; }
+  .rfq-nudge { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; border-top: 1px solid var(--hair); padding-top: 2rem; }
+  .rfq-nudge p { color: var(--muted); font-size: 0.9375rem; margin: 0; }
+  @media (max-width: 680px) { .doc-list { grid-template-columns: 1fr; } .rfq-nudge { flex-direction: column; align-items: flex-start; } }
+</style>

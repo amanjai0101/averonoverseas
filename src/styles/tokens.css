@@ -1,26 +1,15 @@
 /* ==========================================================================
-   src/styles/tokens.css
-   Design tokens: CSS custom properties, dark-mode overrides, reduced-motion.
-   NOTE: @font-face rules are declared in src/layouts/Base.astro using
-   import.meta.env.BASE_URL so font paths are correct under any base path.
+   src/styles/tokens.css  —  design tokens, light-only
    ========================================================================== */
 
-/* --------------------------------------------------------------------------
-   :root — light-mode tokens (default)
-   -------------------------------------------------------------------------- */
-
 :root {
-  /* Colour tokens */
-  --paper:    #E9EFF4;
-  --panel:    #D6E1EA;
-  --ink:      #12263F;
-  --accent:   #E58C6B;
-  --muted:    #566577;
-  --rule:     #9FB1C2;
-  --night:    #12263F;
-  --on-night: #EAF0F6;
+  --bg:     #FAFBFC;
+  --band:   #EEF3F7;
+  --ink:    #12263F;
+  --muted:  #566577;
+  --hair:   #D5DEE6;
+  --accent: #E58C6B;
 
-  /* Font stacks */
   --serif: 'Young Serif', Georgia, serif;
   --sans:  'Hanken Grotesk', system-ui, sans-serif;
   --mono:  'JetBrains Mono', ui-monospace, monospace;
@@ -28,60 +17,10 @@
   color-scheme: light;
 }
 
-/* --------------------------------------------------------------------------
-   Dark mode — OS preference (skipped when user has pinned light theme)
-   -------------------------------------------------------------------------- */
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper:  #0D1826;
-    --panel:  #16273B;
-    --ink:    #E6EDF4;
-    --muted:  #93A4B7;
-    --rule:   #34495F;
-    --night:  #16273B;
-    /* --accent and --on-night intentionally unchanged */
-    color-scheme: dark;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   Explicit dark theme override — beats the media query
-   -------------------------------------------------------------------------- */
-
-[data-theme="dark"] {
-  --paper:  #0D1826;
-  --panel:  #16273B;
-  --ink:    #E6EDF4;
-  --muted:  #93A4B7;
-  --rule:   #34495F;
-  --night:  #16273B;
-  /* --accent and --on-night intentionally unchanged */
-  color-scheme: dark;
-}
-
-/* --------------------------------------------------------------------------
-   Explicit light theme override — beats the media query
-   -------------------------------------------------------------------------- */
-
-[data-theme="light"] {
-  --paper:    #E9EFF4;
-  --panel:    #D6E1EA;
-  --ink:      #12263F;
-  --muted:    #566577;
-  --rule:     #9FB1C2;
-  --night:    #12263F;
-  --on-night: #EAF0F6;
-  color-scheme: light;
-}
-
-/* --------------------------------------------------------------------------
-   Reduced motion — disable all transitions and scroll animations
-   -------------------------------------------------------------------------- */
-
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *, *::before, *::after {
     transition: none !important;
+    animation: none !important;
     scroll-behavior: auto !important;
   }
 }

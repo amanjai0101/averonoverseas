@@ -5,13 +5,13 @@ import { getCategories, getProducts } from '../../data/index.ts';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const categories = await getCategories();
-  return categories.map(cat => ({ params: { category: cat.slug }, props: { cat } }));
+  const cats = await getCategories();
+  return cats.map(cat => ({ params: { category: cat.slug }, props: { cat } }));
 };
 
 const { cat } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const site = import.meta.env.SITE ?? 'https://averonoverseas.github.io';
+const site = (import.meta.env.SITE ?? '').replace(/\/$/, '');
 const canonicalURL = `${site}${base}/products/${cat.slug}/`;
 
 const products = await getProducts(cat.slug);
@@ -33,9 +33,11 @@ const breadcrumb = {
   canonicalURL={canonicalURL}
   ogImage={`${site}${base}/images/${cat.image}`}
 >
-  <script slot="jsonld" type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />
+  <Fragment slot="jsonld">
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />
+  </Fragment>
 
-  <div class="wrap">
+  <div class="wrap page-wrap">
     <nav aria-label="Breadcrumb" class="breadcrumb">
       <ol>
         <li><a href={`${base}/`}>Home</a></li>
@@ -46,85 +48,93 @@ const breadcrumb = {
 
     <header class="cat-header">
       <div class="cat-hero-img">
-        <ProductImage src={cat.image} alt={cat.name} width={1200} height={800} loading="eager" />
+        <ProductImage src={cat.image} alt={cat.name} aspectRatio="3/2" loading="eager" />
       </div>
       <div class="cat-intro">
         <h1>{cat.name}</h1>
-        <p class="lead">{cat.summary}</p>
-        <a href={`${base}/rfq/`} class="btn btn-accent">Request a quote</a>
+        <p class="cat-summary">{cat.summary}</p>
+        <a href={`${base}/rfq/`} class="btn btn-primary">Request a quote</a>
       </div>
     </header>
 
-    <section aria-label={`${cat.name} products`}>
-      {products.length === 0 ? (
-        <p class="empty">No products listed yet. <a href={`${base}/rfq/`}>Send an enquiry</a> for this range.</p>
-      ) : (
-        <div class="product-index" role="list">
-          {products.map(p => (
-            <a href={`${base}/products/${cat.slug}/${p.slug}/`} class="product-row" role="listitem">
-              <div class="row-thumb">
-                <ProductImage src={p.images[0] ?? ''} alt={p.name} width={120} height={84} loading="lazy" />
-              </div>
-              <div class="row-name"><b>{p.name}</b></div>
-              <div class="row-desc">{p.summary}</div>
-              <div class="row-sizes mono muted">{p.sizeRange}</div>
-            </a>
-          ))}
-        </div>
-      )}
-    </section>
+    {products.length === 0 ? (
+      <p class="empty">No products listed yet for this category. <a href={`${base}/rfq/`}>Send an enquiry.</a></p>
+    ) : (
+      <div class="product-list" role="list">
+        {products.map(p => (
+          <a href={`${base}/products/${cat.slug}/${p.slug}/`} class="product-row" role="listitem">
+            <div class="product-row-img">
+              <ProductImage
+                src={p.images[0] ?? ''}
+                alt={p.name}
+                aspectRatio="4/3"
+                loading="lazy"
+              />
+            </div>
+            <div class="product-row-body">
+              <h2>{p.name}</h2>
+              <p class="product-row-summary">{p.summary}</p>
+              {p.sizeRange && p.sizeRange !== 'to-verify' && (
+                <p class="product-row-range mono muted">{p.sizeRange}</p>
+              )}
+            </div>
+            <div class="product-row-arrow" aria-hidden="true">&rarr;</div>
+          </a>
+        ))}
+      </div>
+    )}
 
-    <aside class="rfq-inline" aria-label="Quote prompt">
-      <p>Specifications are indicative. Final specs confirmed with the supplier at order stage.</p>
-      <a href={`${base}/rfq/`} class="btn btn-outline">Request a quote for {cat.name}</a>
-    </aside>
+    <div class="rfq-nudge">
+      <p>Specifications are indicative. Final specifications confirmed with the supplier at order stage.</p>
+      <a href={`${base}/rfq/`} class="btn btn-secondary">Request a quote for {cat.name}</a>
+    </div>
   </div>
 
-  <div class="sticky-mobile">
-    <a href={`${base}/rfq/`} class="btn btn-accent btn-block">Request a quote</a>
+  <div class="sticky-bar">
+    <a href={`${base}/rfq/`} class="btn btn-primary btn-block">Request a quote</a>
   </div>
 </Base>
 
 <style>
-  .wrap { max-width:1240px; margin:0 auto; padding:clamp(32px,5vw,64px) clamp(20px,4vw,48px); }
-  .breadcrumb { font-size:.875rem; color:var(--muted); margin-bottom:1.5rem; }
-  .breadcrumb ol { list-style:none; margin:0; padding:0; display:flex; gap:.5rem; flex-wrap:wrap; }
-  .breadcrumb li+li::before { content:'/'; margin-right:.5rem; }
-  .breadcrumb a { color:inherit; text-decoration:none; }
-  .breadcrumb a:hover { text-decoration:underline; }
-  .cat-header { display:grid; grid-template-columns:5fr 7fr; gap:clamp(24px,4vw,56px); align-items:center; margin-bottom:clamp(32px,5vw,56px); }
-  .cat-hero-img img, .cat-hero-img .product-placeholder { width:100%; aspect-ratio:3/2; object-fit:cover; }
-  h1 { font-family:var(--serif); font-weight:400; font-size:clamp(28px,4vw,48px); margin:0 0 1rem; }
-  .lead { color:var(--muted); max-width:52ch; margin:0 0 1.5rem; line-height:1.6; }
-  .product-index { border-top:2px solid var(--ink); margin-bottom:2rem; }
+  .page-wrap { padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(64px, 8vw, 112px); }
+
+  .cat-header { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; margin-bottom: 3rem; }
+  .cat-hero-img .pi-frame { width: 100%; }
+  h1 { margin-bottom: 0.875rem; }
+  .cat-summary { color: var(--muted); max-width: 52ch; line-height: 1.65; margin-bottom: 1.5rem; }
+
+  .product-list { border-top: 1px solid var(--hair); }
   .product-row {
-    display:grid; grid-template-columns:120px 1.1fr 1.6fr 1fr;
-    gap:1.5rem; align-items:center; padding:1.25rem 0;
-    border-bottom:1px solid var(--rule); text-decoration:none; color:inherit;
+    display: grid; grid-template-columns: 160px 1fr 32px;
+    gap: 24px; align-items: center;
+    padding: 24px 0; border-bottom: 1px solid var(--hair);
+    text-decoration: none; color: inherit;
+    transition: background 0.1s;
   }
-  .product-row:hover { background:var(--panel); }
-  .product-row:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
-  .row-thumb { height:84px; overflow:hidden; }
-  .row-name b { font-family:var(--serif); font-weight:400; font-size:1.5rem; line-height:1.15; }
-  .row-desc { color:var(--muted); font-size:.9375rem; }
-  .row-sizes.mono { font-family:var(--mono); font-size:.875rem; }
-  .muted { color:var(--muted); }
-  .empty { color:var(--muted); padding:2rem 0; }
-  .rfq-inline { border-top:1px solid var(--rule); padding:1.5rem 0; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; }
-  .rfq-inline p { margin:0; color:var(--muted); font-size:.9375rem; max-width:60ch; }
-  .btn { display:inline-flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:700;font-size:1rem;padding:.9375rem 1.375rem;text-decoration:none;border:2px solid transparent;min-height:44px;white-space:nowrap; }
-  .btn:hover { transform:translate(-2px,-2px); box-shadow:3px 3px 0 var(--accent); }
-  .btn-accent { background:var(--accent);border-color:var(--accent);color:#12263F; }
-  .btn-outline { background:transparent;border-color:var(--ink);color:var(--ink); }
-  .btn-block { display:flex;width:100%; }
-  .sticky-mobile { display:none; }
-  @media (max-width:860px) {
-    .cat-header { grid-template-columns:1fr; }
-    .product-row { grid-template-columns:84px 1fr; gap:.375rem 1rem; }
-    .row-desc, .row-sizes { grid-column:2; }
-    .rfq-inline { flex-direction:column; align-items:flex-start; }
-    .sticky-mobile { display:block;position:fixed;left:0;right:0;bottom:0;padding:.625rem 1rem calc(.625rem + env(safe-area-inset-bottom,0px));background:var(--paper);border-top:1px solid var(--rule);z-index:30; }
-    body { padding-bottom:72px; }
+  .product-row:hover { background: var(--band); }
+  .product-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .product-row-body { display: flex; flex-direction: column; gap: 6px; }
+  .product-row-body h2 { font-size: 1.125rem; font-family: var(--serif); font-weight: 400; margin: 0; }
+  .product-row-summary { color: var(--muted); font-size: 0.9375rem; line-height: 1.5; }
+  .product-row-range { font-size: 0.8125rem; }
+  .product-row-arrow { font-size: 1.25rem; color: var(--muted); justify-self: end; }
+
+  .empty { color: var(--muted); padding: 2rem 0; }
+  .empty a { color: var(--ink); }
+
+  .rfq-nudge {
+    margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--hair);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
   }
-  @media (prefers-reduced-motion:reduce) { .btn:hover { transform:none;box-shadow:none; } }
+  .rfq-nudge p { color: var(--muted); font-size: 0.875rem; max-width: 60ch; margin: 0; }
+
+  @media (max-width: 860px) {
+    .cat-header { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px) {
+    .product-row { grid-template-columns: 90px 1fr; }
+    .product-row-arrow { display: none; }
+    .rfq-nudge { flex-direction: column; align-items: flex-start; }
+  }
 </style>

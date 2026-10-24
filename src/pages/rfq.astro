@@ -1,11 +1,98 @@
 ---
-import ComingSoon from '../layouts/ComingSoon.astro';
+import Base from '../layouts/Base.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const site = import.meta.env.SITE ?? 'https://averonoverseas.github.io';
+const site = (import.meta.env.SITE ?? '').replace(/\/$/, '');
+const canonicalURL = `${site}${base}/rfq/`;
+
+// Pre-fill product name from ?product= query param (read at runtime via inline script)
 ---
-<ComingSoon
-  title="Request a Quote – Averon Overseas"
-  heading="Request a quote"
-  description="Send us your product, size and quantity and we will come back with options. Prefer email? Write to info@averonoverseas.com"
-  canonical={`${site}${base}/rfq/`}
-/>
+<Base title="Request a Quote – Averon Overseas" description="Send a quote enquiry for pharmaceutical packaging or raw materials. Averon Overseas, Jaipur, India." canonicalURL={canonicalURL}>
+  <div class="wrap page-wrap">
+    <nav aria-label="Breadcrumb" class="breadcrumb">
+      <ol>
+        <li><a href={`${base}/`}>Home</a></li>
+        <li aria-current="page">Request a quote</li>
+      </ol>
+    </nav>
+    <div class="rfq-grid">
+      <div class="rfq-intro">
+        <h1>Request a quote</h1>
+        <p>Tell us the product, size and quantity. We will come back with options.</p>
+        <p>Prefer email? Write to <a href="mailto:info@averonoverseas.com">info@averonoverseas.com</a></p>
+        <p><a href="tel:+918591104074">+91-85911-04074</a><br /><a href="tel:+917073857555">+91-70738-57555</a></p>
+      </div>
+      <form class="rfq-form" action="https://formspree.io/f/REPLACE_ME" method="POST" aria-label="Request a quote">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+        <div class="form-field">
+          <label for="rf-name">Name</label>
+          <input id="rf-name" name="name" type="text" autocomplete="name" required />
+        </div>
+        <div class="form-field">
+          <label for="rf-company">Company</label>
+          <input id="rf-company" name="company" type="text" autocomplete="organization" />
+        </div>
+        <div class="form-field">
+          <label for="rf-email">Work email</label>
+          <input id="rf-email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div class="form-field" id="product-field">
+          <label for="rf-product">Product and size</label>
+          <input id="rf-product" name="product" type="text" placeholder="e.g. 28 mm CRC cap, white" />
+        </div>
+        <div class="form-field">
+          <label for="rf-qty">Quantity</label>
+          <input id="rf-qty" name="quantity" type="text" />
+        </div>
+        <div class="form-field">
+          <label for="rf-country">Destination country</label>
+          <input id="rf-country" name="country" type="text" autocomplete="country-name" />
+        </div>
+        <div class="form-field form-field--full">
+          <label for="rf-notes">Notes</label>
+          <textarea id="rf-notes" name="notes" rows="3"></textarea>
+        </div>
+        <div class="form-field form-field--full form-consent">
+          <label class="checkbox-label">
+            <input type="checkbox" name="consent" required />
+            I agree to Averon Overseas processing my details to respond to this enquiry. See <a href={`${base}/privacy/`}>Privacy Policy</a>.
+          </label>
+        </div>
+        <div class="form-field form-field--full">
+          <button type="submit" class="btn btn-primary btn-block">Send quote request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    // Pre-fill product field from ?product= URL param
+    const params = new URLSearchParams(window.location.search);
+    const product = params.get('product');
+    if (product) {
+      const el = document.getElementById('rf-product') as HTMLInputElement | null;
+      if (el) el.value = product;
+    }
+  </script>
+</Base>
+<style>
+  .page-wrap { padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(64px, 8vw, 112px); }
+  .rfq-grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 5vw, 72px); margin-top: 2rem; }
+  h1 { margin-bottom: 1rem; }
+  .rfq-intro p { color: var(--muted); margin-bottom: 0.75rem; line-height: 1.65; }
+  .rfq-intro a { color: var(--ink); }
+  .rfq-form { display: flex; flex-direction: column; gap: 18px; }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-field--full { grid-column: 1 / -1; }
+  .form-field label { font-size: 0.8125rem; font-weight: 600; color: var(--ink); }
+  .form-field input, .form-field textarea {
+    font: inherit; font-size: 0.9375rem; color: var(--ink);
+    background: transparent; border: 0;
+    border-bottom: 1.5px solid var(--hair); padding: 8px 0; outline: none; width: 100%; resize: vertical;
+  }
+  .form-field input:focus, .form-field textarea:focus { border-bottom-color: var(--accent); }
+  .form-field input::placeholder { color: var(--muted); }
+  .form-consent { font-size: 0.875rem; color: var(--muted); }
+  .checkbox-label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+  .checkbox-label input { margin-top: 3px; flex-shrink: 0; accent-color: var(--accent); }
+  .checkbox-label a { color: var(--ink); }
+  @media (max-width: 768px) { .rfq-grid { grid-template-columns: 1fr; } }
+</style>

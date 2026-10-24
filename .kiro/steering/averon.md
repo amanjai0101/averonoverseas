@@ -51,10 +51,22 @@ src/data/products/<slug>.json
 Every product page: image, one-line summary, spec table, available sizes, "Request a quote" button pre-filling product name via URL param, related products.
 
 ## 6. Design rules
-- Follow the reference page: square corners, 1 px rules, no card shadows, no gradients, no emoji, no fake stats. Accent (#E58C6B) only for the quote CTA and diagram dimension lines. Light and dark mode via tokens.
-- Tokens: paper #E9EFF4, panel #D6E1EA, ink/night #12263F, accent #E58C6B, muted #566577, rule #9FB1C2.
-- One photo or drawing per product row/page. Realistic product photography style: neutral pale blue-grey backdrop, soft top light, product centred, no text on image, 4:3 for tiles, 1:1 for product pages. Technical diagrams: navy line on paper with peach dimension lines.
-- Accessibility: WCAG AA contrast, visible focus, skip link, reduced motion respected, forms labelled, 44 px touch targets.
+
+> **`reference/design.html` is SUPERSEDED for look and feel.** Its notation and spec-formatting rules (section 4) remain in effect. Do not copy styles from it.
+
+**Direction: classy, calm, light, photo-led, editorial — a trading house catalogue, not a SaaS template.**
+
+- **Theme: LIGHT ONLY.** No dark mode, no `prefers-color-scheme` dark, no `data-theme` dark logic.
+- **Tokens:** `--bg: #FAFBFC` · `--band: #EEF3F7` · `--ink: #12263F` · `--muted: #566577` · `--hair: #D5DEE6` · `--accent: #E58C6B`
+- Accent (`#E58C6B`) is used **only** for the primary "Request a quote" button and small highlights. Nowhere else.
+- Footer: pale `#EEF3F7` band. No dark footer.
+- **Typography:** Young Serif for headlines (hero ≤ 56 px), Hanken Grotesk body 17 px/1.65, JetBrains Mono for size ranges and spec values only. Generous whitespace (sections 96–128 px). No all-caps eyebrow labels.
+- **Lines:** Max 1 px `#D5DEE6` hairlines only. No thick rules or borders.
+- **Remove** from homepage: all technical SVG line diagrams, spec-spotlight section.
+- **Images:** object-fit `contain` inside a `#EEF3F7` frame. No cropping of products. Placeholders: quiet neutral frame with product name, no dashed outlines.
+- **Avoid:** uniform card grids, identical rounded boxes, icon-in-circle rows, gradients, glow, badge spam, emoji.
+- **Logo:** `AveronLogo.webp`, height 40 px in header, in footer. Mobile: logo + hamburger.
+- **Accessibility:** WCAG AA contrast, visible focus (2 px solid accent), skip link, reduced motion respected, forms fully labelled, 44 px min touch targets.
 
 ## 7. Forms and analytics (static-compatible)
 - RFQ + contact: Web3Forms or Formspree free tier (access key placeholder in `.env.example`; email delivery to info@averonoverseas.com). Honeypot field, client + server validation message, success/failure states, consent checkbox linking to privacy policy.
