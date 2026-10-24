@@ -14,9 +14,14 @@
  */
 import { readdirSync, readFileSync, existsSync } from 'fs';
 import { join, relative } from 'path';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const distDir = 'e:/website/averon/dist';
-const base = process.env.BASE_PATH ?? '/averonoverseas';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const DIST = path.join(ROOT, 'dist');
+
+const distDir = DIST;
+const base = process.env.BASE_PATH || '/';
 const baseStripped = base === '/' ? '' : base.replace(/\/$/, '');
 
 let errors = 0;
