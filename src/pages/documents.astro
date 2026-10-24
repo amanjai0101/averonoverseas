@@ -1,0 +1,11 @@
+---
+import ComingSoon from '../layouts/ComingSoon.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = import.meta.env.SITE ?? 'https://averonoverseas.github.io';
+---
+<ComingSoon
+  title="Documents – CoA, TDS, SDS, Drawings – Averon Overseas"
+  heading="Documents"
+  description="Averon Overseas shares certificates of analysis (CoA), technical data sheets (TDS), safety data sheets (SDS) and technical drawings on request."
+  canonical={`${site}${base}/documents/`}
+/>

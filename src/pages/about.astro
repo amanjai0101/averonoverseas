@@ -1,0 +1,11 @@
+---
+import ComingSoon from '../layouts/ComingSoon.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = import.meta.env.SITE ?? 'https://averonoverseas.github.io';
+---
+<ComingSoon
+  title="About Averon Overseas – Pharmaceutical Packaging Sourcing"
+  heading="About Averon Overseas"
+  description="Averon Overseas is a sourcing and supply company for pharmaceutical primary packaging and raw materials, based in Jaipur, India."
+  canonical={`${site}${base}/about/`}
+/>

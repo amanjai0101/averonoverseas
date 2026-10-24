@@ -1,0 +1,11 @@
+---
+import ComingSoon from '../layouts/ComingSoon.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = import.meta.env.SITE ?? 'https://averonoverseas.github.io';
+---
+<ComingSoon
+  title="Contact Averon Overseas – Pharmaceutical Packaging"
+  heading="Contact us"
+  description="Get in touch with Averon Overseas for pharmaceutical primary packaging and raw material enquiries. Email: info@averonoverseas.com"
+  canonical={`${site}${base}/contact/`}
+/>

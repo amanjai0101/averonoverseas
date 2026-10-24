@@ -1,0 +1,78 @@
+---
+/**
+ * Minimal "coming soon" layout for stub pages.
+ * Keeps nav/footer working so no links 404.
+ */
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  heading: string;
+  description: string;
+  canonical: string;
+}
+
+const { title, heading, description, canonical } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base title={title} description={description} canonicalURL={canonical}>
+  <section class="soon-wrap">
+    <h1>{heading}</h1>
+    <p class="lead">{description}</p>
+    <p class="soon-label">This page is coming soon.</p>
+    <div class="soon-cta">
+      <a href={`${base}/`} class="btn btn-outline">← Back to home</a>
+      <a href={`${base}/rfq/`} class="btn btn-accent">Request a quote</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .soon-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: clamp(64px, 10vw, 128px) clamp(20px, 4vw, 48px);
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(28px, 4vw, 48px);
+    margin: 0 0 1rem;
+    color: var(--ink);
+  }
+  .lead {
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+    max-width: 52ch;
+  }
+  .soon-label {
+    font-size: 0.875rem;
+    color: var(--muted);
+    margin: 0 0 2rem;
+    border-left: 3px solid var(--rule);
+    padding-left: 0.75rem;
+  }
+  .soon-cta {
+    display: flex;
+    gap: 0.875rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.9375rem 1.375rem;
+    text-decoration: none;
+    border: 2px solid transparent;
+    min-height: 44px;
+  }
+  .btn:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--accent); }
+  .btn-accent  { background: var(--accent); border-color: var(--accent); color: #12263F; }
+  .btn-outline { background: transparent; border-color: var(--ink); color: var(--ink); }
+  @media (prefers-reduced-motion: reduce) { .btn:hover { transform: none; box-shadow: none; } }
+</style>

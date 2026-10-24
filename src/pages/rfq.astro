@@ -1,0 +1,11 @@
+---
+import ComingSoon from '../layouts/ComingSoon.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = import.meta.env.SITE ?? 'https://averonoverseas.github.io';
+---
+<ComingSoon
+  title="Request a Quote – Averon Overseas"
+  heading="Request a quote"
+  description="Send us your product, size and quantity and we will come back with options. Prefer email? Write to info@averonoverseas.com"
+  canonical={`${site}${base}/rfq/`}
+/>
