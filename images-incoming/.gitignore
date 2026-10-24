@@ -1,0 +1,10 @@
+# Ignore processed originals and any images dropped here
+done/
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.avif
+# Keep this directory and the .gitkeep
+!.gitkeep
+!.gitignore

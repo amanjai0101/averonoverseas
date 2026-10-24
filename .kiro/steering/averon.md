@@ -99,8 +99,18 @@ Use **Spec mode once** (Stage 1). Use plain chat/vibe for everything else. End e
 **Stage 8 – Launch:** repo settings → Pages → GitHub Actions; add Search Console and Bing Webmaster verification, submit sitemap; custom domain `www.averonoverseas.com` via CNAME + DNS.
 
 ## 11. Images
-- Generate detailed prompts for generating real images of Products or images like "People in laboratory" with proper size and scenario: "Photorealistic studio product photograph, [product], pale blue-grey seamless backdrop, soft top-left light, subtle shadow, centred, no text, no logo, sharp focus, 4:3." Review at thumbnail size, regenerate only failures.
-- Use real supplier or sample photos where available; they outrank generated images for trust. Do not show generated images as certified samples.
-- Name files `category-product-n.webp`; keep originals outside the repo.
-- You can even put all the prmompts in one .md file also so that i can use and generate the image separately via other external tool and put them at right places.
-- Sevaral Images are already there in images/ folder in the project for reference and direct use. Also use proper logo images or favicon icon images for web engines to show on listing at search.
+
+**Standard for all product and category tile images:**
+- Format: WebP, 4:3, **1600 × 1200 px**, pure white (#FFFFFF) seamless backdrop, soft contact shadow, subject fully inside central 75% with clear margin, soft top-left studio light, no text, no logos.
+- Category / section heroes: 3:2, **1800 × 1200 px**, soft pale blue-white backdrop allowed.
+- OG default: 1200 × 630 px.
+- CSS rendering: `object-fit: contain` on white background — nothing is ever cropped.
+
+**Workflow:**
+1. Drop new/replacement images (any format) into `images-incoming/`.
+2. Run `npm run images` — converts to optimised WebP (max 1800 px wide, quality 82) in `public/images/`, moves originals to `images-incoming/done/` (gitignored).
+3. File naming: `<category-slug>-<product-slug>-1.webp` for product tiles; `<category-slug>-hero.webp` for heroes.
+4. Real supplier or sample photos always take precedence over AI-generated images. Do not show generated images as certified samples.
+5. All generation prompts are in `IMAGE_PROMPTS.md`. Audit results are in `IMAGE_AUDIT.md`.
+6. `images/` folder at project root contains original source photos for reference — do not commit large originals to the repo.
+
