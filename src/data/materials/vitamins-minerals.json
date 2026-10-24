@@ -1,0 +1,18 @@
+{
+  "slug": "vitamins-minerals",
+  "name": "Vitamins & Minerals",
+  "group": "vitamins-minerals",
+  "grades": ["BP", "USP", "EP", "IP"],
+  "docs": ["CoA", "TDS", "SDS"],
+  "items": [
+    { "name": "Ascorbic Acid (Vitamin C)" },
+    { "name": "Folic Acid" },
+    { "name": "Nicotinamide (Vitamin B3)" },
+    { "name": "Mecobalamin (Vitamin B12)" },
+    { "name": "Ferric Ammonium Citrate" },
+    { "name": "Iron-III Polymaltose Complex" },
+    { "name": "Calcium Carbonate" },
+    { "name": "Zinc Sulphate Heptahydrate" },
+    { "name": "L-Lysine HCl" }
+  ]
+}

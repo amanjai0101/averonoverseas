@@ -1,0 +1,21 @@
+{
+  "slug": "triplex-film",
+  "category": "blister-films-foils",
+  "name": "OPA/ALU/PVC Triplex Cold-Form Blister Film",
+  "summary": "OPA/ALU/PVC (Triplex) cold-form blister film for high-moisture-barrier pharmaceutical packaging. OPA layer 100–120 µm.",
+  "materials": ["OPA (oriented polyamide)", "Aluminium", "PVC (polyvinyl chloride)"],
+  "variants": [
+    { "label": "100 µm OPA layer", "attrs": { "opaThickness": "100 µm" } },
+    { "label": "120 µm OPA layer", "attrs": { "opaThickness": "120 µm" } }
+  ],
+  "specs": [
+    { "key": "OPA layer thickness", "value": "100–120", "unit": "µm" }
+  ],
+  "sizeRange": "100–120 µm",
+  "colours": ["Silver"],
+  "standards": [],
+  "docs": ["Specification"],
+  "images": ["triplex-film-1.webp"],
+  "status": "to-verify",
+  "tags": ["Triplex", "cold form", "OPA", "blister"]
+}

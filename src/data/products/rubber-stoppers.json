@@ -1,0 +1,25 @@
+{
+  "slug": "rubber-stoppers",
+  "category": "injectables",
+  "name": "Rubber Stoppers",
+  "summary": "Bromobutyl, chlorobutyl, butyl and ETFE fluoro-laminated stoppers for injectable vials, 13 mm and 20 mm, RTU or RTS.",
+  "materials": ["Bromobutyl", "Chlorobutyl", "Butyl", "ETFE fluoro-laminated"],
+  "variants": [
+    { "label": "13 mm / Bromobutyl",      "status": "to-verify", "attrs": { "neckMm": 13, "compound": "Bromobutyl",      "design": "serum" } },
+    { "label": "13 mm / Chlorobutyl",     "status": "to-verify", "attrs": { "neckMm": 13, "compound": "Chlorobutyl",     "design": "serum" } },
+    { "label": "13 mm / Butyl",           "status": "to-verify", "attrs": { "neckMm": 13, "compound": "Butyl",           "design": "serum" } },
+    { "label": "13 mm / ETFE-laminated",  "status": "to-verify", "attrs": { "neckMm": 13, "compound": "ETFE-laminated",  "design": "serum" } },
+    { "label": "20 mm / Bromobutyl",      "status": "to-verify", "attrs": { "neckMm": 20, "compound": "Bromobutyl",      "design": "serum" } },
+    { "label": "20 mm / Chlorobutyl",     "status": "to-verify", "attrs": { "neckMm": 20, "compound": "Chlorobutyl",     "design": "serum" } },
+    { "label": "20 mm / Butyl",           "status": "to-verify", "attrs": { "neckMm": 20, "compound": "Butyl",           "design": "serum" } },
+    { "label": "20 mm / ETFE-laminated",  "status": "to-verify", "attrs": { "neckMm": 20, "compound": "ETFE-laminated",  "design": "serum" } }
+  ],
+  "specs": [],
+  "sizeRange": "13–20 mm",
+  "colours": ["Grey", "Black", "Custom"],
+  "standards": [],
+  "docs": ["Drawing", "Specification", "CoA"],
+  "images": ["injectables-rubber-stoppers-1.webp"],
+  "status": "to-verify",
+  "tags": ["rubber stopper", "bromobutyl", "chlorobutyl", "ETFE", "injectable", "RTU", "RTS", "lyophilisation"]
+}

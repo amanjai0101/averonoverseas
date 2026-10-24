@@ -1,0 +1,22 @@
+{
+  "slug": "pvc-pvdc-film",
+  "category": "blister-films-foils",
+  "name": "PVC/PVDC Blister Film",
+  "summary": "PVC base with PVDC coating for high-barrier blister packaging; improved moisture and gas barrier for sensitive products.",
+  "materials": ["PVC (polyvinyl chloride)", "PVDC (polyvinylidene chloride) coating"],
+  "variants": [
+    { "label": "PVC/PVDC Duplex",  "status": "to-verify", "attrs": { "structure": "PVC/PVDC" } },
+    { "label": "Triplex PVC/PE/PVDC", "status": "to-verify", "attrs": { "structure": "PVC/PE/PVDC" } }
+  ],
+  "specs": [
+    { "key": "Width (max)", "value": "1360", "unit": "mm" },
+    { "key": "Core inner Ø", "value": "76", "unit": "mm" }
+  ],
+  "sizeRange": "100–600 µm",
+  "colours": ["Clear", "Amber"],
+  "standards": [],
+  "docs": ["Specification"],
+  "images": ["blister-films-foils-pvc-pvdc-film-1.webp"],
+  "status": "to-verify",
+  "tags": ["PVDC", "PVC", "high barrier", "blister film", "moisture barrier", "Triplex", "tropical"]
+}

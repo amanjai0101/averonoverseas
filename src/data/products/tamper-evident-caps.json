@@ -1,0 +1,47 @@
+{
+  "slug": "tamper-evident-caps",
+  "category": "closures-caps",
+  "name": "Tamper-Evident Caps",
+  "summary": "PP and HDPE tamper-evident and pilfer-proof closures with frangible tear-band, 18–38 mm, EPE or LDPE plug liner options.",
+  "materials": ["PP (polypropylene)", "HDPE (high-density polyethylene)", "EPE liner", "LDPE plug liner"],
+  "variants": [
+    {
+      "label": "28 mm / EPE liner",
+      "status": "verified",
+      "docRef": "AO/QA/QC/SPC/03",
+      "attrs": { "neck": 28, "unit": "mm", "liner": "EPE", "material": "PP" },
+      "specs": [
+        { "key": "Overall height",       "value": "23.35", "tol": "0.20", "unit": "mm" },
+        { "key": "Outer diameter (top)", "value": "34.40", "tol": "0.20", "unit": "mm" },
+        { "key": "Liner diameter",       "value": "25.60", "tol": "0.20", "unit": "mm" },
+        { "key": "Liner thickness",      "value": "1.40",  "tol": "0.10", "unit": "mm" },
+        { "key": "Overall weight",       "value": "5.50",  "tol": "0.30", "unit": "g"  }
+      ]
+    },
+    {
+      "label": "28 mm / LDPE plug liner",
+      "status": "verified",
+      "docRef": "AO/QA/QC/SPC/04",
+      "attrs": { "neck": 28, "unit": "mm", "liner": "LDPE plug", "material": "PP" },
+      "specs": [
+        { "key": "Overall height",       "value": "23.35", "tol": "0.20", "unit": "mm" },
+        { "key": "Outer diameter (top)", "value": "34.40", "tol": "0.20", "unit": "mm" },
+        { "key": "Plug OD (nominal)",    "value": "24.40", "tol": "0.20", "unit": "mm" },
+        { "key": "Overall weight",       "value": "5.30",  "tol": "0.30", "unit": "g"  }
+      ]
+    },
+    { "label": "18 mm", "status": "to-verify", "attrs": { "neckMm": 18 } },
+    { "label": "20 mm", "status": "to-verify", "attrs": { "neckMm": 20 } },
+    { "label": "24 mm", "status": "to-verify", "attrs": { "neckMm": 24 } },
+    { "label": "33 mm", "status": "to-verify", "attrs": { "neckMm": 33 } },
+    { "label": "38 mm", "status": "to-verify", "attrs": { "neckMm": 38 } }
+  ],
+  "specs": [],
+  "sizeRange": "18–38 mm",
+  "colours": ["White", "Custom"],
+  "standards": [],
+  "docs": ["Drawing", "Specification", "CoA"],
+  "images": ["closures-caps-tamper-evident-1.webp"],
+  "status": "verified",
+  "tags": ["tamper evident", "pilfer proof", "tear band", "PP cap", "HDPE cap"]
+}

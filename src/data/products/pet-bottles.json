@@ -1,0 +1,24 @@
+{
+  "slug": "pet-bottles",
+  "category": "bottles-containers",
+  "name": "PET Bottles",
+  "summary": "Pharmaceutical-grade PET bottles, clear and amber, 60–1000 mL, for syrups, suspensions and oral solutions.",
+  "materials": ["PET (polyethylene terephthalate)"],
+  "variants": [
+    { "label": "60 mL",   "status": "to-verify", "attrs": { "capacityML": 60   } },
+    { "label": "100 mL",  "status": "to-verify", "attrs": { "capacityML": 100  } },
+    { "label": "150 mL",  "status": "to-verify", "attrs": { "capacityML": 150  } },
+    { "label": "200 mL",  "status": "to-verify", "attrs": { "capacityML": 200  } },
+    { "label": "300 mL",  "status": "to-verify", "attrs": { "capacityML": 300  } },
+    { "label": "500 mL",  "status": "to-verify", "attrs": { "capacityML": 500  } },
+    { "label": "1000 mL", "status": "to-verify", "attrs": { "capacityML": 1000 } }
+  ],
+  "specs": [],
+  "sizeRange": "60–1000 mL",
+  "colours": ["Clear", "Amber"],
+  "standards": [],
+  "docs": ["Drawing", "Specification"],
+  "images": ["bottles-containers-pet-bottles-1.webp"],
+  "status": "to-verify",
+  "tags": ["PET bottle", "oral liquid", "syrup", "suspension", "transparent"]
+}

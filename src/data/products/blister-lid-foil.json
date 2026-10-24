@@ -1,0 +1,24 @@
+{
+  "slug": "blister-lid-foil",
+  "category": "blister-films-foils",
+  "name": "Blister Lid Foil",
+  "summary": "Hard-temper aluminium blister lid foil, 20–30 µm, widths up to 1360 mm, on 76 mm core rolls.",
+  "materials": ["Aluminium (hard temper)"],
+  "variants": [
+    { "label": "20 µm", "status": "to-verify", "attrs": { "thicknessMicron": 20 } },
+    { "label": "25 µm", "status": "to-verify", "attrs": { "thicknessMicron": 25 } },
+    { "label": "30 µm", "status": "to-verify", "attrs": { "thicknessMicron": 30 } }
+  ],
+  "specs": [
+    { "key": "Thickness range", "value": "20–30",  "unit": "µm" },
+    { "key": "Width (max)",     "value": "1360",   "unit": "mm" },
+    { "key": "Core inner Ø",   "value": "76",      "unit": "mm" }
+  ],
+  "sizeRange": "20–30 µm",
+  "colours": ["Silver"],
+  "standards": [],
+  "docs": ["Specification"],
+  "images": ["blister-films-foils-lid-foil-1.webp"],
+  "status": "to-verify",
+  "tags": ["lid foil", "aluminium", "blister", "hard temper", "heat-seal lacquer"]
+}

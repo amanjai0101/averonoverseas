@@ -1,0 +1,25 @@
+{
+  "slug": "hdpe-containers",
+  "category": "bottles-containers",
+  "name": "HDPE Containers",
+  "summary": "HDPE jars and bottles, 30–1000 mL, for tablets, capsules and powders.",
+  "materials": ["HDPE (high-density polyethylene)"],
+  "variants": [
+    { "label": "30 mL",   "status": "to-verify", "attrs": { "capacityML": 30   } },
+    { "label": "60 mL",   "status": "to-verify", "attrs": { "capacityML": 60   } },
+    { "label": "100 mL",  "status": "to-verify", "attrs": { "capacityML": 100  } },
+    { "label": "150 mL",  "status": "to-verify", "attrs": { "capacityML": 150  } },
+    { "label": "200 mL",  "status": "to-verify", "attrs": { "capacityML": 200  } },
+    { "label": "300 mL",  "status": "to-verify", "attrs": { "capacityML": 300  } },
+    { "label": "500 mL",  "status": "to-verify", "attrs": { "capacityML": 500  } },
+    { "label": "1000 mL", "status": "to-verify", "attrs": { "capacityML": 1000 } }
+  ],
+  "specs": [],
+  "sizeRange": "30–1000 mL",
+  "colours": ["White", "Natural", "Custom"],
+  "standards": [],
+  "docs": ["Drawing", "Specification"],
+  "images": ["bottles-containers-hdpe-containers-1.webp"],
+  "status": "to-verify",
+  "tags": ["HDPE", "container", "oral solid", "tablets", "capsules", "powders"]
+}

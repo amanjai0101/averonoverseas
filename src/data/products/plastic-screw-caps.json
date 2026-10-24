@@ -1,0 +1,25 @@
+{
+  "slug": "plastic-screw-caps",
+  "category": "closures-caps",
+  "name": "Plastic Screw Caps",
+  "summary": "PP and HDPE plain screw closures, 18–38 mm, with or without liner, for standard pharmaceutical bottle neck finishes.",
+  "materials": ["PP (polypropylene)", "HDPE (high-density polyethylene)"],
+  "variants": [
+    { "label": "18 mm", "status": "to-verify", "attrs": { "neckMm": 18 } },
+    { "label": "20 mm", "status": "to-verify", "attrs": { "neckMm": 20 } },
+    { "label": "22 mm", "status": "to-verify", "attrs": { "neckMm": 22 } },
+    { "label": "24 mm", "status": "to-verify", "attrs": { "neckMm": 24 } },
+    { "label": "28 mm", "status": "to-verify", "attrs": { "neckMm": 28 } },
+    { "label": "30 mm", "status": "to-verify", "attrs": { "neckMm": 30 } },
+    { "label": "33 mm", "status": "to-verify", "attrs": { "neckMm": 33 } },
+    { "label": "38 mm", "status": "to-verify", "attrs": { "neckMm": 38 } }
+  ],
+  "specs": [],
+  "sizeRange": "18–38 mm",
+  "colours": ["White", "Black", "Custom"],
+  "standards": [],
+  "docs": ["Drawing", "Specification"],
+  "images": ["closures-caps-screw-caps-1.webp"],
+  "status": "to-verify",
+  "tags": ["screw cap", "PP cap", "HDPE cap", "plain closure"]
+}

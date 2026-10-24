@@ -1,0 +1,20 @@
+{
+  "slug": "strip-foil",
+  "category": "blister-films-foils",
+  "name": "Strip Foil",
+  "summary": "Aluminium/LDPE strip foil for pharmaceutical strip packaging, on 76 mm core rolls.",
+  "materials": ["Aluminium", "LDPE (low-density polyethylene)"],
+  "variants": [
+    { "label": "ALU/LDPE", "status": "to-verify", "attrs": { "structure": "overcoat/primer/aluminium/adhesive/LDPE" } }
+  ],
+  "specs": [
+    { "key": "Core inner Ø", "value": "76", "unit": "mm" }
+  ],
+  "sizeRange": "to-verify",
+  "colours": ["Silver"],
+  "standards": [],
+  "docs": ["Specification"],
+  "images": ["blister-films-foils-strip-foil-1.webp"],
+  "status": "to-verify",
+  "tags": ["strip foil", "aluminium", "LDPE", "strip pack"]
+}

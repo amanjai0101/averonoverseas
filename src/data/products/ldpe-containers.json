@@ -1,0 +1,26 @@
+{
+  "slug": "ldpe-containers",
+  "category": "bottles-containers",
+  "name": "LDPE Containers",
+  "summary": "LDPE squeeze and dropper bottles, 5–500 mL, for eye drops, nasal and topical pharmaceutical products.",
+  "materials": ["LDPE (low-density polyethylene)"],
+  "variants": [
+    { "label": "5 mL",   "status": "to-verify", "attrs": { "capacityML": 5   } },
+    { "label": "10 mL",  "status": "to-verify", "attrs": { "capacityML": 10  } },
+    { "label": "15 mL",  "status": "to-verify", "attrs": { "capacityML": 15  } },
+    { "label": "20 mL",  "status": "to-verify", "attrs": { "capacityML": 20  } },
+    { "label": "30 mL",  "status": "to-verify", "attrs": { "capacityML": 30  } },
+    { "label": "50 mL",  "status": "to-verify", "attrs": { "capacityML": 50  } },
+    { "label": "100 mL", "status": "to-verify", "attrs": { "capacityML": 100 } },
+    { "label": "200 mL", "status": "to-verify", "attrs": { "capacityML": 200 } },
+    { "label": "500 mL", "status": "to-verify", "attrs": { "capacityML": 500 } }
+  ],
+  "specs": [],
+  "sizeRange": "5–500 mL",
+  "colours": ["Natural", "White", "Custom"],
+  "standards": [],
+  "docs": ["Drawing", "Specification"],
+  "images": ["bottles-containers-ldpe-containers-1.webp"],
+  "status": "to-verify",
+  "tags": ["LDPE", "squeeze bottle", "dropper bottle", "ophthalmic", "nasal", "topical"]
+}

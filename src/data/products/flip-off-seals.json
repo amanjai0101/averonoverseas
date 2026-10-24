@@ -1,0 +1,21 @@
+{
+  "slug": "flip-off-seals",
+  "category": "injectables",
+  "name": "Flip-Off Seals",
+  "summary": "Aluminium crimp seals with polypropylene flip-off button for injectable vials, 8–32 mm, wide colour range.",
+  "materials": ["Aluminium", "PP (polypropylene) flip-off button"],
+  "variants": [
+    { "label": "8 mm",  "status": "to-verify", "attrs": { "neckMm": 8  } },
+    { "label": "13 mm", "status": "to-verify", "attrs": { "neckMm": 13 } },
+    { "label": "20 mm", "status": "to-verify", "attrs": { "neckMm": 20 } },
+    { "label": "32 mm", "status": "to-verify", "attrs": { "neckMm": 32 } }
+  ],
+  "specs": [],
+  "sizeRange": "8–32 mm",
+  "colours": ["Silver", "Gold", "Yellow", "Orange", "Red", "Blue", "Green", "Purple", "White", "Custom"],
+  "standards": [],
+  "docs": ["Drawing", "Specification"],
+  "images": ["injectables-flip-off-seals-1.webp"],
+  "status": "to-verify",
+  "tags": ["flip-off", "seal", "aluminium", "crimp seal", "injectable", "vial"]
+}

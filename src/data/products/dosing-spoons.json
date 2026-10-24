@@ -1,0 +1,20 @@
+{
+  "slug": "dosing-spoons",
+  "category": "dosing-dispensing",
+  "name": "Dosing Spoons",
+  "summary": "Calibrated PP measuring spoons, 2.5–10 mL, for oral solid and liquid pharmaceuticals, food-grade PP, phthalate-free and BPA-free.",
+  "materials": ["PP (polypropylene)"],
+  "variants": [
+    { "label": "2.5 mL", "status": "to-verify", "attrs": { "capacityML": 2.5 } },
+    { "label": "5 mL",   "status": "to-verify", "attrs": { "capacityML": 5   } },
+    { "label": "10 mL",  "status": "to-verify", "attrs": { "capacityML": 10  } }
+  ],
+  "specs": [],
+  "sizeRange": "2.5–10 mL",
+  "colours": ["White", "Clear", "Custom"],
+  "standards": [],
+  "docs": ["Drawing", "Specification"],
+  "images": ["dosing-dispensing-dosing-spoons-1.webp"],
+  "status": "to-verify",
+  "tags": ["measuring spoon", "dosing spoon", "calibrated", "BPA-free", "phthalate-free"]
+}

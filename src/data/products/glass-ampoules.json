@@ -1,0 +1,27 @@
+{
+  "slug": "glass-ampoules",
+  "category": "injectables",
+  "name": "Glass Ampoules",
+  "summary": "Type I neutral borosilicate glass ampoules, 1–25 mL, clear and amber, OPC and CBR opening types.",
+  "materials": ["Type I neutral borosilicate glass"],
+  "variants": [
+    { "label": "1 mL / OPC",  "status": "to-verify", "attrs": { "capacityML": 1,  "opening": "OPC" } },
+    { "label": "2 mL / OPC",  "status": "to-verify", "attrs": { "capacityML": 2,  "opening": "OPC" } },
+    { "label": "5 mL / OPC",  "status": "to-verify", "attrs": { "capacityML": 5,  "opening": "OPC" } },
+    { "label": "10 mL / OPC", "status": "to-verify", "attrs": { "capacityML": 10, "opening": "OPC" } },
+    { "label": "20 mL / OPC", "status": "to-verify", "attrs": { "capacityML": 20, "opening": "OPC" } },
+    { "label": "25 mL / OPC", "status": "to-verify", "attrs": { "capacityML": 25, "opening": "OPC" } },
+    { "label": "1 mL / CBR",  "status": "to-verify", "attrs": { "capacityML": 1,  "opening": "CBR" } },
+    { "label": "2 mL / CBR",  "status": "to-verify", "attrs": { "capacityML": 2,  "opening": "CBR" } },
+    { "label": "5 mL / CBR",  "status": "to-verify", "attrs": { "capacityML": 5,  "opening": "CBR" } },
+    { "label": "10 mL / CBR", "status": "to-verify", "attrs": { "capacityML": 10, "opening": "CBR" } }
+  ],
+  "specs": [],
+  "sizeRange": "1–25 mL",
+  "colours": ["Clear", "Amber"],
+  "standards": ["Type I borosilicate"],
+  "docs": ["Drawing", "Specification", "CoA"],
+  "images": ["injectables-glass-ampoules-1.webp"],
+  "status": "to-verify",
+  "tags": ["ampoule", "borosilicate", "injectable", "OPC", "CBR", "single-dose"]
+}

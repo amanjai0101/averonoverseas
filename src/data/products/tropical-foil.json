@@ -1,0 +1,21 @@
+{
+  "slug": "tropical-foil",
+  "category": "blister-films-foils",
+  "name": "Tropical Blister Foil",
+  "summary": "oPA/aluminium tropical blister foil for high-humidity Zone III/IV markets, on 76 mm core rolls.",
+  "materials": ["oPA (oriented polyamide)", "Aluminium"],
+  "variants": [
+    { "label": "Tropical foil", "status": "to-verify", "attrs": { "structure": "oPA/adhesive/print/aluminium/lacquer" } }
+  ],
+  "specs": [
+    { "key": "Width (max)", "value": "1360", "unit": "mm" },
+    { "key": "Core inner Ø", "value": "76", "unit": "mm" }
+  ],
+  "sizeRange": "to-verify",
+  "colours": ["Silver"],
+  "standards": [],
+  "docs": ["Specification"],
+  "images": ["blister-films-foils-tropical-foil-1.webp"],
+  "status": "to-verify",
+  "tags": ["tropical foil", "aluminium", "Zone III", "Zone IV", "high humidity", "blister"]
+}

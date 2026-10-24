@@ -1,0 +1,20 @@
+{
+  "slug": "cold-form-film",
+  "category": "blister-films-foils",
+  "name": "Cold-Form Film",
+  "summary": "oPA/aluminium/PVC cold-form base film for alu-alu blister packs, on 76 mm core rolls.",
+  "materials": ["oPA (oriented polyamide)", "Aluminium", "PVC (polyvinyl chloride)"],
+  "variants": [
+    { "label": "Cold-form film", "status": "to-verify", "attrs": { "structure": "oPA/adhesive/aluminium/adhesive/PVC" } }
+  ],
+  "specs": [
+    { "key": "Core inner Ø", "value": "76", "unit": "mm" }
+  ],
+  "sizeRange": "to-verify",
+  "colours": ["Silver"],
+  "standards": [],
+  "docs": ["Specification"],
+  "images": ["blister-films-foils-cold-form-1.webp"],
+  "status": "to-verify",
+  "tags": ["cold form", "alu-alu", "ALU blister", "oPA", "aluminium laminate"]
+}

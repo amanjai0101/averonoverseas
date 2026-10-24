@@ -1,0 +1,27 @@
+{
+  "slug": "dropper-assemblies",
+  "category": "dosing-dispensing",
+  "name": "Dropper Assemblies & Glass Dropper Bottles",
+  "summary": "Complete rubber dropper assemblies (teat + glass tube + PP cap) and Type I borosilicate glass dropper bottles, 5–30 mL, amber and clear.",
+  "materials": ["Type I borosilicate glass", "Rubber (dropper teat)", "PP (polypropylene) cap"],
+  "variants": [
+    { "label": "5 mL / Amber",  "status": "to-verify", "attrs": { "capacityML": 5,  "colour": "Amber" } },
+    { "label": "10 mL / Amber", "status": "to-verify", "attrs": { "capacityML": 10, "colour": "Amber" } },
+    { "label": "15 mL / Amber", "status": "to-verify", "attrs": { "capacityML": 15, "colour": "Amber" } },
+    { "label": "20 mL / Amber", "status": "to-verify", "attrs": { "capacityML": 20, "colour": "Amber" } },
+    { "label": "30 mL / Amber", "status": "to-verify", "attrs": { "capacityML": 30, "colour": "Amber" } },
+    { "label": "5 mL / Clear",  "status": "to-verify", "attrs": { "capacityML": 5,  "colour": "Clear" } },
+    { "label": "10 mL / Clear", "status": "to-verify", "attrs": { "capacityML": 10, "colour": "Clear" } },
+    { "label": "15 mL / Clear", "status": "to-verify", "attrs": { "capacityML": 15, "colour": "Clear" } },
+    { "label": "20 mL / Clear", "status": "to-verify", "attrs": { "capacityML": 20, "colour": "Clear" } },
+    { "label": "30 mL / Clear", "status": "to-verify", "attrs": { "capacityML": 30, "colour": "Clear" } }
+  ],
+  "specs": [],
+  "sizeRange": "5–30 mL",
+  "colours": ["Amber", "Clear"],
+  "standards": ["Type I borosilicate"],
+  "docs": ["Drawing", "Specification"],
+  "images": ["dosing-dispensing-dropper-assemblies-1.webp"],
+  "status": "to-verify",
+  "tags": ["dropper", "dropper assembly", "dropper bottle", "ophthalmic", "ENT", "oral drops"]
+}

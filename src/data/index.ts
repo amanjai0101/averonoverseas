@@ -1,4 +1,6 @@
-import type { Category, Product } from './types';
+import type { Category, Product, RawMaterial } from './types';
+
+export type { Category, Product, RawMaterial };
 
 export async function getCategories(): Promise<Category[]> {
   const modules = import.meta.glob('../data/categories/*.json', { eager: true });
@@ -14,5 +16,17 @@ export async function getProducts(categorySlug?: string): Promise<Product[]> {
     return products;
   }
 
-  return products.filter(p => p.category === categorySlug);
+  const filtered = products.filter(p => p.category === categorySlug);
+  return filtered;
+}
+
+export async function getMaterials(group?: string): Promise<RawMaterial[]> {
+  const modules = import.meta.glob('../data/materials/*.json', { eager: true });
+  const materials = Object.values(modules).map(m => (m as any).default ?? m) as RawMaterial[];
+
+  if (group === undefined) {
+    return materials;
+  }
+
+  return materials.filter(m => m.group === group);
 }

@@ -1,0 +1,45 @@
+{
+  "slug": "measuring-cups",
+  "category": "dosing-dispensing",
+  "name": "Measuring Cups",
+  "summary": "PP measuring cups, 5–60 mL, printed or embossed graduation scales, food-grade PP, phthalate-free and BPA-free.",
+  "materials": ["PP (polypropylene)"],
+  "variants": [
+    {
+      "label": "20 mL / 28 mm cap",
+      "status": "verified",
+      "docRef": "AO/QA/QC/SPC/05",
+      "attrs": { "capacityML": 20, "capNeck": "28 mm" },
+      "specs": [
+        { "key": "Nominal capacity", "value": "20.00", "tol": "0.50", "unit": "mL" },
+        { "key": "Overall height",   "value": "45.00", "tol": "0.50", "unit": "mm" },
+        { "key": "Outer diameter",   "value": "38.00", "tol": "0.50", "unit": "mm" },
+        { "key": "Wall thickness",   "value": "0.90",  "tol": "0.10", "unit": "mm" }
+      ]
+    },
+    {
+      "label": "15 mL / 28 mm cap",
+      "status": "verified",
+      "docRef": "AO/QA/QC/SPC/06",
+      "attrs": { "capacityML": 15, "capNeck": "28 mm" },
+      "specs": [
+        { "key": "Nominal capacity", "value": "15.00", "tol": "0.50", "unit": "mL" },
+        { "key": "Overall height",   "value": "40.00", "tol": "0.50", "unit": "mm" },
+        { "key": "Outer diameter",   "value": "38.00", "tol": "0.50", "unit": "mm" },
+        { "key": "Wall thickness",   "value": "0.90",  "tol": "0.10", "unit": "mm" }
+      ]
+    },
+    { "label": "5 mL",  "status": "to-verify", "attrs": { "capacityML": 5  } },
+    { "label": "10 mL", "status": "to-verify", "attrs": { "capacityML": 10 } },
+    { "label": "30 mL", "status": "to-verify", "attrs": { "capacityML": 30 } },
+    { "label": "60 mL", "status": "to-verify", "attrs": { "capacityML": 60 } }
+  ],
+  "specs": [],
+  "sizeRange": "5–60 mL",
+  "colours": ["White", "Clear", "Green", "Custom"],
+  "standards": [],
+  "docs": ["Drawing", "Specification"],
+  "images": ["dosing-dispensing-measuring-cups-1.webp"],
+  "status": "verified",
+  "tags": ["measuring cup", "dosing cup", "oral liquid", "paediatric", "BPA-free", "phthalate-free"]
+}

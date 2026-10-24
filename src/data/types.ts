@@ -17,7 +17,10 @@ export interface ProductSpec {
 
 export interface ProductVariant {
   label: string;
+  status?: 'verified' | 'to-verify';
+  docRef?: string;
   attrs: Record<string, string | number>;
+  specs?: ProductSpec[];  // per-variant specs (backward-compatible)
 }
 
 export interface Product {
@@ -27,7 +30,7 @@ export interface Product {
   summary: string;       // max 160 chars
   materials: string[];
   variants: ProductVariant[];
-  specs: ProductSpec[];
+  specs: ProductSpec[];  // top-level specs (used when variants share the same specs)
   sizeRange: string;
   colours: string[];
   standards: string[];
@@ -35,4 +38,19 @@ export interface Product {
   images: string[];
   status: 'verified' | 'to-verify';
   tags: string[];
+  docRef?: string;       // document reference number if applicable
+}
+
+export interface MaterialItem {
+  name: string;
+  category?: string;     // sub-category within the group (e.g. therapeutic category for APIs)
+}
+
+export interface RawMaterial {
+  slug: string;
+  name: string;
+  group: 'apis' | 'excipients' | 'vitamins-minerals' | 'chemicals';
+  items: MaterialItem[];
+  grades: string[];
+  docs: string[];
 }

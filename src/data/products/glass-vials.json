@@ -1,0 +1,31 @@
+{
+  "slug": "glass-vials",
+  "category": "injectables",
+  "name": "Glass Vials",
+  "summary": "Neutral Type I borosilicate glass vials, clear and amber, 2R–100R, for injectables, biologics and lyophilised products.",
+  "materials": ["Type I borosilicate glass"],
+  "variants": [
+    { "label": "2R",   "status": "to-verify", "attrs": { "size": "2R",   "neckMm": 13 } },
+    { "label": "3R",   "status": "to-verify", "attrs": { "size": "3R",   "neckMm": 13 } },
+    { "label": "4R",   "status": "to-verify", "attrs": { "size": "4R",   "neckMm": 13 } },
+    { "label": "5R",   "status": "to-verify", "attrs": { "size": "5R",   "neckMm": 13 } },
+    { "label": "6R",   "status": "to-verify", "attrs": { "size": "6R",   "neckMm": 13 } },
+    { "label": "7R",   "status": "to-verify", "attrs": { "size": "7R",   "neckMm": 20 } },
+    { "label": "8R",   "status": "to-verify", "attrs": { "size": "8R",   "neckMm": 20 } },
+    { "label": "10R",  "status": "to-verify", "attrs": { "size": "10R",  "neckMm": 20 } },
+    { "label": "15R",  "status": "to-verify", "attrs": { "size": "15R",  "neckMm": 20 } },
+    { "label": "20R",  "status": "to-verify", "attrs": { "size": "20R",  "neckMm": 20 } },
+    { "label": "25R",  "status": "to-verify", "attrs": { "size": "25R",  "neckMm": 20 } },
+    { "label": "30R",  "status": "to-verify", "attrs": { "size": "30R",  "neckMm": 20 } },
+    { "label": "50R",  "status": "to-verify", "attrs": { "size": "50R",  "neckMm": 20 } },
+    { "label": "100R", "status": "to-verify", "attrs": { "size": "100R", "neckMm": 20 } }
+  ],
+  "specs": [],
+  "sizeRange": "2R–100R",
+  "colours": ["Clear", "Amber"],
+  "standards": ["Type I borosilicate"],
+  "docs": ["Drawing", "Specification", "CoA"],
+  "images": ["injectables-glass-vials-1.webp"],
+  "status": "to-verify",
+  "tags": ["vial", "borosilicate", "injectable", "parenteral", "lyophilisation", "biologics"]
+}

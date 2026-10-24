@@ -1,0 +1,23 @@
+{
+  "slug": "glass-bottles",
+  "category": "bottles-containers",
+  "name": "Glass Bottles",
+  "summary": "Amber and flint pharmaceutical glass bottles for oral liquids, 30–500 mL, DIN neck, compatible with ROPP, pilfer-proof and CRC closures.",
+  "materials": ["Pharmaceutical glass (amber)", "Pharmaceutical glass (flint/clear)"],
+  "variants": [
+    { "label": "30 mL",  "status": "to-verify", "attrs": { "capacityML": 30  } },
+    { "label": "60 mL",  "status": "to-verify", "attrs": { "capacityML": 60  } },
+    { "label": "100 mL", "status": "to-verify", "attrs": { "capacityML": 100 } },
+    { "label": "150 mL", "status": "to-verify", "attrs": { "capacityML": 150 } },
+    { "label": "200 mL", "status": "to-verify", "attrs": { "capacityML": 200 } },
+    { "label": "500 mL", "status": "to-verify", "attrs": { "capacityML": 500 } }
+  ],
+  "specs": [],
+  "sizeRange": "30–500 mL",
+  "colours": ["Amber", "Clear (flint)"],
+  "standards": ["DIN neck finish"],
+  "docs": ["Drawing", "Specification"],
+  "images": ["bottles-containers-glass-bottles-1.webp"],
+  "status": "to-verify",
+  "tags": ["glass bottle", "syrup", "oral liquid", "amber glass", "DIN neck"]
+}

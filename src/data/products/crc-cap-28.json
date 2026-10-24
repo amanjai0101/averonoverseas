@@ -1,22 +1,37 @@
 {
   "slug": "crc-cap-28",
   "category": "closures-caps",
-  "name": "Child-Resistant Closure (CRC) 28 mm",
-  "summary": "PP/LDPE child-resistant closure with EPE liner, 28 mm neck finish, suitable for oral pharmaceutical bottles.",
-  "materials": ["PP", "LDPE", "EPE liner"],
+  "name": "Child-Resistant Closure (CRC)",
+  "summary": "PP/LDPE press-down-and-turn child-resistant closure, 22–38 mm, EPE liner option, two-piece and single-piece designs.",
+  "materials": ["PP (polypropylene)", "LDPE (low-density polyethylene)", "EPE liner"],
+  "docRef": "AO/QA/QC/SPC/02",
   "variants": [
-    { "label": "28 mm", "attrs": { "neck": 28, "unit": "mm" } }
+    {
+      "label": "28 mm / EPE liner",
+      "status": "verified",
+      "docRef": "AO/QA/QC/SPC/02",
+      "attrs": { "neck": 28, "unit": "mm", "liner": "EPE" },
+      "specs": [
+        { "key": "Overall height",            "value": "24.30", "tol": "0.20", "unit": "mm" },
+        { "key": "Outer diameter (top)",       "value": "34.40", "tol": "0.20", "unit": "mm" },
+        { "key": "Outer diameter (base)",      "value": "35.00", "tol": "0.20", "unit": "mm" },
+        { "key": "Liner diameter",             "value": "25.60", "tol": "0.20", "unit": "mm" },
+        { "key": "Liner thickness",            "value": "1.40",  "tol": "0.10", "unit": "mm" },
+        { "key": "Overall weight",             "value": "6.30",  "tol": "0.30", "unit": "g"  },
+        { "key": "Cap weight (without liner)", "value": "5.20",  "tol": "0.30", "unit": "g"  }
+      ]
+    },
+    { "label": "22 mm", "status": "to-verify", "attrs": { "neck": 22, "unit": "mm" } },
+    { "label": "25 mm", "status": "to-verify", "attrs": { "neck": 25, "unit": "mm" } },
+    { "label": "33 mm", "status": "to-verify", "attrs": { "neck": 33, "unit": "mm" } },
+    { "label": "38 mm", "status": "to-verify", "attrs": { "neck": 38, "unit": "mm" } }
   ],
-  "specs": [
-    { "key": "Overall height", "value": "24.30", "tol": "0.20", "unit": "mm" },
-    { "key": "Outer diameter", "value": "34.40", "tol": "0.20", "unit": "mm" },
-    { "key": "Weight", "value": "6.30", "tol": "0.20", "unit": "g" }
-  ],
+  "specs": [],
   "sizeRange": "22–38 mm",
-  "colours": ["White", "Custom"],
+  "colours": ["White", "Yellow", "Red", "Blue", "Green", "Grey", "Custom"],
   "standards": [],
   "docs": ["Drawing", "Specification", "CoA"],
-  "images": ["crc-cap-28-1.webp"],
+  "images": ["closures-caps-crc-1.webp"],
   "status": "verified",
-  "tags": ["child resistant", "tamper evident", "28 mm"]
+  "tags": ["child resistant", "CRC", "press-down-and-turn", "squeeze-and-turn", "rim-snap"]
 }

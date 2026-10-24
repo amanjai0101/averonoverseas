@@ -1,0 +1,24 @@
+{
+  "slug": "ropp-caps",
+  "category": "closures-caps",
+  "name": "Aluminium ROPP Caps",
+  "summary": "Roll-on pilfer-proof aluminium closures for glass syrup bottles, 18–28 mm, EPE, SARAN or TIN SARAN liner options.",
+  "materials": ["Aluminium"],
+  "variants": [
+    { "label": "18 mm / EPE liner",       "status": "to-verify", "attrs": { "neckMm": 18, "liner": "EPE"       } },
+    { "label": "20 mm / EPE liner",       "status": "to-verify", "attrs": { "neckMm": 20, "liner": "EPE"       } },
+    { "label": "22 mm / EPE liner",       "status": "to-verify", "attrs": { "neckMm": 22, "liner": "EPE"       } },
+    { "label": "25 mm / EPE liner",       "status": "to-verify", "attrs": { "neckMm": 25, "liner": "EPE"       } },
+    { "label": "28 mm / EPE liner",       "status": "to-verify", "attrs": { "neckMm": 28, "liner": "EPE"       } },
+    { "label": "28 mm / SARAN liner",     "status": "to-verify", "attrs": { "neckMm": 28, "liner": "SARAN"     } },
+    { "label": "28 mm / TIN SARAN liner", "status": "to-verify", "attrs": { "neckMm": 28, "liner": "TIN SARAN" } }
+  ],
+  "specs": [],
+  "sizeRange": "18–28 mm",
+  "colours": ["Silver", "Gold", "Black", "Blue", "Red", "Green", "Purple", "Pink", "Rose Gold", "Custom"],
+  "standards": [],
+  "docs": ["Drawing", "Specification"],
+  "images": ["closures-caps-ropp-1.webp"],
+  "status": "to-verify",
+  "tags": ["ROPP", "aluminium cap", "roll-on pilfer-proof", "syrup bottle", "glass bottle"]
+}

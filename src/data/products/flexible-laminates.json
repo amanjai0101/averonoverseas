@@ -1,0 +1,21 @@
+{
+  "slug": "flexible-laminates",
+  "category": "blister-films-foils",
+  "name": "Flexible Laminates",
+  "summary": "Multi-layer flexible laminates for sachets, pouches and strip packs; structures include PVC/PE, BOPP/ALU/PE, PET/ALU/PE and custom.",
+  "materials": ["PET (polyethylene terephthalate)", "Aluminium", "PE (polyethylene)", "BOPP (biaxially oriented polypropylene)", "CPP (cast polypropylene)"],
+  "variants": [
+    { "label": "PVC/PE",         "status": "to-verify", "attrs": { "structure": "PVC/PE" } },
+    { "label": "BOPP/ALU/PE",    "status": "to-verify", "attrs": { "structure": "BOPP/ALU/PE" } },
+    { "label": "PET/ALU/PE",     "status": "to-verify", "attrs": { "structure": "PET/ALU/PE" } },
+    { "label": "Custom",         "status": "to-verify", "attrs": { "structure": "Custom on request" } }
+  ],
+  "specs": [],
+  "sizeRange": "to-verify",
+  "colours": ["Custom"],
+  "standards": [],
+  "docs": ["Specification"],
+  "images": ["blister-films-foils-flexible-laminates-1.webp"],
+  "status": "to-verify",
+  "tags": ["laminate", "sachet", "pouch", "strip pack", "flexible packaging", "PET", "BOPP"]
+}

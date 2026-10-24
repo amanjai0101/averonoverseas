@@ -1,0 +1,15 @@
+{
+  "slug": "chemicals",
+  "name": "Chemicals",
+  "group": "chemicals",
+  "grades": ["BP", "USP", "EP", "IP"],
+  "docs": ["CoA", "TDS", "SDS"],
+  "items": [
+    { "name": "Citric Acid Anhydrous" },
+    { "name": "Sodium Citrate" },
+    { "name": "Sodium Bicarbonate" },
+    { "name": "Glycerine" },
+    { "name": "Propylene Glycol" },
+    { "name": "Simethicone" }
+  ]
+}

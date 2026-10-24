@@ -1,0 +1,22 @@
+{
+  "slug": "oral-dosing-syringes",
+  "category": "dosing-dispensing",
+  "name": "Oral Dosing Syringes",
+  "summary": "PP oral dosing syringes, 1–20 mL, non-Luer tip, printed and embossed graduation scales, food-grade PP, phthalate-free and BPA-free.",
+  "materials": ["PP (polypropylene) barrel", "PE (polyethylene) plunger"],
+  "variants": [
+    { "label": "1 mL",  "status": "to-verify", "attrs": { "capacityML": 1  } },
+    { "label": "2.5 mL","status": "to-verify", "attrs": { "capacityML": 2.5 } },
+    { "label": "5 mL",  "status": "to-verify", "attrs": { "capacityML": 5  } },
+    { "label": "10 mL", "status": "to-verify", "attrs": { "capacityML": 10 } },
+    { "label": "20 mL", "status": "to-verify", "attrs": { "capacityML": 20 } }
+  ],
+  "specs": [],
+  "sizeRange": "1–20 mL",
+  "colours": ["Clear", "Red", "Blue", "Green", "Orange", "Custom"],
+  "standards": [],
+  "docs": ["Drawing", "Specification"],
+  "images": ["dosing-dispensing-oral-syringes-1.webp"],
+  "status": "to-verify",
+  "tags": ["oral syringe", "dosing syringe", "non-Luer", "paediatric", "FFS-sealed", "BPA-free"]
+}

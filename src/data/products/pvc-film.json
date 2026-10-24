@@ -1,0 +1,26 @@
+{
+  "slug": "pvc-film",
+  "category": "blister-films-foils",
+  "name": "PVC Blister Film",
+  "summary": "Rigid PVC mono film for blister packaging, 100–600 µm, widths up to 1360 mm, clear and coloured, for rotary and flatbed machines.",
+  "materials": ["PVC (polyvinyl chloride)"],
+  "variants": [
+    { "label": "200 µm / Clear",  "status": "to-verify", "attrs": { "thicknessMicron": 200, "colour": "Clear" } },
+    { "label": "250 µm / Clear",  "status": "to-verify", "attrs": { "thicknessMicron": 250, "colour": "Clear" } },
+    { "label": "300 µm / Clear",  "status": "to-verify", "attrs": { "thicknessMicron": 300, "colour": "Clear" } },
+    { "label": "250 µm / Amber",  "status": "to-verify", "attrs": { "thicknessMicron": 250, "colour": "Amber" } },
+    { "label": "300 µm / Amber",  "status": "to-verify", "attrs": { "thicknessMicron": 300, "colour": "Amber" } }
+  ],
+  "specs": [
+    { "key": "Thickness range", "value": "100–600", "unit": "µm" },
+    { "key": "Width (max)",     "value": "1360",    "unit": "mm" },
+    { "key": "Core inner Ø",   "value": "76",       "unit": "mm" }
+  ],
+  "sizeRange": "100–600 µm",
+  "colours": ["Clear", "White", "Yellow", "Amber", "Blue", "Green"],
+  "standards": [],
+  "docs": ["Specification"],
+  "images": ["blister-films-foils-pvc-film-1.webp"],
+  "status": "to-verify",
+  "tags": ["PVC", "blister film", "rigid", "rotary", "flatbed"]
+}
