@@ -26,7 +26,7 @@ const heroImage = product.images[0] ?? '';
 const allInCat = await getProducts(cat.slug);
 const related = allInCat.filter(p => p.slug !== product.slug).slice(0, 3);
 
-const rawTitle = `${product.name} – ${cat.name} – Averon Overseas`;
+const rawTitle = `${product.name} | ${cat.name} | Averon Overseas`;
 const seoTitle = rawTitle.length > 60 ? rawTitle.slice(0, 57) + '…' : rawTitle;
 const seoDesc = product.summary.length > 155 ? product.summary.slice(0, 152) + '…' : product.summary;
 

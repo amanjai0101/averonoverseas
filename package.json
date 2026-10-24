@@ -7,7 +7,8 @@
     "preview": "astro preview",
     "test": "vitest --run",
     "check-build": "node scripts/check-build.mjs",
-    "images": "node scripts/process-incoming.mjs"
+    "images": "node scripts/process-incoming.mjs",
+    "seo-check": "node scripts/seo-check.mjs"
   },
   "devDependencies": {
     "astro": "5.18.2",

@@ -16,6 +16,62 @@ const canonicalURL = `${site}${base}/products/${cat.slug}/`;
 
 const products = await getProducts(cat.slug);
 
+// Per-category SEO intro and FAQ (from catalogue facts only)
+type CatContent = { intro: string; faq: { q: string; a: string }[] };
+const catContent: Record<string, CatContent> = {
+  'injectables': {
+    intro: 'Averon Overseas supplies pharmaceutical injectable packaging — glass vials, ampoules, rubber stoppers and flip-off seals — sourced from qualified manufacturing partners in India. As a pharmaceutical primary packaging supplier, we provide Type I borosilicate glass for injectables, biologics and lyophilised products with documentation on request.',
+    faq: [
+      { q: 'What sizes of glass vials are available?', a: 'Standard vials range from 2R to 100R. Exact dimensions are confirmed per order against the supplier drawing.' },
+      { q: 'What documents can be provided for injectable packaging?', a: 'A Certificate of Analysis (CoA), Technical Data Sheet (TDS), Safety Data Sheet (SDS) and technical drawing are available on request.' },
+      { q: 'Can rubber stoppers be supplied ready-to-use (RTU)?', a: 'Stoppers are available RTU (Ready to Use) or RTS (Ready to Sterilise). Specific supply format is confirmed at order stage.' },
+    ],
+  },
+  'bottles-containers': {
+    intro: 'Averon Overseas sources glass, PET, HDPE and LDPE pharmaceutical bottles and containers for liquid, solid and topical dosage forms. Our range covers oral liquid preparations, tablet and capsule containers, and squeeze bottles for ophthalmic and nasal products, supplied from India to buyers worldwide.',
+    faq: [
+      { q: 'What sizes of glass syrup bottles are available?', a: 'Amber and flint glass bottles are available from 30 mL to 500 mL with DIN neck finish, compatible with ROPP, pilfer-proof and CRC closures. Exact sizes confirmed per order.' },
+      { q: 'Are PET bottles compatible with tamper-evident closures?', a: 'Yes. PET bottles are compatible with tamper-evident and CRC closures. Neck finish compatibility is confirmed at order stage.' },
+      { q: 'Can custom sizes or colours be arranged?', a: 'Custom sizes, colours and printing can be confirmed on request via enquiry.' },
+    ],
+  },
+  'closures-caps': {
+    intro: 'Averon Overseas supplies aluminium ROPP caps, polypropylene child-resistant closures (CRC), tamper-evident caps and plain screw caps for pharmaceutical bottles. Our closures range from 18 mm to 38 mm neck finishes, sourced from qualified partners and supplied with full technical documentation on request.',
+    faq: [
+      { q: 'What CRC mechanisms are available?', a: 'Press-down-and-turn, squeeze-and-turn, squeeze-and-pull and Rim-Snap mechanisms are available. Sizes from 22 mm to 38 mm.' },
+      { q: 'What liner options are available for ROPP caps?', a: 'EPE, SARAN and TIN SARAN liner options are available. Specific liner confirmed at order stage.' },
+      { q: 'Can caps be supplied with custom colours or printing?', a: 'Custom colours and printing are available on request. Confirmed per enquiry.' },
+    ],
+  },
+  'blister-films-foils': {
+    intro: 'Averon Overseas supplies PVC mono, PVC/PVDC duplex and Triplex blister films, aluminium lid foils, tropical foils, strip foils and cold-form films for pharmaceutical blister and strip packaging. Films are supplied on rolls from widths up to 1360 mm for rotary and flatbed machines.',
+    faq: [
+      { q: 'What PVC film thicknesses are available?', a: 'Rigid PVC blister film is available from 100 µm to 600 µm in clear and coloured shades. Exact thickness confirmed per order.' },
+      { q: 'What is a Triplex blister film?', a: 'Triplex combines PVC, PE and PVDC layers for enhanced moisture and gas barrier properties, suitable for tropical markets (Zone III/IV).' },
+      { q: 'What documents are available for blister films?', a: 'A Specification Sheet is available on request for all film types. CoA and TDS may be provided by the manufacturing partner.' },
+    ],
+  },
+  'dosing-dispensing': {
+    intro: 'Averon Overseas supplies oral dosing syringes, measuring cups, calibrated dosing spoons, and glass dropper assemblies for accurate pharmaceutical dose measurement and dispensing. All items are manufactured in food-grade PP, phthalate-free and BPA-free, for paediatric and adult oral preparations.',
+    faq: [
+      { q: 'What oral syringe sizes are available?', a: 'Oral dosing syringes are available from 1 mL to 20 mL with printed or embossed graduation scales. Non-Luer tip prevents IV misconnection.' },
+      { q: 'Are measuring cups available in custom colours?', a: 'Measuring cups are available in multiple colours including white, clear and green, with custom colour options confirmed on request.' },
+      { q: 'What material are dropper assemblies made from?', a: 'Glass dropper bottles are Type I borosilicate glass, 5 mL to 30 mL, amber or clear. The dropper teat is rubber and the cap is PP.' },
+    ],
+  },
+  'raw-materials': {
+    intro: 'Averon Overseas sources pharmaceutical raw materials — APIs, excipients, vitamins, minerals and chemicals — from qualified manufacturing partners in BP, USP, EP and IP grades. We provide CoA, TDS and SDS on request for all raw materials to support pharmaceutical formulation and manufacturing.',
+    faq: [
+      { q: 'What grades are raw materials available in?', a: 'APIs, excipients and chemicals are available in BP, USP, EP and IP grades, as required. Grade availability is confirmed per enquiry.' },
+      { q: 'What documents are available for raw materials?', a: 'Certificate of Analysis (CoA), Technical Data Sheet (TDS) and Safety Data Sheet (SDS) are available on request.' },
+      { q: 'Are controlled substances available?', a: 'Products subject to controlled-substance regulations are not listed and are supplied only to licensed buyers subject to applicable law.' },
+    ],
+  },
+};
+
+const content = catContent[cat.slug] ?? null;
+
+// JSON-LD
 const breadcrumb = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -25,6 +81,33 @@ const breadcrumb = {
     { '@type': 'ListItem', position: 3, name: cat.name,   item: canonicalURL },
   ],
 };
+
+const collectionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: cat.name,
+  description: cat.seoDescription,
+  url: canonicalURL,
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: products.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: p.name,
+      url: `${site}${base}/products/${cat.slug}/${p.slug}/`,
+    })),
+  },
+};
+
+const faqJsonLd = content?.faq ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: content.faq.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+} : null;
 ---
 
 <Base
@@ -35,6 +118,8 @@ const breadcrumb = {
 >
   <Fragment slot="jsonld">
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />
+    <script type="application/ld+json" set:html={JSON.stringify(collectionJsonLd)} />
+    {faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
   </Fragment>
 
   <div class="wrap page-wrap">
@@ -48,11 +133,11 @@ const breadcrumb = {
 
     <header class="cat-header">
       <div class="cat-hero-img">
-        <ProductImage src={cat.image} alt={cat.name} aspectRatio="3/2" loading="eager" />
+        <ProductImage src={cat.image} alt={cat.name} aspectRatio="3/2" loading="eager" width={900} height={600} />
       </div>
       <div class="cat-intro">
         <h1>{cat.name}</h1>
-        <p class="cat-summary">{cat.summary}</p>
+        {content && <p class="cat-seo-intro">{content.intro}</p>}
         <a href={`${base}/rfq/`} class="btn btn-primary">Request a quote</a>
       </div>
     </header>
@@ -64,12 +149,7 @@ const breadcrumb = {
         {products.map(p => (
           <a href={`${base}/products/${cat.slug}/${p.slug}/`} class="product-row" role="listitem">
             <div class="product-row-img">
-              <ProductImage
-                src={p.images[0] ?? ''}
-                alt={p.name}
-                aspectRatio="4/3"
-                loading="lazy"
-              />
+              <ProductImage src={p.images[0] ?? ''} alt={p.name} aspectRatio="4/3" loading="lazy" width={320} height={240} />
             </div>
             <div class="product-row-body">
               <h2>{p.name}</h2>
@@ -89,6 +169,20 @@ const breadcrumb = {
         <p>Standard sizes shown. Need a different size, colour or printing? <a href={`${base}/rfq/`}>Tell us and we will confirm options →</a></p>
       </div>
     </div>
+
+    {content?.faq && (
+      <section class="faq-section" aria-labelledby="faq-heading">
+        <h2 id="faq-heading">Frequently asked questions</h2>
+        <dl class="faq-list">
+          {content.faq.map(f => (
+            <div class="faq-item">
+              <dt>{f.q}</dt>
+              <dd>{f.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    )}
   </div>
 
   <div class="sticky-bar">
@@ -97,20 +191,17 @@ const breadcrumb = {
 </Base>
 
 <style>
-  .page-wrap { padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(64px, 8vw, 112px); }
-
-  .cat-header { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; margin-bottom: 3rem; }
+  .page-wrap { padding-top: clamp(40px,6vw,72px); padding-bottom: clamp(64px,8vw,112px); }
+  .cat-header { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,5vw,64px); align-items: center; margin-bottom: 3rem; }
   .cat-hero-img .pi-frame { width: 100%; }
   h1 { margin-bottom: 0.875rem; }
-  .cat-summary { color: var(--muted); max-width: 52ch; line-height: 1.65; margin-bottom: 1.5rem; }
+  .cat-seo-intro { color: var(--muted); max-width: 52ch; line-height: 1.65; margin-bottom: 1.5rem; font-size: 0.9375rem; }
 
   .product-list { border-top: 1px solid var(--hair); }
   .product-row {
     display: grid; grid-template-columns: 160px 1fr 32px;
-    gap: 24px; align-items: center;
-    padding: 24px 0; border-bottom: 1px solid var(--hair);
-    text-decoration: none; color: inherit;
-    transition: background 0.1s;
+    gap: 24px; align-items: center; padding: 24px 0;
+    border-bottom: 1px solid var(--hair); text-decoration: none; color: inherit; transition: background 0.1s;
   }
   .product-row:hover { background: var(--band); }
   .product-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -120,22 +211,19 @@ const breadcrumb = {
   .product-row-range { font-size: 0.8125rem; }
   .product-row-arrow { font-size: 1.25rem; color: var(--muted); justify-self: end; }
 
+  .rfq-nudge { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--hair); }
+
+  .faq-section { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--hair); }
+  .faq-section h2 { font-size: 1.375rem; margin-bottom: 1.5rem; }
+  .faq-list { display: flex; flex-direction: column; gap: 0; margin: 0; padding: 0; }
+  .faq-item { padding: 1.125rem 0; border-bottom: 1px solid var(--hair); display: grid; grid-template-columns: 5fr 7fr; gap: 24px; align-items: baseline; }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-item dt { font-weight: 500; font-size: 0.9375rem; color: var(--ink); }
+  .faq-item dd { font-size: 0.9375rem; color: var(--muted); margin: 0; line-height: 1.6; }
+
   .empty { color: var(--muted); padding: 2rem 0; }
   .empty a { color: var(--ink); }
 
-  .rfq-nudge {
-    margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--hair);
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 24px; flex-wrap: wrap;
-  }
-  .rfq-nudge p { color: var(--muted); font-size: 0.875rem; max-width: 60ch; margin: 0; }
-
-  @media (max-width: 860px) {
-    .cat-header { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 680px) {
-    .product-row { grid-template-columns: 90px 1fr; }
-    .product-row-arrow { display: none; }
-    .rfq-nudge { flex-direction: column; align-items: flex-start; }
-  }
+  @media (max-width: 860px) { .cat-header { grid-template-columns: 1fr; } .faq-item { grid-template-columns: 1fr; } }
+  @media (max-width: 680px) { .product-row { grid-template-columns: 90px 1fr; } .product-row-arrow { display: none; } }
 </style>

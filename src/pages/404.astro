@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = (import.meta.env.SITE ?? '').replace(/\/$/, '');
+const canonicalURL = `${site}${base}/404/`;
+---
+<Base
+  title="Page Not Found – Averon Overseas"
+  description="The page you requested could not be found. Browse our pharmaceutical packaging products or contact us."
+  canonicalURL={canonicalURL}
+  noIndex={true}
+>
+  <div class="wrap page-wrap" style="text-align:center; padding: 96px 20px;">
+    <h1>Page not found</h1>
+    <p style="color:var(--muted); margin:1rem 0 2rem; max-width:40ch; margin-left:auto; margin-right:auto;">
+      The page you are looking for does not exist or has moved.
+    </p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href={`${base}/`} class="btn btn-primary">Go to home</a>
+      <a href={`${base}/products/`} class="btn btn-secondary">Browse products</a>
+    </div>
+  </div>
+</Base>
+<style>
+  .page-wrap { padding-top: clamp(40px,6vw,72px); padding-bottom: clamp(64px,8vw,112px); }
+  h1 { margin-bottom: 0; }
+</style>

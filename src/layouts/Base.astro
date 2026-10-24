@@ -12,6 +12,7 @@ interface Props {
   lang?: string;
   dir?: string;
   alternates?: Array<{ lang: string; url: string }>;
+  noIndex?: boolean; // explicit override (product pages etc need not set this)
 }
 
 const {
@@ -22,6 +23,7 @@ const {
   lang = 'en',
   dir: dirProp = 'ltr',
   alternates,
+  noIndex = false,
 } = Astro.props;
 
 const RTL = new Set(['ar', 'he', 'fa', 'ur']);
@@ -30,6 +32,15 @@ const resolvedDir = RTL.has(lang.split('-')[0].toLowerCase()) ? 'rtl' : dirProp;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const site = (import.meta.env.SITE ?? '').replace(/\/$/, '');
 
+// Indexing control: PUBLIC_INDEXABLE must be exactly "true" to allow indexing
+const indexable = import.meta.env.PUBLIC_INDEXABLE === 'true';
+const robotsMeta = (!indexable || noIndex) ? 'noindex,nofollow' : 'index,follow';
+
+// OG image: use provided, else og-default, else logo
+const defaultOgImage = `${site}${base}/images/og-default.webp`;
+const ogImageFinal = ogImage || defaultOgImage;
+
+// Organisation JSON-LD (on every page)
 const orgJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -45,9 +56,23 @@ const orgJsonLd = {
     postalCode: '302012',
     addressCountry: 'IN',
   },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+91-85911-04074',
+    contactType: 'customer service',
+    email: 'info@averonoverseas.com',
+    areaServed: 'Worldwide',
+    availableLanguage: ['English'],
+  },
 };
 
-// Build font-face block with resolved base path
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Averon Overseas',
+  url: site ? `${site}${base}/` : undefined,
+};
+
 const fontBase = `${base}/fonts`;
 const fontFaceCSS = `
 @font-face{font-family:'Young Serif';font-weight:400;font-style:normal;font-display:swap;src:url('${fontBase}/young-serif-latin-400-normal.woff2') format('woff2')}
@@ -57,6 +82,8 @@ const fontFaceCSS = `
 @font-face{font-family:'JetBrains Mono';font-weight:400;font-style:normal;font-display:swap;src:url('${fontBase}/jetbrains-mono-latin-400-normal.woff2') format('woff2')}
 @font-face{font-family:'JetBrains Mono';font-weight:500;font-style:normal;font-display:swap;src:url('${fontBase}/jetbrains-mono-latin-500-normal.woff2') format('woff2')}
 `.trim();
+
+const gcCode = import.meta.env.PUBLIC_GOATCOUNTER_CODE ?? '';
 ---
 
 <!DOCTYPE html>
@@ -66,23 +93,58 @@ const fontFaceCSS = `
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="robots" content={robotsMeta} />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Averon Overseas" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonicalURL} />
-  {ogImage && <meta property="og:image" content={ogImage} />}
+  <meta property="og:image" content={ogImageFinal} />
+  <meta property="og:locale" content="en_GB" />
+
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageFinal} />
+
+  <!-- hreflang: x-default = en; more languages added here when live -->
+  <link rel="alternate" hreflang="x-default" href={canonicalURL} />
+  <link rel="alternate" hreflang="en" href={canonicalURL} />
   {alternates?.map(a => <link rel="alternate" hreflang={a.lang} href={a.url} />)}
+
+  <!-- Critical font preloads -->
+  <link rel="preload" href={`${base}/fonts/young-serif-latin-400-normal.woff2`} as="font" type="font/woff2" crossorigin="anonymous" />
+  <link rel="preload" href={`${base}/fonts/hanken-grotesk-latin-400-normal.woff2`} as="font" type="font/woff2" crossorigin="anonymous" />
+
+  <!-- Favicons -->
   <link rel="icon" type="image/x-icon" href={`${base}/favicon.ico`} />
   <link rel="icon" type="image/png" sizes="32x32" href={`${base}/favicon-32x32.png`} />
+  <link rel="icon" type="image/png" sizes="16x16" href={`${base}/favicon-16x16.png`} />
   <link rel="apple-touch-icon" href={`${base}/apple-touch-icon.png`} />
   <link rel="manifest" href={`${base}/site.webmanifest`} />
-  <meta name="theme-color" content="#FAFBFC" />
-  <!-- Font-face with resolved base path -->
+  <meta name="theme-color" content="#F3F6F9" />
+
+  <!-- Font-face block (base-path-resolved) -->
   <style set:html={fontFaceCSS} />
+
+  <!-- Structured data -->
   <script type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
   <slot name="jsonld" />
+
+  <!-- GoatCounter analytics (cookieless, only when code is set) -->
+  {gcCode && (
+    <script
+      data-goatcounter={`https://${gcCode}.goatcounter.com/count`}
+      async
+      src="//gc.zgo.at/count.js"
+    />
+  )}
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>

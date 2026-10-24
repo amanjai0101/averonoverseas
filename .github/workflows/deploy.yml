@@ -17,11 +17,26 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SITE_URL:                ${{ vars.SITE_URL || 'https://averonoverseas.github.io' }}
+      BASE_PATH:               ${{ vars.BASE_PATH || '/averonoverseas' }}
+      PUBLIC_INDEXABLE:        ${{ vars.PUBLIC_INDEXABLE || 'false' }}
+      PUBLIC_WEB3FORMS_KEY:    ${{ secrets.PUBLIC_WEB3FORMS_KEY }}
+      PUBLIC_GOATCOUNTER_CODE: ${{ secrets.PUBLIC_GOATCOUNTER_CODE }}
     steps:
       - uses: actions/checkout@v4
+
+      # Write public/CNAME if CUSTOM_DOMAIN secret is set
+      - name: Write CNAME
+        if: ${{ secrets.CUSTOM_DOMAIN != '' }}
+        run: echo "${{ secrets.CUSTOM_DOMAIN }}" > public/CNAME
+
       - uses: withastro/action@v3
         with:
           node-version: 20
+
+      - name: SEO check
+        run: BASE_PATH=${{ vars.BASE_PATH || '/averonoverseas' }} node scripts/seo-check.mjs
 
   deploy:
     needs: build

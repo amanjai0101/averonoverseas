@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = (import.meta.env.SITE ?? '').replace(/\/$/, '');
+const canonicalURL = `${site}${base}/terms/`;
+const buildYear = new Date().getFullYear();
+---
+<Base
+  title="Terms of Use – Averon Overseas"
+  description="Website terms of use and indicative-specifications disclaimer for averonoverseas.com."
+  canonicalURL={canonicalURL}
+>
+  <div class="wrap page-wrap">
+    <nav aria-label="Breadcrumb" class="breadcrumb">
+      <ol><li><a href={`${base}/`}>Home</a></li><li aria-current="page">Terms of Use</li></ol>
+    </nav>
+    <article class="prose">
+      <h1>Terms of Use</h1>
+      <p class="updated">Last updated: {buildYear}</p>
+
+      <h2>Website use</h2>
+      <p>This website is provided by Averon Overseas for informational purposes. By accessing this site you agree to these terms. We reserve the right to update them at any time; the date above reflects the most recent change.</p>
+
+      <h2>Indicative specifications</h2>
+      <p>All product specifications, dimensions, size ranges, materials, grades and other technical data shown on this site are indicative only. Final specifications are confirmed with the manufacturing partner at the time of order. Averon Overseas makes no warranty that any specification shown on this site will match the specification of any product supplied.</p>
+
+      <h2>No controlled substances</h2>
+      <p>Products subject to controlled-substance regulations are not listed on this site and are supplied only to licensed buyers subject to applicable law.</p>
+
+      <h2>Intellectual property</h2>
+      <p>All content on this site, including text, images and data, is the property of Averon Overseas or its content suppliers. You may not reproduce or redistribute it without written permission.</p>
+
+      <h2>Limitation of liability</h2>
+      <p>Averon Overseas is a sourcing and trading company. We are not the manufacturer of the products described on this site. We accept no liability for any loss or damage arising from the use of information on this site or from reliance on indicative specifications.</p>
+
+      <h2>Governing law</h2>
+      <p>These terms are governed by the laws of Rajasthan, India. Any disputes shall be subject to the jurisdiction of courts in Jaipur, Rajasthan.</p>
+
+      <h2>Contact</h2>
+      <p>For any queries about these terms: <a href="mailto:info@averonoverseas.com">info@averonoverseas.com</a></p>
+    </article>
+  </div>
+</Base>
+<style>
+  .page-wrap { padding-top: clamp(40px,6vw,72px); padding-bottom: clamp(64px,8vw,112px); }
+  .prose { max-width: 68ch; }
+  h1 { margin-bottom: 0.5rem; }
+  .updated { font-size: 0.875rem; color: var(--muted); margin-bottom: 2rem; }
+  h2 { font-size: 1.25rem; margin: 2rem 0 0.625rem; }
+  p { color: var(--muted); line-height: 1.65; margin-bottom: 0.875rem; }
+  a { color: var(--ink); }
+  a:hover { text-decoration: underline; }
+</style>
