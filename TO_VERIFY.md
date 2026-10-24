@@ -11,11 +11,11 @@ Products subject to controlled-substance regulations are not listed and are supp
 | Catalogue text | Corrected to | File |
 |---|---|---|
 | Amocicillin | **Amoxicillin** | apis.json |
-| Levotaxacin | **Levofloxacin** | apis.json |
+| Levofoxacin | **Levofloxacin** | apis.json |
 | Methormin HCl | **Metformin HCl** | apis.json |
 | Vildaglitin | **Vildagliptin** | apis.json |
 | Clobetasol Proponate | **Clobetasol Propionate** | apis.json |
-| Levtirecetam | **Levetiracetam** | apis.json |
+| Levetirecetam | **Levetiracetam** | apis.json |
 | Melendazole | **Mebendazole** | apis.json |
 | Crospowidone | **Crospovidone** | excipients.json |
 
@@ -23,30 +23,35 @@ Products subject to controlled-substance regulations are not listed and are supp
 
 ## Spec conflicts from spec/CoA sheets
 
-1. **CRC 28 mm — overall weight range conflict**
-   - Specification sheet (AO/QA/QC/SPC/02): 6.00–6.30 g
-   - CoA: 6.00–6.60 g
-   - Data uses: `6.30 ± 0.30 g` (midpoint of spec range, wider tolerance)
-   - Action: Confirm with supplier which range is current.
+1. **CRC 28 mm — overall weight: RESOLVED**
+   - Specification text "6.00–6.30 g" is a misprint; the wider CoA range confirms the tolerance.
+   - Data value `6.30 ± 0.30 g` is correct (nominal 6.30 g, tolerance ±0.30 g).
+   - No further action required.
 
 2. **CRC 28 mm — EPE liner diameter tolerance conflict**
+   - Specification sheet: ±0.10 mm
+   - CoA: ±0.15 mm
+   - Data uses: `±0.10 mm` (specification sheet value)
+   - Action: Confirm with supplier which tolerance is current production spec.
+
+3. **Tamper-evident cap 28 mm / EPE liner — liner diameter tolerance conflict**
    - Specification sheet: ±0.20 mm
    - CoA: ±0.10 mm
    - Data uses: `±0.20 mm` (specification sheet value, conservative)
    - Action: Confirm with supplier which tolerance applies.
 
-3. **Tamper-evident cap LDPE plug liner — plug OD range typo**
+4. **Tamper-evident cap LDPE plug liner — plug OD range typo**
    - CoA prints plug OD range as "24.40–20.80 mm" (lower bound > upper bound — apparent typo)
    - Data uses: `24.40 ± 0.20 mm` (nominal value only)
    - Action: Supplier to confirm correct OD range.
 
-4. **Tamper-evident cap — overall height conflict**
+5. **Tamper-evident cap — overall height conflict**
    - Specification sheet text: 23.35 mm
-   - Drawing dimension: 20.8 mm
-   - Data uses: `23.35 mm` (specification text)
-   - Action: Confirm with supplier which dimension is current.
+   - Drawing dimension: 20.8 mm (may be shell height only, not overall)
+   - Data uses: `23.35 mm` (specification text, overall height)
+   - Action: Confirm with supplier whether 20.8 mm is shell height and 23.35 mm is overall height.
 
-5. **15 mL measuring cup — spec title references brand name**
+6. **15 mL measuring cup — spec title references brand name**
    - Specification document title includes a specific brand cap name.
    - Data describes cup generically as "28 mm plastic cap" variant.
    - Action: Confirm the cup fits all 28 mm plastic closures, not just one brand.
@@ -98,6 +103,6 @@ Sizes, capacities and dimensions are from the 2026 catalogue and are indicative 
 
 ## Image placeholders
 
-All `images` fields in product JSON files contain placeholder filenames (e.g. `injectables-glass-vials-1.webp`).
-Images must be created or sourced and placed in `public/images/` before Stage 3 pages are built.
-See `.kiro/steering/averon.md` section 11 for image generation prompt guidelines.
+Product JSON files without a real photo use placeholder filenames in their `images` field.
+See `IMAGE_PROMPTS.md` for generation prompts for all missing images.
+See `.kiro/steering/averon.md` section 11 for image guidelines.

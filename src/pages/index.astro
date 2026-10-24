@@ -1,20 +1,345 @@
 ---
 import Base from '../layouts/Base.astro';
+import ProductImage from '../components/ProductImage.astro';
+import { getCategories, getProducts } from '../data/index.ts';
+import { formatSpec } from '../utils/formatSpec.ts';
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://amanjai0101.github.io').toString();
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = import.meta.env.SITE ?? 'https://averonoverseas.github.io';
+const canonicalURL = `${site}${base}/`;
+
+const categories = await getCategories();
+// Pull CRC product for spec spotlight
+const closures = await getProducts('closures-caps');
+const crc = closures.find(p => p.slug === 'crc-cap-28');
+const crcVariant = crc?.variants.find(v => v.status === 'verified');
+const crcSpecs = crcVariant?.specs ?? crc?.specs ?? [];
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Averon Overseas',
+  url: `${site}${base}/`,
+};
+
+const processSteps = [
+  { n: '1', heading: 'Enquiry',       body: 'Send product, size and quantity.' },
+  { n: '2', heading: 'Specification', body: 'We match it to a qualified partner and confirm the drawing.' },
+  { n: '3', heading: 'Documents',     body: 'CoA, TDS and SDS shared on request.' },
+  { n: '4', heading: 'Supply',        body: 'Order coordination through to delivery.' },
+];
+
+const docTypes = [
+  { label: 'CoA',       desc: 'Certificate of Analysis' },
+  { label: 'TDS',       desc: 'Technical Data Sheet' },
+  { label: 'SDS',       desc: 'Safety Data Sheet' },
+  { label: 'Drawing',   desc: 'Technical Drawing' },
+  { label: 'Spec',      desc: 'Specification Sheet' },
+];
 ---
 
 <Base
-  title="Averon Overseas – Pharmaceutical Packaging Supplier"
-  description="Sourcing and supply company for pharmaceutical primary packaging and raw materials. Jaipur, India."
+  title="Pharmaceutical Packaging Supplier – Averon Overseas"
+  description="Averon Overseas sources and supplies pharmaceutical primary packaging and raw materials for manufacturers and brand owners. Jaipur, India."
   canonicalURL={canonicalURL}
+  ogImage={`${site}${base}/images/home-cover.webp`}
 >
-  <section style="padding: 80px 24px; max-width: 900px; margin: 0 auto;">
-    <h1 style="font-family: var(--serif); color: var(--ink); font-size: 2rem; margin: 0 0 16px;">
-      Pharmaceutical Primary Packaging
-    </h1>
-    <p style="font-family: var(--sans); color: var(--muted); max-width: 60ch; line-height: 1.7;">
-      Averon Overseas sources and supplies pharmaceutical primary packaging and raw materials for manufacturers and brand owners worldwide.
-    </p>
+  <slot slot="jsonld">
+    <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
+  </slot>
+
+  <!-- ── Hero ──────────────────────────────────────────────── -->
+  <section class="hero-section" aria-label="Introduction">
+    <div class="wrap hero-grid">
+      <div class="hero-text">
+        <h1>Pharmaceutical packaging, specified before it is sourced.</h1>
+        <p class="lead">Averon Overseas connects pharma manufacturers and brand owners with qualified manufacturing partners for primary packaging and raw materials.</p>
+        <div class="hero-cta">
+          <a href={`${base}/rfq/`} class="btn btn-accent">Request a quote</a>
+          <a href={`${base}/products/`} class="btn btn-outline">Browse the range</a>
+        </div>
+      </div>
+      <figure class="hero-figure">
+        <div class="plate">
+          <svg viewBox="0 0 360 400" role="img" aria-label="Line drawing of a glass vial with dimension lines" style="width:100%;height:auto;display:block">
+            <g fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="130" y="40" width="100" height="26"/>
+              <rect x="118" y="66" width="124" height="16"/>
+              <path d="M136 82v22q-26 14-26 44v196q0 14 14 14h112q14 0 14-14V148q0-30-26-44V82"/>
+              <path d="M110 330h140" stroke-dasharray="3 4" opacity=".5"/>
+            </g>
+            <g stroke="var(--accent)" stroke-width="1.2" fill="none">
+              <path d="M70 40v370M62 40h16M62 410h16"/>
+              <path d="M110 424h140M110 416v16M250 416v16"/>
+              <path d="M300 82v22M292 82h16M292 104h16"/>
+            </g>
+            <g font-family="JetBrains Mono,monospace" font-size="11" fill="currentColor">
+              <text x="20" y="230" transform="rotate(-90 28 230)">height, per vial size</text>
+              <text x="142" y="444">outer Ø, per vial size</text>
+              <text x="256" y="98">neck finish 13 / 20 mm</text>
+            </g>
+          </svg>
+        </div>
+        <figcaption>Type I borosilicate vial, 2R–100R, clear or amber. Dimensions confirmed against supplier drawing at order stage.</figcaption>
+      </figure>
+    </div>
   </section>
+
+  <!-- ── Product index ─────────────────────────────────────── -->
+  <section id="products" class="section-border" aria-labelledby="products-heading">
+    <div class="wrap">
+      <div class="sechead">
+        <h2 id="products-heading">Six product families, one enquiry</h2>
+        <p>Typical ranges from our 2026 catalogue. Exact sizes, necks and grades confirmed per order.</p>
+      </div>
+      <div class="product-index" role="list">
+        {categories.map(cat => (
+          <a href={`${base}/products/${cat.slug}/`} class="product-row" role="listitem">
+            <div class="row-thumb">
+              <ProductImage
+                src={cat.image}
+                alt={cat.name}
+                width={120}
+                height={84}
+                loading="lazy"
+              />
+            </div>
+            <div class="row-name"><b>{cat.name}</b></div>
+            <div class="row-desc">{cat.summary}</div>
+            <div class="row-sizes mono muted">{cat.seoDescription?.split('.')[0]}</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Spec spotlight (CRC28) ────────────────────────────── -->
+  {crc && crcSpecs.length > 0 && (
+    <section class="section-night" id="specifications" aria-labelledby="spec-heading">
+      <div class="wrap spec-grid">
+        <div class="spec-content">
+          <h2 id="spec-heading">A closure, as a buyer reads it</h2>
+          <p class="muted-text">Every product page follows this layout: material, dimensions, weight, documents. Values from our CRC specification, doc {crcVariant?.docRef ?? ''}.</p>
+          <table class="spec-table" aria-label={`${crc.name} specifications`}>
+            <thead class="sr-only"><tr><th>Property</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Product</th><td class="mono">{crc.name}</td></tr>
+              {crc.materials.map(m => (
+                <tr><th scope="row">Material</th><td class="mono">{m}</td></tr>
+              ))}
+              {crcSpecs.map(s => (
+                <tr>
+                  <th scope="row">{s.key}</th>
+                  <td class="mono">{formatSpec({ value: s.value, tol: s.tol, unit: s.unit })}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="docs-note">Available on request: technical drawing, specification, certificate of analysis.</p>
+        </div>
+        <figure aria-hidden="true">
+          <svg viewBox="0 0 340 300" role="img" aria-label="Section drawing of a 28 mm CRC closure" style="width:100%;height:auto;display:block">
+            <g fill="none" stroke="#EAF0F6" stroke-width="1.5">
+              <path d="M70 60h200v12H258v128H82V72H70z"/>
+              <path d="M94 72v110M246 72v110"/>
+              <path d="M102 72h136v10H102z" opacity=".7"/>
+              <path d="M82 200l-8 10h12M258 200l8 10h-12"/>
+            </g>
+            <g stroke="var(--accent)" stroke-width="1.1" fill="none">
+              <path d="M70 34h200M70 28v12M270 28v12"/>
+              <path d="M304 60v140M298 60h12M298 200h12"/>
+              <path d="M102 250h136M102 244v12M238 244v12"/>
+            </g>
+            <g font-family="JetBrains Mono,monospace" font-size="11" fill="#EAF0F6">
+              <text x="128" y="24">Ø 34.4 ± 0.2</text>
+              <text x="150" y="272">liner Ø 25.6</text>
+              <text x="238" y="130" fill="var(--accent)" transform="rotate(90 312 130)">24.3 ± 0.2</text>
+            </g>
+          </svg>
+          <figcaption>CRC28 section, simplified. Supplier drawing confirmed at order stage.</figcaption>
+        </figure>
+      </div>
+    </section>
+  )}
+
+  <!-- ── Process steps ─────────────────────────────────────── -->
+  <section id="process" aria-labelledby="process-heading">
+    <div class="wrap">
+      <div class="sechead">
+        <h2 id="process-heading">From enquiry to delivery</h2>
+        <p>Four steps, with documents shared at the point you need them.</p>
+      </div>
+      <div class="steps-grid">
+        {processSteps.map(s => (
+          <div class="step">
+            <div class="step-num" aria-hidden="true">{s.n}</div>
+            <h3>{s.heading}</h3>
+            <p>{s.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Documents strip ───────────────────────────────────── -->
+  <section aria-labelledby="docs-heading" class="section-border">
+    <div class="wrap">
+      <h2 id="docs-heading" class="sr-only">Documents we share</h2>
+      <div class="docs-strip" role="list">
+        {docTypes.map(d => (
+          <div class="doc-item" role="listitem">
+            <b>{d.label}</b>
+            <span class="muted">{d.desc}</span>
+          </div>
+        ))}
+      </div>
+      <p class="docs-note" style="margin-top:1rem">All documents shared on request. <a href={`${base}/documents/`}>Learn more about our documentation.</a></p>
+    </div>
+  </section>
+
+  <!-- ── RFQ band ───────────────────────────────────────────── -->
+  <section class="rfq-band" id="rfq-band" aria-labelledby="rfq-heading">
+    <div class="wrap rfq-grid">
+      <div>
+        <h2 id="rfq-heading">Tell us your product, size and quantity.</h2>
+        <p>We will come back with options. Prefer email? Write to <a href="mailto:info@averonoverseas.com">info@averonoverseas.com</a></p>
+      </div>
+      <a href={`${base}/rfq/`} class="btn btn-dark">Send a quote request</a>
+    </div>
+  </section>
+
+  <!-- ── Mobile sticky CTA ─────────────────────────────────── -->
+  <div class="sticky-mobile" role="complementary" aria-label="Quick quote">
+    <a href={`${base}/rfq/`} class="btn btn-accent btn-block">Request a quote</a>
+  </div>
 </Base>
+
+<style>
+  /* ── Layout helpers ─────────────────────────────────────── */
+  .wrap { max-width:1240px; margin:0 auto; padding:0 clamp(20px,4vw,48px); }
+  .section-border { border-top: 1px solid var(--rule); }
+
+  /* ── Typography ─────────────────────────────────────────── */
+  h1 { font-family:var(--serif); font-weight:400; font-size:clamp(38px,6vw,72px); letter-spacing:-.01em; line-height:1.08; margin:0; }
+  h2 { font-family:var(--serif); font-weight:400; font-size:clamp(28px,3.6vw,44px); line-height:1.08; margin:0; }
+  h3 { font-family:var(--serif); font-weight:400; font-size:1.375rem; margin:0.875rem 0 0.5rem; }
+  .lead { font-size:1.25rem; max-width:46ch; color:var(--muted); margin:1.375rem 0 2rem; }
+  .mono { font-family:var(--mono); font-size:0.9em; }
+  .muted { color:var(--muted); }
+  .muted-text { color:var(--muted); max-width:48ch; margin:1rem 0 1.625rem; }
+  .docs-note { font-size:0.9375rem; color:var(--muted); margin-top:1.375rem; }
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+
+  /* ── Buttons ────────────────────────────────────────────── */
+  .btn {
+    display:inline-flex; align-items:center; justify-content:center;
+    font-family:var(--sans); font-weight:700; font-size:1rem; line-height:1;
+    padding:0.9375rem 1.375rem; text-decoration:none;
+    border:2px solid transparent; cursor:pointer; min-height:44px;
+    transition:transform 0.15s, box-shadow 0.15s;
+  }
+  .btn:hover { transform:translate(-2px,-2px); box-shadow:3px 3px 0 var(--accent); }
+  .btn-accent  { background:var(--accent); border-color:var(--accent); color:#12263F; }
+  .btn-outline { background:transparent; border-color:var(--ink); color:var(--ink); }
+  .btn-dark    { background:var(--ink); border-color:var(--ink); color:var(--paper); }
+  .btn-block   { display:flex; width:100%; }
+  @media (prefers-reduced-motion:reduce) { .btn:hover { transform:none; box-shadow:none; } }
+
+  /* ── Hero ───────────────────────────────────────────────── */
+  .hero-section { padding:clamp(40px,7vw,96px) 0 clamp(40px,6vw,80px); }
+  .hero-grid {
+    display:grid; grid-template-columns:7fr 5fr;
+    gap:clamp(24px,5vw,72px); align-items:center;
+  }
+  .hero-cta { display:flex; gap:0.875rem; flex-wrap:wrap; margin-top:2rem; }
+  .plate { background:var(--panel); padding:1.25rem; }
+  figure { margin:0; }
+  figcaption { font-size:0.875rem; color:var(--muted); border-top:1px solid var(--rule); margin-top:0.625rem; padding-top:0.5rem; }
+
+  /* ── Section head ───────────────────────────────────────── */
+  .sechead {
+    display:grid; grid-template-columns:5fr 7fr;
+    gap:2rem; margin-bottom:2.25rem; align-items:end;
+  }
+  .sechead p { margin:0; color:var(--muted); max-width:56ch; }
+
+  /* ── Product index rows ─────────────────────────────────── */
+  section#products { padding:clamp(44px,6vw,84px) 0; }
+  .product-index { border-top:2px solid var(--ink); }
+  .product-row {
+    display:grid; grid-template-columns:120px 1.1fr 1.6fr 1fr;
+    gap:1.5rem; align-items:center; padding:1.25rem 0;
+    border-bottom:1px solid var(--rule); text-decoration:none; color:inherit;
+  }
+  .product-row:hover { background:var(--panel); }
+  .product-row:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .row-thumb { height:84px; overflow:hidden; }
+  .row-name b { font-family:var(--serif); font-weight:400; font-size:1.5rem; line-height:1.15; }
+  .row-desc { color:var(--muted); font-size:0.9375rem; }
+  .row-sizes { font-size:0.875rem; }
+
+  /* ── Spec spotlight ─────────────────────────────────────── */
+  .section-night { background:var(--night); color:var(--on-night); padding:clamp(44px,6vw,84px) 0; }
+  .spec-grid {
+    display:grid; grid-template-columns:6fr 5fr;
+    gap:clamp(24px,5vw,72px); align-items:start;
+  }
+  .spec-table { border-collapse:collapse; width:100%; }
+  .spec-table th,
+  .spec-table td { text-align:left; padding:0.6875rem 0; border-bottom:1px solid #41566D; vertical-align:top; }
+  .spec-table th { font-weight:400; color:#A9B9CA; width:46%; padding-right:1rem; }
+  .spec-table td { font-family:var(--mono); font-size:0.9375rem; }
+  .section-night figcaption { color:#A9B9CA; border-color:#41566D; }
+  .section-night .muted-text { color:#A9B9CA; }
+  .section-night .docs-note { color:#A9B9CA; }
+
+  /* ── Process steps ──────────────────────────────────────── */
+  section#process { padding:clamp(44px,6vw,84px) 0; }
+  .steps-grid {
+    display:grid; grid-template-columns:repeat(4,1fr);
+    border-top:2px solid var(--ink);
+  }
+  .step { padding:1.375rem 1.5rem 0 0; }
+  .step-num { font-family:var(--serif); font-size:2.5rem; line-height:1; color:var(--accent); }
+  .step p { margin:0; color:var(--muted); font-size:1rem; }
+
+  /* ── Docs strip ─────────────────────────────────────────── */
+  .docs-strip {
+    display:grid; grid-template-columns:repeat(5,1fr);
+    border:1px solid var(--rule);
+    padding:clamp(44px,6vw,84px) 0 1rem;
+  }
+  .doc-item { padding:1.125rem; border-right:1px solid var(--rule); }
+  .doc-item:last-child { border-right:none; }
+  .doc-item b { display:block; font-weight:700; margin-bottom:0.25rem; }
+  .doc-item span { font-size:0.875rem; }
+
+  /* ── RFQ band ───────────────────────────────────────────── */
+  .rfq-band { background:var(--accent); color:#12263F; padding:clamp(44px,6vw,84px) 0; }
+  .rfq-grid {
+    display:grid; grid-template-columns:5fr 3fr;
+    gap:clamp(24px,5vw,72px); align-items:center;
+  }
+  .rfq-band h2 { color:#12263F; }
+  .rfq-band p { margin:0.875rem 0 0; max-width:40ch; }
+  .rfq-band a[href^="mailto"] { color:#12263F; font-weight:500; }
+
+  /* ── Mobile sticky bar ──────────────────────────────────── */
+  .sticky-mobile { display:none; }
+
+  /* ── Responsive ─────────────────────────────────────────── */
+  @media (max-width:860px) {
+    .hero-grid, .spec-grid, .sechead, .rfq-grid { grid-template-columns:1fr; }
+    .product-row { grid-template-columns:84px 1fr; gap:0.375rem 1rem; }
+    .row-desc, .row-sizes { grid-column:2; }
+    .steps-grid { grid-template-columns:1fr 1fr; }
+    .docs-strip { grid-template-columns:1fr 1fr; }
+    .doc-item { border-bottom:1px solid var(--rule); }
+    .sticky-mobile {
+      display:block; position:fixed; left:0; right:0; bottom:0;
+      padding:0.625rem 1rem calc(0.625rem + env(safe-area-inset-bottom,0px));
+      background:var(--paper); border-top:1px solid var(--rule); z-index:30;
+    }
+    body { padding-bottom:72px; }
+  }
+</style>

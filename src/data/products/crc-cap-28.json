@@ -15,7 +15,7 @@
         { "key": "Overall height",            "value": "24.30", "tol": "0.20", "unit": "mm" },
         { "key": "Outer diameter (top)",       "value": "34.40", "tol": "0.20", "unit": "mm" },
         { "key": "Outer diameter (base)",      "value": "35.00", "tol": "0.20", "unit": "mm" },
-        { "key": "Liner diameter",             "value": "25.60", "tol": "0.20", "unit": "mm" },
+        { "key": "Liner diameter",             "value": "25.60", "tol": "0.10", "unit": "mm" },
         { "key": "Liner thickness",            "value": "1.40",  "tol": "0.10", "unit": "mm" },
         { "key": "Overall weight",             "value": "6.30",  "tol": "0.30", "unit": "g"  },
         { "key": "Cap weight (without liner)", "value": "5.20",  "tol": "0.30", "unit": "g"  }

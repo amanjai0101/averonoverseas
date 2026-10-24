@@ -45,6 +45,7 @@ const orgJsonLd = {
   '@type': 'Organization',
   name: 'Averon Overseas',
   url: import.meta.env.SITE,
+  logo: `${import.meta.env.SITE}${base}/images/averon-logo.webp`,
   email: 'info@averonoverseas.com',
   telephone: ['+91-85911-04074', '+91-70738-57555'],
   address: {
@@ -73,6 +74,13 @@ const orgJsonLd = {
     {alternates?.map(alt => (
       <link rel="alternate" hreflang={alt.lang} href={alt.url} />
     ))}
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href={`${base}/favicon.ico`} />
+    <link rel="icon" type="image/png" sizes="16x16" href={`${base}/favicon-16x16.png`} />
+    <link rel="icon" type="image/png" sizes="32x32" href={`${base}/favicon-32x32.png`} />
+    <link rel="apple-touch-icon" sizes="180x180" href={`${base}/apple-touch-icon.png`} />
+    <link rel="manifest" href={`${base}/site.webmanifest`} />
+    <meta name="theme-color" content="#12263F" />
     <script type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} />
     <slot name="jsonld" />
   </head>
