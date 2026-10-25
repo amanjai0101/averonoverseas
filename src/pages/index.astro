@@ -11,20 +11,23 @@ const categories = await getCategories();
 const allProducts = await getProducts();
 const materials = await getMaterials();
 
-// Compute first sizeRange per category
-const catRanges = new Map<string, string>();
-for (const p of allProducts) {
-  if (!catRanges.has(p.category) && p.sizeRange && p.sizeRange !== 'to-verify') {
-    catRanges.set(p.category, p.sizeRange);
-  }
-}
+// Product-type labels per category (for tile subtitle) — Fix 1
+const catTypeLabels: Record<string, string> = {
+  'injectables':         'Vials · Ampoules · Seals · Stoppers',
+  'bottles-containers':  'Glass · PET · HDPE · LDPE',
+  'closures-caps':       'ROPP · CRC · Tamper-Evident · Screw Caps',
+  'blister-films-foils': 'PVC · PVC/PVDC · Triplex · Cold-Form · Laminates',
+  'dosing-dispensing':   'Syringes · Cups · Droppers · Spoons',
+  'raw-materials':       'APIs · Excipients · Vitamins · Chemicals',
+};
 
-// Build size chips: first variant label per product where it's short and useful
+// Build size chips for ALL products with a real sizeRange — Fix 4
 const chips: string[] = [];
 for (const p of allProducts) {
-  if (p.sizeRange && p.sizeRange !== 'to-verify' && p.sizeRange.length < 30) {
-    const label = `${p.sizeRange} ${p.name.replace(/\(.*\)/g,'').trim()}`;
-    if (chips.length < 14) chips.push(label);
+  if (p.sizeRange && p.sizeRange !== 'to-verify') {
+    // Short product label: strip bracketed text, trim
+    const shortName = p.name.replace(/\s*\(.*?\)\s*/g, '').trim();
+    chips.push(`${shortName}: ${p.sizeRange}`);
   }
 }
 
@@ -48,8 +51,8 @@ const websiteJsonLd = {
 ---
 
 <Base
-  title="Pharmaceutical Packaging Supplier – Averon Overseas"
-  description="Averon Overseas sources pharmaceutical primary packaging and raw materials for manufacturers and brand owners worldwide. Jaipur, India."
+  title="Pharma Primary Packaging & Raw Materials Supplier India | Averon"
+  description="Averon Overseas sources pharmaceutical primary packaging and raw materials for manufacturers worldwide — glass vials, closures, blister films, APIs and excipients. Jaipur, India."
   canonicalURL={canonicalURL}
   ogImage={`${site}${base}/images/og-default.webp`}
 >
@@ -104,30 +107,19 @@ const websiteJsonLd = {
       </div>
       <div class="cat-grid">
         {categories.map(cat => (
-          <a href={`${base}/products/${cat.slug}/`} class="cat-tile" aria-label={`${cat.name} — view sizes`}>
+          <a href={cat.slug === 'raw-materials' ? `${base}/raw-materials/` : `${base}/products/${cat.slug}/`}
+             class="cat-tile"
+             aria-label={`${cat.name} — view range`}>
             <div class="cat-tile-img">
               <ProductImage src={cat.image} alt={cat.name} aspectRatio="4/3" loading="lazy" />
             </div>
             <div class="cat-tile-meta">
               <span class="cat-tile-name">{cat.name}</span>
-              {catRanges.get(cat.slug) && (
-                <span class="cat-tile-range mono muted">{catRanges.get(cat.slug)}</span>
-              )}
-              <span class="cat-tile-hover" aria-hidden="true">View sizes →</span>
+              <span class="cat-tile-range mono muted">{catTypeLabels[cat.slug] ?? ''}</span>
+              <span class="cat-tile-hover" aria-hidden="true">View range →</span>
             </div>
           </a>
         ))}
-        <!-- Raw Materials tile -->
-        <a href={`${base}/raw-materials/`} class="cat-tile" aria-label="Raw Materials — view range">
-          <div class="cat-tile-img">
-            <ProductImage src="raw-materials-hero.webp" alt="Pharmaceutical raw materials" aspectRatio="4/3" loading="lazy" />
-          </div>
-          <div class="cat-tile-meta">
-            <span class="cat-tile-name">Raw Materials</span>
-            <span class="cat-tile-range mono muted">APIs, excipients, vitamins, chemicals</span>
-            <span class="cat-tile-hover" aria-hidden="true">View range →</span>
-          </div>
-        </a>
       </div>
     </div>
   </section>

@@ -13,5 +13,14 @@
   "email": "info@averonoverseas.com",
   "phones": ["+91-85911-04074", "+91-70738-57555"],
   "mapEmbedUrl": "",
-  "mapLinkUrl": "https://maps.google.com/?q=Jaipur,+Rajasthan+302012,+India"
+  "mapLinkUrl": "https://maps.google.com/?q=Jaipur,+Rajasthan+302012,+India",
+  "iec": "",
+  "gstin": "",
+  "established": "",
+  "social": {
+    "x": "",
+    "linkedin": "",
+    "instagram": "",
+    "facebook": ""
+  }
 }

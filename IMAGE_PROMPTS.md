@@ -216,6 +216,12 @@ Photorealistic studio product photograph of a roll of cold-form aluminium lamina
 
 ---
 
+### blister-films-foils-triplex-film-1.webp
+**Aspect:** 4:3 · **Size:** 1600 × 1200 px · **Backdrop:** pure white
+**Prompt:**
+Photorealistic studio product photograph of a roll of OPA/ALU/PVC Triplex cold-form blister film on a pure white seamless backdrop. The roll is approximately 22 cm diameter, 30 cm width, standing upright on its flat end. The outer face shows a soft matte silver-grey aluminium surface (the cold-formable aluminium layer). A short length of film (about 12 cm) is unrolled and draped forward to reveal the tri-layer laminate cross-section at the cut edge: a thin translucent OPA layer on the outside, a bright aluminium middle layer, and a soft PVC inner layer in off-white. Soft diffused top-left studio light, gentle fill, soft contact shadow beneath roll. 90 mm macro lens, f/9, ISO 200. Subject within central 75%, clear white margins.
+**Negative prompt:** text, labels, logos, watermarks, extra objects, gradients, coloured backgrounds, distortion, blur, illustration, faces
+
 ### blister-films-foils-flexible-laminates-1.webp
 **Aspect:** 4:3 · **Size:** 1600 × 1200 px · **Backdrop:** pure white
 **Prompt:**

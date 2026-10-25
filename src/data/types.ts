@@ -82,4 +82,13 @@ export interface SiteConfig {
   phones: string[];
   mapEmbedUrl: string;
   mapLinkUrl: string;
+  iec?: string;
+  gstin?: string;
+  established?: string;
+  social?: {
+    x?: string;
+    linkedin?: string;
+    instagram?: string;
+    facebook?: string;
+  };
 }

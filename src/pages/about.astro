@@ -1,9 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProductImage from '../components/ProductImage.astro';
+import { getSiteConfig } from '../data/index.ts';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const site = (import.meta.env.SITE ?? '').replace(/\/$/, '');
 const canonicalURL = `${site}${base}/about/`;
+const cfg = await getSiteConfig();
 
 const whyPoints = [
   { label: 'One partner for packaging and raw materials', desc: 'Source primary packaging and APIs, excipients and vitamins through a single contact.' },
@@ -57,9 +59,19 @@ const categories = [
           <p>We connect pharma manufacturers and brand owners with qualified manufacturing partners, with clear specifications and documents shared on request.</p>
           <p>From vials and ampoules to blister films, closures, dosing devices and raw materials — we source across six product families for customers in India and internationally.</p>
           <div class="contact-detail">
-            <p><a href="mailto:info@averonoverseas.com">info@averonoverseas.com</a></p>
-            <p><a href="tel:+918591104074">+91-85911-04074</a>&emsp;<a href="tel:+917073857555">+91-70738-57555</a></p>
-            <p class="muted">Jaipur, Rajasthan 302012, India</p>
+            <p><a href={`mailto:${cfg.email}`}>{cfg.email}</a></p>
+            <p>
+              {cfg.phones.map((p, i) => (
+                <>
+                  <a href={`tel:${p.replace(/[^+\d]/g,'')}`}>{p}</a>
+                  {i < cfg.phones.length - 1 && <>&emsp;</>}
+                </>
+              ))}
+            </p>
+            <p class="muted">{cfg.address.city}, {cfg.address.state} {cfg.address.postcode}, {cfg.address.country}</p>
+            {cfg.iec && <p class="muted" style="font-size:0.875rem">IEC: <span class="mono">{cfg.iec}</span></p>}
+            {cfg.gstin && <p class="muted" style="font-size:0.875rem">GSTIN: <span class="mono">{cfg.gstin}</span></p>}
+            {cfg.established && <p class="muted" style="font-size:0.875rem">Established: {cfg.established}</p>}
           </div>
         </div>
         <div class="about-img">

@@ -10,12 +10,15 @@ const canonicalURL = `${site}${base}/products/`;
 const categories = await getCategories();
 const allProducts = await getProducts();
 
-const catRanges = new Map<string, string>();
-for (const p of allProducts) {
-  if (!catRanges.has(p.category) && p.sizeRange && p.sizeRange !== 'to-verify') {
-    catRanges.set(p.category, p.sizeRange);
-  }
-}
+// Product-type labels per category — Fix 1
+const catTypeLabels: Record<string, string> = {
+  'injectables':         'Vials · Ampoules · Seals · Stoppers',
+  'bottles-containers':  'Glass · PET · HDPE · LDPE',
+  'closures-caps':       'ROPP · CRC · Tamper-Evident · Screw Caps',
+  'blister-films-foils': 'PVC · PVC/PVDC · Triplex · Cold-Form · Laminates',
+  'dosing-dispensing':   'Syringes · Cups · Droppers · Spoons',
+  'raw-materials':       'APIs · Excipients · Vitamins · Chemicals',
+};
 
 const breadcrumb = {
   '@context': 'https://schema.org',
@@ -28,8 +31,8 @@ const breadcrumb = {
 ---
 
 <Base
-  title="Pharmaceutical Packaging Products – Averon Overseas"
-  description="Browse our 2026 catalogue: injectables, bottles, closures, blister films, dosing devices and raw materials sourced from qualified partners."
+  title="Pharma Packaging Products Supplier India | Averon Overseas"
+  description="Browse injectables, bottles, closures, blister films, dosing devices and raw materials sourced from qualified pharmaceutical packaging partners in India."
   canonicalURL={canonicalURL}
 >
   <Fragment slot="jsonld">
@@ -63,9 +66,7 @@ const breadcrumb = {
           <div class="cat-row-body">
             <h2>{cat.name}</h2>
             <p class="cat-row-summary">{cat.summary}</p>
-            {catRanges.get(cat.slug) && (
-              <p class="cat-row-range mono muted">{catRanges.get(cat.slug)}</p>
-            )}
+            <p class="cat-row-range mono muted">{catTypeLabels[cat.slug] ?? ''}</p>
           </div>
           <div class="cat-row-arrow" aria-hidden="true">&rarr;</div>
         </a>

@@ -89,7 +89,7 @@ const nav = [
     border-bottom: 1px solid var(--hair);
   }
   .header-inner {
-    display: flex; align-items: center; gap: 32px; height: 68px;
+    display: flex; align-items: center; gap: 16px; height: 68px;
   }
 
   /* Logo */
@@ -113,11 +113,12 @@ const nav = [
   }
 
   /* Desktop nav */
-  .desktop-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 2px; }
+  .desktop-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 0; }
   .desktop-nav a {
-    font-size: 0.875rem; font-weight: 500; color: var(--ink);
-    text-decoration: none; padding: 8px 10px;
+    font-size: 0.8125rem; font-weight: 500; color: var(--ink);
+    text-decoration: none; padding: 8px 8px;
     display: flex; align-items: center; min-height: 44px;
+    white-space: nowrap;
     border-bottom: 2px solid transparent;
     transition: border-color 0.15s, color 0.15s;
   }
@@ -125,7 +126,7 @@ const nav = [
   .desktop-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   /* Header end */
-  .header-end { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .header-end { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .lang-select {
     font: inherit; font-size: 0.8125rem; background: transparent; color: var(--ink);
     border: 1px solid var(--hair); padding: 0 8px; cursor: pointer; min-height: 36px;
@@ -161,6 +162,12 @@ const nav = [
     .desktop-nav, .header-end { display: none; }
     .mobile-menu { display: block; }
     .logo-link { margin-right: 0; }
+  }
+  /* At 768px keep nav visible but collapse to hamburger only if needed */
+  @media (min-width: 861px) and (max-width: 1023px) {
+    .desktop-nav a { font-size: 0.75rem; padding: 8px 5px; }
+    .cta-btn { font-size: 0.8125rem; padding: 8px 12px; }
+    .lang-select { display: none; }
   }
   @media (max-width: 400px) {
     .wm-tag { display: none; }
