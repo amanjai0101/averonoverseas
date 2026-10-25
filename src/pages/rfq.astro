@@ -49,16 +49,17 @@ const web3key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
           <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
 
           <div class="form-row-2">
-            <div class="form-field"><label for="rf-name">Name</label><input id="rf-name" name="name" type="text" autocomplete="name" required /></div>
+            <div class="form-field"><label for="rf-name">Name <span class="req">*</span></label><input id="rf-name" name="name" type="text" autocomplete="name" required /><span class="field-error" id="rf-name-error"></span></div>
             <div class="form-field"><label for="rf-company">Company</label><input id="rf-company" name="company" type="text" autocomplete="organization" /></div>
           </div>
           <div class="form-row-2">
-            <div class="form-field"><label for="rf-email">Work email</label><input id="rf-email" name="email" type="email" autocomplete="email" required /></div>
+            <div class="form-field"><label for="rf-email">Work email <span class="req">*</span></label><input id="rf-email" name="email" type="email" autocomplete="email" required /><span class="field-error" id="rf-email-error"></span></div>
             <div class="form-field"><label for="rf-country">Destination country</label><input id="rf-country" name="country" type="text" autocomplete="country-name" /></div>
           </div>
           <div class="form-field">
-            <label for="rf-product">Product and size</label>
-            <input id="rf-product" name="product" type="text" list="product-list" placeholder="e.g. 28 mm CRC cap, white" />
+            <label for="rf-product">Product and size <span class="req">*</span></label>
+            <input id="rf-product" name="product" type="text" list="product-list" placeholder="e.g. 28 mm CRC cap, white" required />
+            <span class="field-error" id="rf-product-error"></span>
             <datalist id="product-list">
               {productNames.map(n => <option value={n} />)}
             </datalist>
@@ -67,14 +68,15 @@ const web3key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
             <div class="form-field"><label for="rf-qty">Quantity</label><input id="rf-qty" name="quantity" type="text" /></div>
             <div class="form-field"><label for="rf-grade">Grade (if applicable)</label><input id="rf-grade" name="grade" type="text" placeholder="e.g. BP, USP" /></div>
           </div>
-          <div class="form-field"><label for="rf-notes">Notes</label><textarea id="rf-notes" name="notes" rows="3" placeholder="Colour, printing, specification requirements…"></textarea></div>
+          <div class="form-field"><label for="rf-notes">Notes</label><textarea id="rf-notes" name="notes" rows="3" placeholder="Colour, printing, specification requirements…"></textarea><span class="field-error" id="rf-notes-error"></span></div>
 
           <label class="checkbox-row">
             <input type="checkbox" name="consent" required />
             <span>I agree to Averon Overseas processing my enquiry details. <a href={`${base}/privacy/`}>Privacy Policy</a>.</span>
           </label>
+          <span class="field-error" id="rf-consent-error"></span>
 
-          <div id="rfq-msg" class="form-msg" aria-live="polite"></div>
+          <div id="rfq-msg" class="form-msg" aria-live="polite" aria-atomic="true"></div>
           <button type="submit" class="btn btn-primary btn-block">Send quote request</button>
         </form>
       </div>
@@ -83,6 +85,8 @@ const web3key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 </Base>
 
 <script>
+  import { validateRfqForm, sanitizeText, sanitizeEmail } from '../utils/formValidation';
+
   // Pre-fill product field from ?product= URL param
   const params = new URLSearchParams(window.location.search);
   const product = params.get('product');
@@ -93,15 +97,77 @@ const web3key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 
   const form = document.getElementById('rfq-form') as HTMLFormElement;
   const msg  = document.getElementById('rfq-msg') as HTMLElement;
+  
   if (form && msg) {
     form.addEventListener('submit', async e => {
       e.preventDefault();
-      msg.textContent = 'Sending…'; msg.className = 'form-msg';
+      
+      // Clear previous errors
+      document.querySelectorAll('.field-error').forEach(el => el.textContent = '');
+      
+      // Gather form data
+      const nameInput = document.getElementById('rf-name') as HTMLInputElement;
+      const emailInput = document.getElementById('rf-email') as HTMLInputElement;
+      const productInput = document.getElementById('rf-product') as HTMLInputElement;
+      const notesInput = document.getElementById('rf-notes') as HTMLTextAreaElement;
+      const consentCheckbox = document.querySelector('input[name="consent"]') as HTMLInputElement;
+      
+      const formData = {
+        name: nameInput.value,
+        email: emailInput.value,
+        product: productInput.value,
+        consent: consentCheckbox.checked,
+        company: (document.getElementById('rf-company') as HTMLInputElement).value,
+        country: (document.getElementById('rf-country') as HTMLInputElement).value,
+        quantity: (document.getElementById('rf-qty') as HTMLInputElement).value,
+        grade: (document.getElementById('rf-grade') as HTMLInputElement).value,
+        notes: notesInput.value,
+      };
+      
+      // Validate
+      const validation = validateRfqForm(formData);
+      
+      if (!validation.valid) {
+        msg.textContent = 'Please fill all required fields correctly.';
+        msg.className = 'form-msg form-msg--err form-msg--visible';
+        
+        // Show field-level errors
+        validation.errors.forEach(err => {
+          const errorEl = document.getElementById(`rf-${err.field}-error`);
+          if (errorEl) errorEl.textContent = err.message;
+        });
+        return;
+      }
+      
+      // Sanitize before sending
+      const sanitized = new FormData(form);
+      sanitized.set('name', sanitizeText(formData.name));
+      sanitized.set('email', sanitizeEmail(formData.email));
+      sanitized.set('product', sanitizeText(formData.product));
+      sanitized.set('company', sanitizeText(formData.company));
+      sanitized.set('country', sanitizeText(formData.country));
+      sanitized.set('quantity', sanitizeText(formData.quantity));
+      sanitized.set('grade', sanitizeText(formData.grade));
+      sanitized.set('notes', sanitizeText(formData.notes));
+      
+      msg.textContent = 'Sending…';
+      msg.className = 'form-msg form-msg--visible';
+      
       try {
-        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(form) });
-        if (res.ok) { msg.textContent = 'Thank you — we will be in touch shortly.'; msg.className = 'form-msg form-msg--ok'; form.reset(); }
-        else { msg.textContent = 'Something went wrong. Please email us directly.'; msg.className = 'form-msg form-msg--err'; }
-      } catch { msg.textContent = 'Could not send. Please email info@averonoverseas.com.'; msg.className = 'form-msg form-msg--err'; }
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: sanitized });
+        if (res.ok) {
+          msg.textContent = 'Thank you — we will be in touch shortly.';
+          msg.className = 'form-msg form-msg--ok form-msg--visible';
+          form.reset();
+          setTimeout(() => { msg.className = 'form-msg'; }, 5000);
+        } else {
+          msg.textContent = 'Something went wrong. Please try again or email us directly.';
+          msg.className = 'form-msg form-msg--err form-msg--visible';
+        }
+      } catch {
+        msg.textContent = 'Could not send. Please email info@averonoverseas.com.';
+        msg.className = 'form-msg form-msg--err form-msg--visible';
+      }
     });
   }
 </script>
@@ -131,6 +197,30 @@ const web3key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
   .form-msg { font-size: 0.875rem; min-height: 1.4em; }
   .form-msg--ok  { color: #1a6632; }
   .form-msg--err { color: #8b1a1a; }
+  .form-msg--visible {
+    padding: 12px 14px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    animation: slideDown 0.3s ease-out;
+  }
+  .form-msg--ok.form-msg--visible { background: #e8f5e9; border: 1px solid #a5d6a7; }
+  .form-msg--err.form-msg--visible { background: #ffebee; border: 1px solid #ef9a9a; }
+
+  .field-error {
+    display: block;
+    font-size: 0.8125rem;
+    color: #8b1a1a;
+    margin-top: 3px;
+    animation: slideDown 0.2s ease-out;
+  }
+  .field-error:empty { display: none; }
+
+  .req { color: #8b1a1a; font-weight: 600; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   @media (max-width: 860px) { .rfq-grid { grid-template-columns: 1fr; } .form-row-2 { grid-template-columns: 1fr; } }
 </style>

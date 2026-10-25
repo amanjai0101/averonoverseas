@@ -194,16 +194,19 @@ const websiteJsonLd = {
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
         <div class="form-row-2">
           <div class="form-field">
-            <label for="hq-name">Name</label>
+            <label for="hq-name">Name <span class="req">*</span></label>
             <input id="hq-name" name="name" type="text" autocomplete="name" required />
+            <span class="field-error" id="hq-name-error"></span>
           </div>
           <div class="form-field">
-            <label for="hq-email">Work email</label>
+            <label for="hq-email">Work email <span class="req">*</span></label>
             <input id="hq-email" name="email" type="email" autocomplete="email" required />
+            <span class="field-error" id="hq-email-error"></span>
           </div>
           <div class="form-field">
-            <label for="hq-product">Product</label>
-            <input id="hq-product" name="product" type="text" placeholder="e.g. 28 mm CRC cap, white" />
+            <label for="hq-product">Product <span class="req">*</span></label>
+            <input id="hq-product" name="product" type="text" placeholder="e.g. 28 mm CRC cap, white" required />
+            <span class="field-error" id="hq-product-error"></span>
           </div>
           <div class="form-field">
             <label for="hq-qty">Quantity</label>
@@ -214,7 +217,8 @@ const websiteJsonLd = {
           <input type="checkbox" name="consent" required />
           <span>I agree to Averon Overseas processing my enquiry details. <a href={`${base}/privacy/`}>Privacy Policy</a>.</span>
         </label>
-        <div id="hq-msg" class="form-msg" aria-live="polite"></div>
+        <span class="field-error" id="hq-consent-error"></span>
+        <div id="hq-msg" class="form-msg" aria-live="polite" aria-atomic="true"></div>
         <button type="submit" class="btn btn-primary">Send enquiry</button>
       </form>
     </div>
@@ -226,28 +230,75 @@ const websiteJsonLd = {
 </Base>
 
 <script>
+  import { validateHomeQuoteForm, sanitizeText, sanitizeEmail } from '../utils/formValidation';
+
   const form = document.getElementById('home-quote-form') as HTMLFormElement;
   const msg  = document.getElementById('hq-msg') as HTMLElement;
+  
   if (form && msg) {
     form.addEventListener('submit', async e => {
       e.preventDefault();
-      msg.textContent = 'Sending…'; msg.className = 'form-msg';
+      
+      // Clear previous errors
+      document.querySelectorAll('.field-error').forEach(el => el.textContent = '');
+      
+      // Gather form data
+      const nameInput = document.getElementById('hq-name') as HTMLInputElement;
+      const emailInput = document.getElementById('hq-email') as HTMLInputElement;
+      const productInput = document.getElementById('hq-product') as HTMLInputElement;
+      const quantityInput = document.getElementById('hq-qty') as HTMLInputElement;
+      const consentCheckbox = document.querySelector('input[name="consent"]') as HTMLInputElement;
+      
+      const formData = {
+        name: nameInput.value,
+        email: emailInput.value,
+        product: productInput.value,
+        quantity: quantityInput.value,
+        consent: consentCheckbox.checked,
+      };
+      
+      // Validate
+      const validation = validateHomeQuoteForm(formData);
+      
+      if (!validation.valid) {
+        msg.textContent = 'Please fill all required fields correctly.';
+        msg.className = 'form-msg form-msg--err form-msg--visible';
+        
+        // Show field-level errors
+        validation.errors.forEach(err => {
+          const errorEl = document.getElementById(`hq-${err.field}-error`);
+          if (errorEl) errorEl.textContent = err.message;
+        });
+        return;
+      }
+      
+      // Sanitize before sending
+      const sanitized = new FormData(form);
+      sanitized.set('name', sanitizeText(formData.name));
+      sanitized.set('email', sanitizeEmail(formData.email));
+      sanitized.set('product', sanitizeText(formData.product));
+      sanitized.set('quantity', sanitizeText(formData.quantity));
+      
+      msg.textContent = 'Sending…';
+      msg.className = 'form-msg form-msg--visible';
+      
       try {
         const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
-          body: new FormData(form),
+          body: sanitized,
         });
         if (res.ok) {
           msg.textContent = 'Thank you — we will be in touch shortly.';
-          msg.className = 'form-msg form-msg--ok';
+          msg.className = 'form-msg form-msg--ok form-msg--visible';
           form.reset();
+          setTimeout(() => { msg.className = 'form-msg'; }, 5000);
         } else {
-          msg.textContent = 'Something went wrong. Please email us directly.';
-          msg.className = 'form-msg form-msg--err';
+          msg.textContent = 'Something went wrong. Please try again or email us directly.';
+          msg.className = 'form-msg form-msg--err form-msg--visible';
         }
       } catch {
         msg.textContent = 'Could not send. Please email info@averonoverseas.com.';
-        msg.className = 'form-msg form-msg--err';
+        msg.className = 'form-msg form-msg--err form-msg--visible';
       }
     });
   }
@@ -372,6 +423,30 @@ const websiteJsonLd = {
   .form-msg { font-size: 0.875rem; min-height: 1.4em; }
   .form-msg--ok  { color: #1a6632; }
   .form-msg--err { color: #8b1a1a; }
+  .form-msg--visible {
+    padding: 12px 14px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    animation: slideDown 0.3s ease-out;
+  }
+  .form-msg--ok.form-msg--visible { background: #e8f5e9; border: 1px solid #a5d6a7; }
+  .form-msg--err.form-msg--visible { background: #ffebee; border: 1px solid #ef9a9a; }
+
+  .field-error {
+    display: block;
+    font-size: 0.8125rem;
+    color: #8b1a1a;
+    margin-top: 3px;
+    animation: slideDown 0.2s ease-out;
+  }
+  .field-error:empty { display: none; }
+
+  .req { color: #8b1a1a; font-weight: 600; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   /* ── Responsive ─────────────────────────────────────────── */
   @media (max-width: 860px) {

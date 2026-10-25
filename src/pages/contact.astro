@@ -39,15 +39,16 @@ const web3key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
         <input type="hidden" name="access_key" value={web3key || 'REPLACE_WITH_KEY'} />
         <input type="hidden" name="subject" value="Contact message from averonoverseas.com" />
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
-        <div class="form-field"><label for="cf-name">Name</label><input id="cf-name" name="name" type="text" autocomplete="name" required /></div>
-        <div class="form-field"><label for="cf-email">Email</label><input id="cf-email" name="email" type="email" autocomplete="email" required /></div>
-        <div class="form-field"><label for="cf-subject">Subject</label><input id="cf-subject" name="subject_line" type="text" /></div>
-        <div class="form-field"><label for="cf-message">Message</label><textarea id="cf-message" name="message" rows="5" required></textarea></div>
+        <div class="form-field"><label for="cf-name">Name <span class="req">*</span></label><input id="cf-name" name="name" type="text" autocomplete="name" required /><span class="field-error" id="cf-name-error"></span></div>
+        <div class="form-field"><label for="cf-email">Email <span class="req">*</span></label><input id="cf-email" name="email" type="email" autocomplete="email" required /><span class="field-error" id="cf-email-error"></span></div>
+        <div class="form-field"><label for="cf-subject">Subject <span class="req">*</span></label><input id="cf-subject" name="subject_line" type="text" required /><span class="field-error" id="cf-subject-error"></span></div>
+        <div class="form-field"><label for="cf-message">Message <span class="req">*</span></label><textarea id="cf-message" name="message" rows="5" required></textarea><span class="field-error" id="cf-message-error"></span></div>
         <label class="checkbox-row">
           <input type="checkbox" name="consent" required />
           <span>I agree to Averon Overseas processing my details to respond to this message. <a href={`${base}/privacy/`}>Privacy Policy</a>.</span>
         </label>
-        <div id="cf-msg" class="form-msg" aria-live="polite"></div>
+        <span class="field-error" id="cf-consent-error"></span>
+        <div id="cf-msg" class="form-msg" aria-live="polite" aria-atomic="true"></div>
         <button type="submit" class="btn btn-primary btn-block">Send message</button>
       </form>
     </div>
@@ -78,17 +79,73 @@ const web3key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 </Base>
 
 <script>
+  import { validateContactForm, sanitizeText, sanitizeEmail } from '../utils/formValidation';
+
   const form = document.getElementById('contact-form') as HTMLFormElement;
   const msg  = document.getElementById('cf-msg') as HTMLElement;
+  
   if (form && msg) {
     form.addEventListener('submit', async e => {
       e.preventDefault();
-      msg.textContent = 'Sending…'; msg.className = 'form-msg';
+      
+      // Clear previous errors
+      document.querySelectorAll('.field-error').forEach(el => el.textContent = '');
+      
+      // Gather form data
+      const nameInput = document.getElementById('cf-name') as HTMLInputElement;
+      const emailInput = document.getElementById('cf-email') as HTMLInputElement;
+      const subjectInput = document.getElementById('cf-subject') as HTMLInputElement;
+      const messageInput = document.getElementById('cf-message') as HTMLTextAreaElement;
+      const consentCheckbox = document.querySelector('input[name="consent"]') as HTMLInputElement;
+      
+      const formData = {
+        name: nameInput.value,
+        email: emailInput.value,
+        subject: subjectInput.value,
+        message: messageInput.value,
+        consent: consentCheckbox.checked,
+      };
+      
+      // Validate
+      const validation = validateContactForm(formData);
+      
+      if (!validation.valid) {
+        msg.textContent = 'Please fill all required fields correctly.';
+        msg.className = 'form-msg form-msg--err form-msg--visible';
+        
+        // Show field-level errors
+        validation.errors.forEach(err => {
+          const errorEl = document.getElementById(`cf-${err.field}-error`);
+          if (errorEl) errorEl.textContent = err.message;
+        });
+        return;
+      }
+      
+      // Sanitize before sending
+      const sanitized = new FormData(form);
+      sanitized.set('name', sanitizeText(formData.name));
+      sanitized.set('email', sanitizeEmail(formData.email));
+      sanitized.set('subject_line', sanitizeText(formData.subject));
+      sanitized.set('message', sanitizeText(formData.message));
+      
+      msg.textContent = 'Sending…';
+      msg.className = 'form-msg form-msg--visible';
+      
       try {
-        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(form) });
-        if (res.ok) { msg.textContent = 'Message sent. We will be in touch shortly.'; msg.className = 'form-msg form-msg--ok'; form.reset(); }
-        else { msg.textContent = 'Something went wrong. Please email us directly.'; msg.className = 'form-msg form-msg--err'; }
-      } catch { msg.textContent = `Could not send. Please email ${''}.`; msg.className = 'form-msg form-msg--err'; }
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: sanitized });
+        if (res.ok) {
+          msg.textContent = 'Message sent. We will be in touch shortly.';
+          msg.className = 'form-msg form-msg--ok form-msg--visible';
+          form.reset();
+          setTimeout(() => { msg.className = 'form-msg'; }, 5000);
+        } else {
+          msg.textContent = 'Something went wrong. Please try again or email us directly.';
+          msg.className = 'form-msg form-msg--err form-msg--visible';
+        }
+      } catch {
+        msg.textContent = 'Could not send. Please email info@averonoverseas.com.';
+        msg.className = 'form-msg form-msg--err form-msg--visible';
+      }
     });
   }
 </script>
@@ -110,6 +167,30 @@ const web3key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
   .form-msg { font-size: 0.875rem; min-height: 1.4em; }
   .form-msg--ok  { color: #1a6632; }
   .form-msg--err { color: #8b1a1a; }
+  .form-msg--visible {
+    padding: 12px 14px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    animation: slideDown 0.3s ease-out;
+  }
+  .form-msg--ok.form-msg--visible { background: #e8f5e9; border: 1px solid #a5d6a7; }
+  .form-msg--err.form-msg--visible { background: #ffebee; border: 1px solid #ef9a9a; }
+
+  .field-error {
+    display: block;
+    font-size: 0.8125rem;
+    color: #8b1a1a;
+    margin-top: 3px;
+    animation: slideDown 0.2s ease-out;
+  }
+  .field-error:empty { display: none; }
+
+  .req { color: #8b1a1a; font-weight: 600; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   .map-section { margin-top: 3rem; aspect-ratio: 16/9; background: var(--band); border: 1px solid var(--hair); overflow: hidden; }
   .map-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
